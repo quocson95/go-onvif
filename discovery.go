@@ -2,6 +2,7 @@ package onvif
 
 import (
 	"errors"
+	"kakacam-hub/config"
 	"net"
 	"regexp"
 	"strings"
@@ -15,40 +16,38 @@ var errWrongDiscoveryResponse = errors.New("Response is not related to discovery
 
 // StartDiscovery send a WS-Discovery message and wait for all matching device to respond
 func StartDiscovery(duration time.Duration) ([]Device, error) {
-	// Get list of interface address
-	addrs, err := net.InterfaceAddrs()
+	itf, err := net.InterfaceByName(config.GetAppConfig().IntFace) //here your interface
+
 	if err != nil {
 		return []Device{}, err
 	}
 
-	// Fetch IPv4 address
-	var ipAddrs []string
-	for _, addr := range addrs {
-		ipAddr, ok := addr.(*net.IPNet)
-		if ok && !ipAddr.IP.IsLoopback() && ipAddr.IP.To4() != nil {
-			ipAddrs = append(ipAddrs, ipAddr.IP.String())
+	item, _ := itf.Addrs()
+	var ip net.IP
+	for _, addr := range item {
+		switch v := addr.(type) {
+		case *net.IPNet:
+			if !v.IP.IsLoopback() {
+				if v.IP.To4() != nil { //Verify if IP is IPV4
+					ip = v.IP
+				}
+			}
 		}
 	}
 
-	// Create initial discovery results
-	var discoveryResults [] Device
-
-	// Discover device on each interface's network
-	for _, ipAddr := range ipAddrs {
-		devices, err := discoverDevices(ipAddr, duration)
-		if err != nil {
-			return []Device{}, err
-		}
-
-		discoveryResults = append(discoveryResults, devices...)
+	if ip == nil {
+		return []Device{}, err
 	}
 
-	return discoveryResults, nil
+	// Discover device on interface's network
+	devices, err := discoverDevices(ip.String(), duration)
+
+	return devices, nil
 }
 
 func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	// Create WS-Discovery request
-	u,_ := uuid.NewV4()
+	u, _ := uuid.NewV4()
 	requestID := "uuid:" + u.String()
 	request := `		
 		<?xml version="1.0" encoding="UTF-8"?>
