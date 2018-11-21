@@ -26,9 +26,15 @@ type NetworkCapabilities struct {
 	ZeroConfig bool
 }
 
+// MediaCapabilities contains media capabilities of ONVIF camera
+type MediaCapabilities struct {
+	XAddr     string
+}
+
 // DeviceCapabilities contains capabilities of an ONVIF camera
 type DeviceCapabilities struct {
 	Network   NetworkCapabilities
+	Media	  MediaCapabilities
 	Events    map[string]bool
 	Streaming map[string]bool
 }

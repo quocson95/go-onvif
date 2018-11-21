@@ -50,6 +50,8 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		Body: `<tds:GetCapabilities>
 			<tds:Category>All</tds:Category>
 		</tds:GetCapabilities>`,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
@@ -105,9 +107,21 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		}
 	}
 
+	// Get media capabilities
+	ifaceMediaCap, err := response.ValueForPath(envelopeBodyPath + ".Media")
+	if err != nil {
+		return DeviceCapabilities{}, err
+	}
+
+	mediaCap := MediaCapabilities{}
+	if mapMediaCap, ok := ifaceMediaCap.(map[string]interface{}); ok {
+		mediaCap.XAddr = interfaceToString(mapMediaCap["XAddr"])
+	}
+
 	// Create final result
 	deviceCapabilities := DeviceCapabilities{
 		Network:   netCap,
+		Media:	   mediaCap,
 		Events:    eventsCap,
 		Streaming: streamingCap,
 	}

@@ -11,6 +11,8 @@ func (device Device) GetProfiles() ([]MediaProfile, error) {
 	soap := SOAP{
 		Body:  "<trt:GetProfiles/>",
 		XMLNs: mediaXMLNs,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
@@ -131,8 +133,8 @@ func (device Device) GetStreamURI(profileToken, protocol string) (MediaURI, erro
 			</trt:StreamSetup>
 			<trt:ProfileToken>` + profileToken + `</trt:ProfileToken>
 		</trt:GetStreamUri>`,
-		User:device.User,
-		Password:device.Password,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
@@ -157,4 +159,30 @@ func (device Device) GetStreamURI(profileToken, protocol string) (MediaURI, erro
 	}
 
 	return streamURI, nil
+}
+
+// GetSnapshot fetch snapshot URI of a media profile.
+func (device Device) GetSnapshot(profileToken string) (string, error) {
+	soap := SOAP{
+		XMLNs:    mediaXMLNs,
+		User:     device.User,
+		Password: device.Password,
+		Body: `<trt:GetSnapshotUri>
+				<trt:ProfileToken>` + profileToken + `</trt:ProfileToken>
+			 </trt:GetSnapshotUri>`,
+	}
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return "", err
+	}
+	// Parse response to interface
+	ifaceURI, err := response.ValueForPath("Envelope.Body.GetSnapshotUriResponse.MediaUri.Uri")
+	if err != nil {
+		return "", err
+	}
+	if mediaUri, ok := ifaceURI.(string); ok {
+		return mediaUri, nil
+	} else {
+		return "", err
+	}
 }
