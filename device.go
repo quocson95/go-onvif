@@ -15,6 +15,8 @@ func (device Device) GetInformation() (DeviceInformation, error) {
 	soap := SOAP{
 		Body:  "<tds:GetDeviceInformation/>",
 		XMLNs: deviceXMLNs,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
@@ -40,6 +42,25 @@ func (device Device) GetInformation() (DeviceInformation, error) {
 	}
 
 	return result, nil
+}
+
+// GetInformation fetch information of ONVIF camera
+func (device Device) GetNetworkInterfaces() (NetworkInterfaces, error) {
+	// Create SOAP
+	soap := SOAP{
+		Body:  "<tds:GetNetworkInterfaces/>",
+		XMLNs: deviceXMLNs,
+		User: device.User,
+		Password: device.Password,
+	}
+
+	// Send SOAP request
+	_, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return NetworkInterfaces{}, err
+	}
+
+	return NetworkInterfaces{}, nil
 }
 
 // GetCapabilities fetch info of ONVIF camera's capabilities
@@ -135,6 +156,8 @@ func (device Device) GetDiscoveryMode() (string, error) {
 	soap := SOAP{
 		Body:  "<tds:GetDiscoveryMode/>",
 		XMLNs: deviceXMLNs,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
@@ -188,6 +211,8 @@ func (device Device) GetHostname() (HostnameInformation, error) {
 	soap := SOAP{
 		Body:  "<tds:GetHostname/>",
 		XMLNs: deviceXMLNs,
+		User: device.User,
+		Password: device.Password,
 	}
 
 	// Send SOAP request
