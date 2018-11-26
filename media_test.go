@@ -29,3 +29,210 @@ func TestGetStreamURI(t *testing.T) {
 	js := prettyJSON(&res)
 	fmt.Println(js)
 }
+
+
+
+func GetVideoEncoderConfigurations(t *testing.T){
+	log.Println("Test GetVideoEncoderConfigurations")
+
+	res, err := testDevice.GetVideoEncoderConfigurations()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetCompatibleVideoEncoderConfigurations(t *testing.T){
+	log.Println("Test GetCompatibleVideoEncoderConfigurations")
+
+	res, err := testDevice.GetCompatibleVideoEncoderConfigurations( "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetVideoEncoderConfigurationOptions(t *testing.T){
+	log.Println("Test GetVideoEncoderConfigurationOptions")
+
+	res, err := testDevice.GetVideoEncoderConfigurationOptions( "mainVideoStream_Encoder_Token", "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetGuaranteedNumberOfVideoEncoderInstances(t *testing.T){
+	log.Println("Test GetGuaranteedNumberOfVideoEncoderInstances")
+
+	//res, err := testDevice.GetGuaranteedNumberOfVideoEncoderInstances( "")
+	res, err := testDevice.GetGuaranteedNumberOfVideoEncoderInstances( "mainVideoStream_Encoder_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetProfileMedia(t *testing.T){
+	log.Println("Test GetProfileMedia")
+
+	res, err := testDevice.GetProfileMedia( "mainStream_Profile_Token")
+	//res, err := testDevice.GetProfileMedia( "fourStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func CreateDeleteProfile(t *testing.T) {
+	log.Println("Test CreateDeleteProfile")
+
+	//res, err := testDevice.CreateProfile( "fourStream","fourStream_Profile_Token")
+	err := testDevice.DeleteProfile( "fourStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+
+func GetVideoSources(t *testing.T) {
+	log.Println("Test GetVideoSources")
+
+	res, err := testDevice.GetVideoSources()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetVideoSourceConfiguration(t *testing.T) {
+	log.Println("Test GetVideoSourceConfiguration")
+
+	res, err := testDevice.GetVideoSourceConfiguration( "VideoStream_Config_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetVideoSourceConfigurations(t *testing.T) {
+	log.Println("Test GetVideoSourceConfigurations")
+
+	res, err := testDevice.GetVideoSourceConfigurations()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetCompatibleVideoSourceConfigurations(t *testing.T) {
+	log.Println("Test GetCompatibleVideoSourceConfigurations")
+
+	res, err := testDevice.GetCompatibleVideoSourceConfigurations( "mainStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetVideoSourceConfigurationOptions(t *testing.T){
+	log.Println("Test GetVideoSourceConfigurationOptions")
+
+	res, err := testDevice.GetVideoSourceConfigurationOptions( "VideoStream_Config_Token", "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetMetadataConfiguration(t *testing.T){
+	log.Println("Test GetMetadataConfiguration")
+
+	res, err := testDevice.GetMetadataConfiguration( "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetMetadataConfigurations(t *testing.T){
+	log.Println("Test GetMetadataConfigurations")
+
+	res, err := testDevice.GetMetadataConfigurations()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetCompatibleMetadataConfigurations(t *testing.T){
+	log.Println("Test GetCompatibleMetadataConfigurations")
+
+	res, err := testDevice.GetCompatibleMetadataConfigurations( "mainStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetMetadataConfigurationOptions(t *testing.T){
+	log.Println("Test GetMetadataConfigurationOptions")
+
+	res, err := testDevice.GetMetadataConfigurationOptions( "metadata0", "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetAudioSources(t *testing.T)  {
+	log.Println("Test GetAudioSources")
+
+	res, err := testDevice.GetAudioSources()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetAudioSourceConfiguration(t *testing.T)  {
+	log.Println("Test GetAudioSources")
+
+	res, err := testDevice.GetAudioSourceConfiguration("AudioStream_Config_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
