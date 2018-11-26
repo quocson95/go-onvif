@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="606cfb1f-023c-49d3-b88e-cdfe203a4a9f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/device.go" beforeDir="false" afterPath="$PROJECT_DIR$/device.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/device_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/device_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media.go" beforeDir="false" afterPath="$PROJECT_DIR$/media.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/media_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils.go" afterDir="false" />
-    </list>
+    <list default="true" id="606cfb1f-023c-49d3-b88e-cdfe203a4a9f" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/media_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1">
-              <caret line="213" column="1" lean-forward="true" selection-start-line="213" selection-start-column="1" selection-end-line="213" selection-end-column="1" />
+            <state relative-caret-position="109">
+              <caret line="51" column="20" lean-forward="true" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -29,8 +22,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
+            <state relative-caret-position="433">
               <caret line="538" column="29" selection-start-line="538" selection-start-column="5" selection-end-line="538" selection-end-column="29" />
+              <folding>
+                <element signature="e#9895#9976#0" />
+                <element signature="e#10006#10040#0" />
+                <element signature="e#10166#10200#0" />
+                <element signature="e#10260#10278#0" />
+                <element signature="e#10351#10375#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -38,8 +38,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/media.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="1247" column="20" selection-start-line="1247" selection-start-column="20" selection-end-line="1247" selection-end-column="20" />
+            <state relative-caret-position="289">
+              <caret line="1215" column="109" selection-start-line="1215" selection-start-column="109" selection-end-line="1215" selection-end-column="109" />
               <folding>
                 <element signature="n#!!block;n#GetProfiles#0" />
                 <element signature="n#!!block;n#GetStreamURI#0" />
@@ -61,6 +61,7 @@
                 <element signature="n#!!block;n#GetCompatibleMetadataConfigurations#0" />
                 <element signature="e#41963#41968#0" />
                 <element signature="n#!!block;n#GetAudioSources#0" />
+                <element signature="n#!!block;n#GetAudioSourceConfiguration#0" />
               </folding>
             </state>
           </provider>
@@ -167,7 +168,7 @@
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32967034" />
+      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.32967034" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -299,17 +300,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="538" column="29" selection-start-line="538" selection-start-column="5" selection-end-line="538" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/media.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="1247" column="20" selection-start-line="1247" selection-start-column="20" selection-end-line="1247" selection-end-column="20" />
+        <state relative-caret-position="289">
+          <caret line="1215" column="109" selection-start-line="1215" selection-start-column="109" selection-end-line="1215" selection-end-column="109" />
           <folding>
             <element signature="n#!!block;n#GetProfiles#0" />
             <element signature="n#!!block;n#GetStreamURI#0" />
@@ -331,14 +325,29 @@
             <element signature="n#!!block;n#GetCompatibleMetadataConfigurations#0" />
             <element signature="e#41963#41968#0" />
             <element signature="n#!!block;n#GetAudioSources#0" />
+            <element signature="n#!!block;n#GetAudioSourceConfiguration#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="433">
+          <caret line="538" column="29" selection-start-line="538" selection-start-column="5" selection-end-line="538" selection-end-column="29" />
+          <folding>
+            <element signature="e#9895#9976#0" />
+            <element signature="e#10006#10040#0" />
+            <element signature="e#10166#10200#0" />
+            <element signature="e#10260#10278#0" />
+            <element signature="e#10351#10375#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/media_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1">
-          <caret line="213" column="1" lean-forward="true" selection-start-line="213" selection-start-column="1" selection-end-line="213" selection-end-column="1" />
+        <state relative-caret-position="109">
+          <caret line="51" column="20" lean-forward="true" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
         </state>
       </provider>
     </entry>
