@@ -1,6 +1,8 @@
 package onvif
 
-import "github.com/golang/glog"
+import (
+	"github.com/golang/glog"
+)
 
 var mediaXMLNs = []string{
 	`xmlns:trt="http://www.onvif.org/ver10/media/wsdl"`,
@@ -1228,14 +1230,12 @@ func (device Device) GetAudioSourceConfiguration(configurationToken string) (Aud
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSourceConfiguration, err := response.ValueForPath("Envelope.Body.GetAudioSourceConfigurationResponse.Configuration")
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
@@ -1245,11 +1245,297 @@ func (device Device) GetAudioSourceConfiguration(configurationToken string) (Aud
 		result.Name = interfaceToString(mapAudioSourceConfiguration["Name"])
 		result.SourceToken = interfaceToString(mapAudioSourceConfiguration["SourceToken"])
 	}
+
+	return result, nil
+}
+
+func (device Device) GetAudioSourceConfigurations() ([]AudioSourceConfiguration, error){
+	// create soap request
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<GetAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+	}
+
+	result := []AudioSourceConfiguration{}
+
+	//send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioSourceConfigurations, err := response.ValuesForPath("Envelope.Body.GetAudioSourceConfigurationsResponse.Configurations")
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse interface
+	for _, ifaceAudioSourceConfiguration:= range  ifaceAudioSourceConfigurations{
+		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok{
+			audioSourceConfiguration := AudioSourceConfiguration{}
+
+			audioSourceConfiguration.Token = interfaceToString(mapAudioSourceConfiguration["-token"])
+			audioSourceConfiguration.Name = interfaceToString(mapAudioSourceConfiguration["Name"])
+			audioSourceConfiguration.SourceToken = interfaceToString(mapAudioSourceConfiguration["SourceToken"])
+
+			// push into result
+			result = append(result, audioSourceConfiguration)
+		}
+	}
+
 	glog.Info(result)
 	return result, nil
 }
 
+func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string) ([]AudioSourceConfiguration, error){
+	// create soap request
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<GetCompatibleAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</GetCompatibleAudioSourceConfigurations>`,
+	}
 
+	result := []AudioSourceConfiguration{}
+
+	//send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioSourceConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleAudioSourceConfigurationsResponse.Configurations")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	for _, ifaceAudioSourceConfiguration:= range  ifaceAudioSourceConfigurations{
+		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok{
+			audioSourceConfiguration := AudioSourceConfiguration{}
+
+			audioSourceConfiguration.Token = interfaceToString(mapAudioSourceConfiguration["-token"])
+			audioSourceConfiguration.Name = interfaceToString(mapAudioSourceConfiguration["Name"])
+			audioSourceConfiguration.SourceToken = interfaceToString(mapAudioSourceConfiguration["SourceToken"])
+
+			// push into result
+			result = append(result, audioSourceConfiguration)
+		}
+	}
+
+	return result, nil
+}
+
+// fetch input tokens available
+func (device Device) GetAudioSourceConfigurationOptions(configurationToken string, profileToken string) (string, error) {
+	// create soap request
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetAudioSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</GetAudioSourceConfigurationOptions>`,
+	}
+
+	var result string
+	//send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse response
+	iface, err := response.ValueForPath("Envelope.Body.GetAudioSourceConfigurationOptionsResponse.Options")
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse interface
+	if mapAudioSourceConfigurationOption, ok := iface.(map[string] interface{}); ok{
+		result = interfaceToString(mapAudioSourceConfigurationOption["InputTokensAvailable"])
+	}
+
+	glog.Info(result)
+	return result, nil
+}
+
+func (device Device) GetAudioEncoderConfiguration(configurationToken string) (AudioEncoderConfig, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetAudioEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
+				</GetAudioEncoderConfiguration>`,
+	}
+
+	result := AudioEncoderConfig{}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioEncoder, err := response.ValueForPath("Envelope.Body.GetAudioEncoderConfigurationResponse.Configuration")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	if mapAudioEncoder, ok := ifaceAudioEncoder.(map[string]interface{}); ok{
+		result.Token = interfaceToString(mapAudioEncoder["-token"])
+		result.Name = interfaceToString(mapAudioEncoder["Name"])
+		result.Bitrate = interfaceToInt(mapAudioEncoder["Bitrate"])
+		result.Encoding = interfaceToString(mapAudioEncoder["Encoding"])
+		result.SampleRate = interfaceToInt(mapAudioEncoder["SampleRate"])
+		result.SessionTimeout = interfaceToString(mapAudioEncoder["SessionTimeout"])
+	}
+
+	return  result, nil
+}
+
+func (device Device) GetAudioEncoderConfigurations() ([]AudioEncoderConfig, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetAudioEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+	}
+
+	result := []AudioEncoderConfig{}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioEncoderConfigurations, err := response.ValuesForPath("Envelope.Body.GetAudioEncoderConfigurationsResponse.Configurations")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations{
+		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok{
+			audioEncoderConfig := AudioEncoderConfig{}
+
+			audioEncoderConfig.Token = interfaceToString(mapAudioEncoderConf["-token"])
+			audioEncoderConfig.Name = interfaceToString(mapAudioEncoderConf["Name"])
+			audioEncoderConfig.Bitrate = interfaceToInt(mapAudioEncoderConf["Bitrate"])
+			audioEncoderConfig.Encoding = interfaceToString(mapAudioEncoderConf["Encoding"])
+			audioEncoderConfig.SampleRate = interfaceToInt(mapAudioEncoderConf["SampleRate"])
+			audioEncoderConfig.SessionTimeout = interfaceToString(mapAudioEncoderConf["SessionTimeout"])
+
+			// push into result
+			result = append(result, audioEncoderConfig)
+		}
+	}
+
+	return  result, nil
+}
+
+func (device Device) GetCompatibleAudioEncoderConfigurations(profileToken string) ([]AudioEncoderConfig, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetCompatibleAudioEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</GetCompatibleAudioEncoderConfigurations>`,
+	}
+
+	result := []AudioEncoderConfig{}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioEncoderConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleAudioEncoderConfigurationsResponse.Configurations")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations{
+		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok{
+			audioEncoderConfig := AudioEncoderConfig{}
+
+			audioEncoderConfig.Token = interfaceToString(mapAudioEncoderConf["-token"])
+			audioEncoderConfig.Name = interfaceToString(mapAudioEncoderConf["Name"])
+			audioEncoderConfig.Bitrate = interfaceToInt(mapAudioEncoderConf["Bitrate"])
+			audioEncoderConfig.Encoding = interfaceToString(mapAudioEncoderConf["Encoding"])
+			audioEncoderConfig.SampleRate = interfaceToInt(mapAudioEncoderConf["SampleRate"])
+			audioEncoderConfig.SessionTimeout = interfaceToString(mapAudioEncoderConf["SessionTimeout"])
+
+			// push into result
+			result = append(result, audioEncoderConfig)
+		}
+	}
+	return  result, nil
+}
+
+func (device Device) GetAudioEncoderConfigurationOptions(configurationToken string, profileToken string) ([]AudioEncoderConfigurationOption, error) {
+	// create token body
+	tokenBody := ``
+	if configurationToken != ""{
+		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
+	} else {
+		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
+	}
+
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetAudioEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetAudioEncoderConfigurationOptions>`,
+	}
+
+	result := []AudioEncoderConfigurationOption{}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse response
+	ifaceAudioEncoderConfigurationOptions, err := response.ValuesForPath("Envelope.Body.GetAudioEncoderConfigurationOptionsResponse.Options.Options")
+	if err != nil{
+		glog.Error(err)
+		return result, err
+	}
+
+	// parse interface
+	for _, ifaceAudioEncoderConfigurationOption := range  ifaceAudioEncoderConfigurationOptions{
+		if mapAudioEncoderConfigurationOption, ok := ifaceAudioEncoderConfigurationOption.(map[string]interface{});ok{
+			audioEncoderConfigOption := AudioEncoderConfigurationOption{}
+
+			audioEncoderConfigOption.Encoding = interfaceToString(mapAudioEncoderConfigurationOption["Encoding"])
+			audioEncoderConfigOption.BitrateList = interfaceToInt(mapAudioEncoderConfigurationOption["BitrateList"])
+			audioEncoderConfigOption.SampleRateList = interfaceToInt(mapAudioEncoderConfigurationOption["SampleRateList"])
+
+
+			result = append(result, audioEncoderConfigOption)
+		}
+	}
+
+	glog.Info(result)
+	return result, nil
+}
 
 
 

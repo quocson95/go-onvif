@@ -541,3 +541,9 @@ type AudioSourceConfiguration struct {
 	Name string
 	SourceToken string
 }
+
+type AudioEncoderConfigurationOption struct {
+	Encoding string // 'G711', 'G726', 'AAC'
+	BitrateList int
+	SampleRateList int
+}

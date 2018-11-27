@@ -168,7 +168,7 @@ func GetVideoSourceConfigurationOptions(t *testing.T){
 func GetMetadataConfiguration(t *testing.T){
 	log.Println("Test GetMetadataConfiguration")
 
-	res, err := testDevice.GetMetadataConfiguration( "")
+	res, err := testDevice.GetMetadataConfiguration( "metadata0")
 	if err != nil {
 		t.Error(err)
 	}
@@ -226,7 +226,7 @@ func GetAudioSources(t *testing.T)  {
 }
 
 func GetAudioSourceConfiguration(t *testing.T)  {
-	log.Println("Test GetAudioSources")
+	log.Println("Test GetAudioSourceConfiguration")
 
 	res, err := testDevice.GetAudioSourceConfiguration("AudioStream_Config_Token")
 	if err != nil {
@@ -236,3 +236,90 @@ func GetAudioSourceConfiguration(t *testing.T)  {
 	js := prettyJSON(&res)
 	fmt.Println(js)
 }
+
+func GetAudioSourceConfigurations(t *testing.T)  {
+	log.Println("Test GetAudioSourceConfigurations")
+
+	res, err := testDevice.GetAudioSourceConfigurations()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetCompatibleAudioSourceConfigurations(t *testing.T)  {
+	log.Println("Test GetCompatibleAudioSourceConfigurations")
+
+	res, err := testDevice.GetCompatibleAudioSourceConfigurations("mainStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetAudioSourceConfigurationOptions(t *testing.T)  {
+	log.Println("Test GetAudioSourceConfigurationOptions")
+
+	res, err := testDevice.GetAudioSourceConfigurationOptions("AudioStream_Config_Token", "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+
+func GetAudioEncoderConfiguration(t *testing.T)  {
+	log.Println("Test GetAudioEncoderConfiguration")
+
+	res, err := testDevice.GetAudioEncoderConfiguration("AudioStream_Encoder_Token")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+
+func GetAudioEncoderConfigurations(t *testing.T)  {
+	log.Println("Test GetAudioEncoderConfigurations")
+
+	res, err := testDevice.GetAudioEncoderConfigurations()
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetCompatibleAudioEncoderConfigurations(t *testing.T)  {
+	log.Println("Test GetCompatibleAudioEncoderConfigurations")
+
+	res, err := testDevice.GetCompatibleAudioEncoderConfigurations("")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetAudioEncoderConfigurationOptions(t *testing.T)  {
+	log.Println("Test GetAudioEncoderConfigurationOptions")
+
+	res, err := testDevice.GetAudioEncoderConfigurationOptions("AudioStream_Encoder_Token", "")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
