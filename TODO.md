@@ -60,16 +60,16 @@
   - [X] getAudioEncoderConfigurationOptions
   - [X] getSnapshotUri
 - [ ] OnvifServicePtz
-  - [ ] getNodes
-  - [ ] getNode
-  - [ ] getConfigurations
-  - [ ] getConfiguration
-  - [ ] getConfigurationOptions
-  - [ ] getStatus
-  - [ ] continuousMove
-  - [ ] absoluteMove
-  - [ ] relativeMove
-  - [ ] stop
+  - [X] getNodes
+  - [X] getNode
+  - [X] getConfigurations
+  - [X] getConfiguration
+  - [X] getConfigurationOptions
+  - [X] getStatus
+  - [X] continuousMove
+  - [X] absoluteMove
+  - [X] relativeMove
+  - [X] stop
   - [ ] gotoHomePosition
   - [ ] setHomePosition
   - [ ] setPreset
