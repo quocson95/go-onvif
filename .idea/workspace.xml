@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="606cfb1f-023c-49d3-b88e-cdfe203a4a9f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ptz.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery.go" beforeDir="false" afterPath="$PROJECT_DIR$/discovery.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/media.go" beforeDir="false" afterPath="$PROJECT_DIR$/media.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="729">
-              <caret line="547" column="19" selection-start-line="547" selection-start-column="19" selection-end-line="547" selection-end-column="19" />
+            <state relative-caret-position="499">
+              <caret line="595" column="13" selection-start-line="595" selection-start-column="13" selection-end-line="595" selection-end-column="13" />
               <folding>
                 <element signature="e#9895#9976#0" />
               </folding>
@@ -24,110 +29,91 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ptz.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="882" column="53" selection-start-line="882" selection-start-column="53" selection-end-line="882" selection-end-column="53" />
+              <folding>
+                <element signature="n#!!block;n#GetNodes#0" />
+                <element signature="e#1263#1274#0" />
+                <element signature="e#1473#1486#0" />
+                <element signature="e#2481#3318#0" />
+                <element signature="e#3166#4003#0" />
+                <element signature="e#4203#4722#0" />
+                <element signature="e#4936#5806#0" />
+                <element signature="e#5957#6500#0" />
+                <element signature="e#6662#7197#0" />
+                <element signature="e#7229#7684#0" />
+                <element signature="e#7825#7830#0" />
+                <element signature="e#8411#15488#0" />
+                <element signature="e#9192#10029#0" />
+                <element signature="e#10191#10710#0" />
+                <element signature="e#10890#11760#0" />
+                <element signature="e#11931#12474#0" />
+                <element signature="e#12651#13510#0" />
+                <element signature="e#13678#14213#0" />
+                <element signature="e#14351#14806#0" />
+                <element signature="e#14935#15366#0" />
+                <element signature="n#!!block;n#GetConfigurations#0" />
+                <element signature="e#17621#17632#0" />
+                <element signature="e#18497#19251#0" />
+                <element signature="e#19758#19763#0" />
+                <element signature="e#22943#23697#0" />
+                <element signature="e#23811#24288#0" />
+                <element signature="e#23995#24000#0" />
+                <element signature="e#25032#31367#0" />
+                <element signature="e#25239#26062#0" />
+                <element signature="e#26222#26732#0" />
+                <element signature="e#26910#27766#0" />
+                <element signature="e#27935#28469#0" />
+                <element signature="e#28644#29489#0" />
+                <element signature="e#29655#30181#0" />
+                <element signature="e#30317#30763#0" />
+                <element signature="e#30890#31312#0" />
+                <element signature="n#!!block;n#GetStatus#0" />
+                <element signature="n#!!block;n#ContinuousMove#0" />
+                <element signature="n#!!block;n#AbsoluteMove#0" />
+                <element signature="n#!!block;n#AbsoluteMove#1" />
+                <element signature="n#!!block;n#Stop#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/media.go">
+        <entry file="file://$PROJECT_DIR$/ptz_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="1138" lean-forward="true" selection-start-line="1138" selection-end-line="1138" />
+            <state relative-caret-position="313">
+              <caret line="116" column="34" lean-forward="true" selection-start-line="116" selection-start-column="34" selection-end-line="116" selection-end-column="34" />
               <folding>
-                <element signature="e#15#83#0" expanded="true" />
-                <element signature="n#!!block;n#GetProfiles#0" />
-                <element signature="n#!!block;n#GetStreamURI#0" />
-                <element signature="n#!!block;n#GetSnapshot#0" />
-                <element signature="n#!!block;n#GetVideoEncoderConfigurations#0" />
-                <element signature="n#!!block;n#GetCompatibleVideoEncoderConfigurations#0" />
-                <element signature="n#!!block;n#GetVideoEncoderConfigurationOptions#0" />
-                <element signature="n#!!block;n#GetGuaranteedNumberOfVideoEncoderInstances#0" />
-                <element signature="n#!!block;n#GetProfileMedia#0" />
-                <element signature="n#!!block;n#CreateProfile#0" />
-                <element signature="n#!!block;n#DeleteProfile#0" />
-                <element signature="n#!!block;n#GetVideoSources#0" />
-                <element signature="n#!!block;n#GetVideoSourceConfiguration#0" />
-                <element signature="n#!!block;n#GetVideoSourceConfigurations#0" />
-                <element signature="n#!!block;n#GetCompatibleVideoSourceConfigurations#0" />
-                <element signature="n#!!block;n#GetVideoSourceConfigurationOptions#0" />
-                <element signature="n#!!block;n#GetMetadataConfiguration#0" />
-                <element signature="n#!!block;n#GetMetadataConfigurations#0" />
-                <element signature="n#!!block;n#GetCompatibleMetadataConfigurations#0" />
-                <element signature="n#!!block;n#GetMetadataConfigurationOptions#0" />
-                <element signature="n#!!block;n#GetAudioSources#0" />
-                <element signature="n#!!block;n#GetAudioSourceConfiguration#0" />
-                <element signature="n#!!block;n#GetAudioSourceConfiguration#1" />
-                <element signature="n#!!block;n#GetAudioSourceConfigurations#1" />
-                <element signature="n#!!block;n#GetAudioSourceConfigurationOptions#0" />
-                <element signature="e#49174#49179#0" />
-                <element signature="n#!!block;n#GetAudioEncoderConfigurations#0" />
-                <element signature="n#!!block;n#GetCompatibleAudioEncoderConfigurations#0" />
-                <element signature="n#!!block;n#GetAudioEncoderConfigurationOptions#0" />
+                <element signature="e#15#50#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TODO.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="108">
-                <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/device.go">
+        <entry file="file://$PROJECT_DIR$/utils.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-676">
-              <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
+            <state relative-caret-position="666">
+              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
               <folding>
-                <element signature="e#316#1236#0" />
-                <element signature="e#1361#1663#0" />
-                <element signature="e#1793#4134#0" />
-                <element signature="e#4260#4666#0" />
-                <element signature="e#4764#5450#0" />
-                <element signature="e#5565#6320#0" />
-                <element signature="e#6387#7943#0" />
-                <element signature="e#8021#9808#0" />
-                <element signature="e#9864#11586#0" />
-                <element signature="e#11653#12707#0" />
-                <element signature="e#12761#13435#0" />
-                <element signature="e#13490#15081#0" />
-                <element signature="e#15148#16184#0" />
-                <element signature="e#16186#16257#0" />
-                <element signature="e#16927#17454#0" />
-                <element signature="e#17456#17529#0" />
-                <element signature="e#18496#19541#0" />
-                <element signature="e#19619#20576#0" />
-                <element signature="e#20635#21224#0" />
-                <element signature="e#21284#21879#0" />
-                <element signature="e#21953#22689#0" />
-                <element signature="e#22763#23534#0" />
-                <element signature="e#23620#24218#0" />
-                <element signature="e#24268#25102#0" />
-                <element signature="e#25149#25854#0" />
-                <element signature="e#25915#26502#0" />
-                <element signature="e#26556#27377#0" />
-                <element signature="e#27439#28451#0" />
-                <element signature="e#28453#28534#0" />
-                <element signature="e#29179#30313#0" />
-                <element signature="e#30381#38519#0" />
+                <element signature="n#!!block;n#interfaceToFloat64#0" />
+                <element signature="n#!!block;n#boolToString#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/media_test.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="549">
-              <caret line="314" column="57" selection-start-line="314" selection-start-column="57" selection-end-line="314" selection-end-column="57" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -158,22 +144,25 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/utils.go" />
         <option value="$USER_HOME$/Desktop/backup/onvif/video.go" />
         <option value="$PROJECT_DIR$/device.go" />
         <option value="$USER_HOME$/Desktop/backup/Test/test.go" />
         <option value="$PROJECT_DIR$/device_test.go" />
-        <option value="$PROJECT_DIR$/model.go" />
         <option value="$PROJECT_DIR$/media_test.go" />
-        <option value="$PROJECT_DIR$/media.go" />
         <option value="$PROJECT_DIR$/TODO.md" />
+        <option value="$PROJECT_DIR$/media.go" />
+        <option value="$PROJECT_DIR$/model.go" />
+        <option value="$PROJECT_DIR$/utils.go" />
+        <option value="$PROJECT_DIR$/ptz.go" />
+        <option value="$PROJECT_DIR$/ptz_test.go" />
+        <option value="$PROJECT_DIR$/discovery.go" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
-    <option name="y" value="27" />
-    <option name="width" value="793" />
+    <option name="y" value="25" />
+    <option name="width" value="988" />
     <option name="height" value="1039" />
   </component>
   <component name="ProjectView">
@@ -200,6 +189,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
@@ -223,7 +213,7 @@
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.086330935" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.08190371" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -236,23 +226,39 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.33516484" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.15805168" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.33516484" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/soap.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1691" />
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/backup/onvif/video.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -298,18 +304,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="37" column="1" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!block;n#interfaceToFloat64#0" />
-            <element signature="n#!!block;n#intToString#0" />
-            <element signature="n#!!block;n#boolToString#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/backup/Test/test.go">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -317,33 +311,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
           <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="729">
-          <caret line="547" column="19" selection-start-line="547" selection-start-column="19" selection-end-line="547" selection-end-column="19" />
-          <folding>
-            <element signature="e#9895#9976#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/media_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="314" column="57" selection-start-line="314" selection-start-column="57" selection-end-line="314" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="108">
-            <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -387,12 +354,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TODO.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="162">
+            <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/soap.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/media.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="1138" lean-forward="true" selection-start-line="1138" selection-end-line="1138" />
+        <state relative-caret-position="972">
+          <caret line="1558" lean-forward="true" selection-start-line="1558" selection-end-line="1558" />
           <folding>
-            <element signature="e#15#83#0" expanded="true" />
+            <element signature="e#15#51#0" expanded="true" />
             <element signature="n#!!block;n#GetProfiles#0" />
             <element signature="n#!!block;n#GetStreamURI#0" />
             <element signature="n#!!block;n#GetSnapshot#0" />
@@ -414,13 +397,108 @@
             <element signature="n#!!block;n#GetMetadataConfigurationOptions#0" />
             <element signature="n#!!block;n#GetAudioSources#0" />
             <element signature="n#!!block;n#GetAudioSourceConfiguration#0" />
-            <element signature="n#!!block;n#GetAudioSourceConfiguration#1" />
-            <element signature="n#!!block;n#GetAudioSourceConfigurations#1" />
+            <element signature="n#!!block;n#GetAudioSourceConfigurations#0" />
+            <element signature="n#!!block;n#GetCompatibleAudioSourceConfigurations#0" />
             <element signature="n#!!block;n#GetAudioSourceConfigurationOptions#0" />
-            <element signature="e#49174#49179#0" />
+            <element signature="n#!!block;n#GetAudioEncoderConfiguration#0" />
             <element signature="n#!!block;n#GetAudioEncoderConfigurations#0" />
             <element signature="n#!!block;n#GetCompatibleAudioEncoderConfigurations#0" />
             <element signature="n#!!block;n#GetAudioEncoderConfigurationOptions#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/media_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="254" column="91" selection-start-line="254" selection-start-column="67" selection-end-line="254" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="595" column="13" selection-start-line="595" selection-start-column="13" selection-end-line="595" selection-end-column="13" />
+          <folding>
+            <element signature="e#9895#9976#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!block;n#interfaceToFloat64#0" />
+            <element signature="n#!!block;n#boolToString#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/discovery.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="117" lean-forward="true" selection-start-line="117" selection-end-line="117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ptz.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="882" column="53" selection-start-line="882" selection-start-column="53" selection-end-line="882" selection-end-column="53" />
+          <folding>
+            <element signature="n#!!block;n#GetNodes#0" />
+            <element signature="e#1263#1274#0" />
+            <element signature="e#1473#1486#0" />
+            <element signature="e#2481#3318#0" />
+            <element signature="e#3166#4003#0" />
+            <element signature="e#4203#4722#0" />
+            <element signature="e#4936#5806#0" />
+            <element signature="e#5957#6500#0" />
+            <element signature="e#6662#7197#0" />
+            <element signature="e#7229#7684#0" />
+            <element signature="e#7825#7830#0" />
+            <element signature="e#8411#15488#0" />
+            <element signature="e#9192#10029#0" />
+            <element signature="e#10191#10710#0" />
+            <element signature="e#10890#11760#0" />
+            <element signature="e#11931#12474#0" />
+            <element signature="e#12651#13510#0" />
+            <element signature="e#13678#14213#0" />
+            <element signature="e#14351#14806#0" />
+            <element signature="e#14935#15366#0" />
+            <element signature="n#!!block;n#GetConfigurations#0" />
+            <element signature="e#17621#17632#0" />
+            <element signature="e#18497#19251#0" />
+            <element signature="e#19758#19763#0" />
+            <element signature="e#22943#23697#0" />
+            <element signature="e#23811#24288#0" />
+            <element signature="e#23995#24000#0" />
+            <element signature="e#25032#31367#0" />
+            <element signature="e#25239#26062#0" />
+            <element signature="e#26222#26732#0" />
+            <element signature="e#26910#27766#0" />
+            <element signature="e#27935#28469#0" />
+            <element signature="e#28644#29489#0" />
+            <element signature="e#29655#30181#0" />
+            <element signature="e#30317#30763#0" />
+            <element signature="e#30890#31312#0" />
+            <element signature="n#!!block;n#GetStatus#0" />
+            <element signature="n#!!block;n#ContinuousMove#0" />
+            <element signature="n#!!block;n#AbsoluteMove#0" />
+            <element signature="n#!!block;n#AbsoluteMove#1" />
+            <element signature="n#!!block;n#Stop#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ptz_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="116" column="34" lean-forward="true" selection-start-line="116" selection-start-column="34" selection-end-line="116" selection-end-column="34" />
+          <folding>
+            <element signature="e#15#50#0" expanded="true" />
           </folding>
         </state>
       </provider>

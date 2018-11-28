@@ -247,7 +247,7 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 	return result, nil
 }
 
-func (device Device) GetCompatibleVideoEncoderConfigurations( profileToken string) ([]VideoEncoderConfig, error) {
+func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string) ([]VideoEncoderConfig, error) {
 	soap := SOAP{
 		Body: `<GetCompatibleVideoEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken xmlns="http://www.onvif.org/ver10/schema">` + profileToken + `</ProfileToken></GetCompatibleVideoEncoderConfigurations>`,
@@ -303,15 +303,20 @@ func (device Device) GetCompatibleVideoEncoderConfigurations( profileToken strin
 	return result, nil
 }
 
-func (device Device) GetVideoEncoderConfigurationOptions( configurationToken string, profileToken string) (VideoEncoderConfigurationOptions, error)  {
+func (device Device) GetVideoEncoderConfigurationOptions(configurationToken string, profileToken string) (VideoEncoderConfigurationOptions, error)  {
+	// create token body
+	tokenBody := ``
+	if configurationToken != ""{
+		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
+	} else {
+		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
+	}
+
 	// create soap
 	soap := SOAP{
 		User: device.User,
 		Password: device.Password,
-		Body: `<GetVideoEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<ConfigurationToken>` + configurationToken + `</Configuration>
-					<ProfileToken>` + profileToken + `</ProfileToken>
-				</GetVideoEncoderConfigurationOptions>`,
+		Body: `<GetVideoEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoEncoderConfigurationOptions>`,
 	}
 
 	result := VideoEncoderConfigurationOptions{}
@@ -380,7 +385,7 @@ func (device Device) GetVideoEncoderConfigurationOptions( configurationToken str
 	return result, nil
 }
 
-func (device Device) GetGuaranteedNumberOfVideoEncoderInstances( configurationToken string) (GuaranteedNumberOfVideoEncoderInstances, error)  {
+func (device Device) GetGuaranteedNumberOfVideoEncoderInstances(configurationToken string) (GuaranteedNumberOfVideoEncoderInstances, error)  {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -413,7 +418,7 @@ func (device Device) GetGuaranteedNumberOfVideoEncoderInstances( configurationTo
 	return result, err
 }
 
-func (device Device) GetProfileMedia( profileToken string) (MediaProfile, error) {
+func (device Device) GetProfileMedia(profileToken string) (MediaProfile, error) {
 	// Create SOAP
 	soap := SOAP{
 		Body:     `<GetProfile xmlns="http://www.onvif.org/ver10/media/wsdl">
@@ -521,7 +526,7 @@ func (device Device) GetProfileMedia( profileToken string) (MediaProfile, error)
 	return result, nil
 }
 
-func (device Device) CreateProfile( profileName string, profileToken string) (MediaProfile, error) {
+func (device Device) CreateProfile(profileName string, profileToken string) (MediaProfile, error) {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -631,7 +636,7 @@ func (device Device) CreateProfile( profileName string, profileToken string) (Me
 
 }
 
-func (device Device) DeleteProfile( profileToken string) error {
+func (device Device) DeleteProfile(profileToken string) error {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -775,7 +780,7 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 	return result, nil
 }
 
-func (device Device) GetVideoSourceConfiguration( configurationToken string) (VideoSourceConfiguration, error) {
+func (device Device) GetVideoSourceConfiguration(configurationToken string) (VideoSourceConfiguration, error) {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -870,7 +875,7 @@ func (device Device) GetVideoSourceConfigurations() ([]VideoSourceConfiguration,
 	return result, nil
 }
 
-func (device Device) GetCompatibleVideoSourceConfigurations( profileToken string) ([]VideoSourceConfiguration, error)  {
+func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string) ([]VideoSourceConfiguration, error)  {
 	//create soap request
 	soap := SOAP{
 		User: device.User,
@@ -921,15 +926,20 @@ func (device Device) GetCompatibleVideoSourceConfigurations( profileToken string
 	return result, nil
 }
 
-func (device Device) GetVideoSourceConfigurationOptions( configurationToken string, profileToken string) (VideoSourceConfigurationOption, error) {
+func (device Device) GetVideoSourceConfigurationOptions(configurationToken string, profileToken string) (VideoSourceConfigurationOption, error) {
+	// create token body
+	tokenBody := ``
+	if configurationToken != ""{
+		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
+	} else {
+		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
+	}
+
 	//create soap
 	soap := SOAP{
 		User: device.User,
 		Password: device.Password,
-		Body: `<GetVideoSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
-					<ProfileToken>` + profileToken + `</ProfileToken>
-				</GetVideoSourceConfigurationOptions>`,
+		Body: `<GetVideoSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoSourceConfigurationOptions>`,
 	}
 
 	result := VideoSourceConfigurationOption{}
@@ -979,7 +989,7 @@ func (device Device) GetVideoSourceConfigurationOptions( configurationToken stri
 	return result, nil
 }
 
-func (device Device) GetMetadataConfiguration( configurationToken string) (MetadataConfiguration, error) {
+func (device Device) GetMetadataConfiguration(configurationToken string) (MetadataConfiguration, error) {
 	//send soap
 	soap := SOAP{
 		User: device.User,
@@ -1081,7 +1091,7 @@ func (device Device) GetMetadataConfigurations() ([]MetadataConfiguration, error
 	return result, nil
 }
 
-func (device Device) GetCompatibleMetadataConfigurations( profileToken string) ([]MetadataConfiguration, error) {
+func (device Device) GetCompatibleMetadataConfigurations(profileToken string) ([]MetadataConfiguration, error) {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -1137,15 +1147,20 @@ func (device Device) GetCompatibleMetadataConfigurations( profileToken string) (
 	return result, nil
 }
 
-func (device Device) GetMetadataConfigurationOptions(confifurationToken string, profileToken string) (MetadataConfigurationOptions, error) {
+func (device Device) GetMetadataConfigurationOptions(configurationToken string, profileToken string) (MetadataConfigurationOptions, error) {
+	// create token body
+	tokenBody := ``
+	if configurationToken != ""{
+		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
+	} else {
+		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
+	}
+
 	// create soap request
 	soap := SOAP{
 		User: device.User,
 		Password: device.Password,
-		Body: `<GetMetadataConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<ConfigurationToken>` + confifurationToken + `</Configuration>
-					<ProfileToken>` + profileToken + `</ProfileToken>
-				</GetMetadataConfigurationOptions>`,
+		Body: `<GetMetadataConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">`+ tokenBody +`</GetMetadataConfigurationOptions>`,
 	}
 	result := MetadataConfigurationOptions{}
 	// send request
@@ -1334,14 +1349,19 @@ func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string)
 
 // fetch input tokens available
 func (device Device) GetAudioSourceConfigurationOptions(configurationToken string, profileToken string) (string, error) {
+	// create token body
+	tokenBody := ``
+	if configurationToken != ""{
+		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
+	} else {
+		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
+	}
+
 	// create soap request
 	soap := SOAP{
 		User: device.User,
 		Password: device.Password,
-		Body: `<GetAudioSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
-					<ProfileToken>` + profileToken + `</ProfileToken>
-				</GetAudioSourceConfigurationOptions>`,
+		Body: `<GetAudioSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody +`</GetAudioSourceConfigurationOptions>`,
 	}
 
 	var result string
@@ -1536,8 +1556,3 @@ func (device Device) GetAudioEncoderConfigurationOptions(configurationToken stri
 	glog.Info(result)
 	return result, nil
 }
-
-
-
-
-

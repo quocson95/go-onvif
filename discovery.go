@@ -9,6 +9,7 @@ import (
 	//"fmt"
 	"github.com/clbanning/mxj"
 	"github.com/satori/go.uuid"
+	"github.com/golang/glog"
 )
 
 var errWrongDiscoveryResponse = errors.New("Response is not related to discovery request ")
@@ -85,7 +86,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	// Create WS-Discovery request
 	u, _ := uuid.NewV4()
 	requestID := "uuid:" + u.String()
-	request := `		
+	request := `
 		<?xml version="1.0" encoding="UTF-8"?>
 		<e:Envelope
 		    xmlns:e="http://www.w3.org/2003/05/soap-envelope"
@@ -110,7 +111,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	request = regexp.MustCompile(`\s+`).ReplaceAllString(request, " ")
 
 	// Create UDP address for local and multicast address
-	localAddress, err := net.ResolveUDPAddr("udp4", ipAddr+":0")
+	localAddress, err := net.ResolveUDPAddr("udp4", u.String() + ":0")
 	if err != nil {
 		return []Device{}, err
 	}
@@ -173,6 +174,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 
 // readDiscoveryResponse reads and parses WS-Discovery response
 func readDiscoveryResponse(messageID string, buffer []byte) (Device, error) {
+	glog.Infof("Response %s", string(buffer))
 	// Inital result
 	result := Device{}
 

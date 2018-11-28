@@ -547,3 +547,117 @@ type AudioEncoderConfigurationOption struct {
 	BitrateList int
 	SampleRateList int
 }
+
+type FloatRange struct {
+	Min float64
+	Max float64
+}
+
+type Space1DDescription struct {
+	URI string
+	XRange FloatRange
+}
+
+type Space2DDescription struct {
+	URI string
+	XRange FloatRange
+	YRange FloatRange
+}
+
+type PTZSpaces struct {
+	AbsolutePanTiltPositionSpace Space2DDescription
+	AbsoluteZoomPositionSpace Space1DDescription
+	RelativePanTiltTranslationSpace Space2DDescription
+	RelativeZoomTranslationSpace Space1DDescription
+	ContinuousPanTiltVelocitySpace Space2DDescription
+	ContinuousZoomVelocitySpace Space1DDescription
+	PanTiltSpeedSpace Space1DDescription
+	ZoomSpeedSpace Space1DDescription
+}
+
+type PTZNode struct {
+	Token string
+	FixedHomePosition bool
+	GeoMove bool
+	Name string
+	SupportedPTZSpaces PTZSpaces
+	MaximumNumberOfPresets int
+	HomeSupported bool
+}
+
+type Vector2D struct {
+	Space string
+	X float64
+	Y float64
+}
+
+type Vector1D struct {
+	Space string
+	X float64
+}
+
+type PTZSpeed struct {
+	PanTilt Vector2D
+	Zoom Vector1D
+}
+
+type PanTiltLimits struct {
+	Range Space2DDescription
+}
+
+type ZoomLimits struct {
+	Range Space1DDescription
+}
+
+type PTZConfiguration struct {
+	Token string
+	Name string
+	MoveRamp int
+	PresetRamp int
+	PresetTourRamp int
+	NodeToken string
+	DefaultAbsolutePantTiltPositionSpace string
+	DefaultAbsoluteZoomPositionSpace string
+	DefaultRelativePanTiltTranslationSpace string
+	DefaultRelativeZoomTranslationSpace string
+	DefaultContinuousPanTiltVelocitySpace string
+	DefaultContinuousZoomVelocitySpace string
+	DefaultPTZSpeed PTZSpeed
+	DefaultPTZTimeout string
+	PanTiltLimits PanTiltLimits
+	ZoomLimits ZoomLimits
+}
+
+type Options struct {
+	Mode string
+}
+
+type PTControlDirection struct {
+	EFlip Options // 'OFF', 'ON', 'Extended'
+	Reverse Options // 'OFF', 'ON', 'AUTO', 'Extended'
+}
+
+type DurationRange struct {
+	Min string
+	Max string
+}
+
+type PTZConfigurationOptions struct {
+	Spaces PTZSpaces
+	PTZTimeout DurationRange
+	PTControlDirection PTControlDirection
+}
+
+type MoveStatus struct {
+	PanTilt string
+	Zoom string
+}
+
+type PTZStatus struct {
+	Position PTZSpeed
+	MoveStatus MoveStatus
+	UtcTime string
+}
+
+
+

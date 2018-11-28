@@ -2,6 +2,7 @@ package onvif
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -41,6 +42,12 @@ func intToString(src int) string  {
 	strInt := strconv.Itoa(src)
 	return strInt
 }
+
+func float64ToString(src float64) string  {
+	strFloat64 := fmt.Sprint(src)
+	return strFloat64
+}
+
 func boolToString(src bool) string{
 	if src {
 		return "true"
