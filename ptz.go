@@ -390,7 +390,7 @@ func (device Device) GetConfigurations() ([]PTZConfiguration, error) {
 
 			// parse DefaultPTZSpeed
 			if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{});ok{
-				DefaultPTZSpeed := PTZSpeed{}
+				DefaultPTZSpeed := PTZVector{}
 				// parse PanTilt
 				if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok{
 					DefaultPTZSpeed.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
@@ -493,7 +493,7 @@ func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfigur
 
 		// parse DefaultPTZSpeed
 		if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{});ok{
-			DefaultPTZSpeed := PTZSpeed{}
+			DefaultPTZSpeed := PTZVector{}
 			// parse PanTilt
 			if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok{
 				DefaultPTZSpeed.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
@@ -762,7 +762,7 @@ func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
 	if mapPTZStatus, ok := ifacePTZStatus.(map[string]interface{}); ok{
 		// parse position
 		if mapPosition, ok := mapPTZStatus["Position"].(map[string]interface{}); ok{
-			Position := PTZSpeed{}
+			Position := PTZVector{}
 
 			//parse PanTilt
 			if mapPanTilt, ok := mapPosition["PanTilt"].(map[string]interface{});ok{
@@ -790,7 +790,7 @@ func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
 	return result, nil
 }
 
-func (device Device) ContinuousMove(profileToken string, velocity PTZSpeed) error {
+func (device Device) ContinuousMove(profileToken string, velocity PTZVector) error {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -807,20 +807,18 @@ func (device Device) ContinuousMove(profileToken string, velocity PTZSpeed) erro
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.ContinuousMoveResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	return nil
 }
 
-func (device Device) AbsoluteMove(profileToken string, position PTZSpeed) error{
+func (device Device) AbsoluteMove(profileToken string, position PTZVector) error{
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -837,20 +835,18 @@ func (device Device) AbsoluteMove(profileToken string, position PTZSpeed) error{
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.AbsoluteMoveResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	return nil
 }
 
-func (device Device) RelativeMove(profileToken string, translation PTZSpeed) error{
+func (device Device) RelativeMove(profileToken string, translation PTZVector) error{
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -867,13 +863,11 @@ func (device Device) RelativeMove(profileToken string, translation PTZSpeed) err
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.RelativeMoveResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -893,11 +887,194 @@ func (device Device) Stop(profileToken string) error {
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.StopResponse")
+	if err != nil{
+		return err
+	}
+
+	return nil
+}
+
+func (device Device) GotoHomePosition(profileToken string) error {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<GotoHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</GotoHomePosition>`,
+	}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return err
+	}
+
+	_, err = response.ValueForPath("Envelope.Body.GotoHomePositionResponse")
+	if err != nil{
+		return err
+	}
+
+	return nil
+}
+
+func (device Device) SetHomePosition(profileToken string) error {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<SetHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</SetHomePosition>`,
+	}
+
+	//send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return err
+	}
+
+	_, err = response.ValueForPath("Envelope.Body.SetHomePositionResponse")
+	if err != nil{
+		return err
+	}
+
+	return nil
+}
+
+// return preset token of new preset
+func (device Device) SetPreset(profileToken string, presetName string) (string, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<SetPreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+					<PresetName>` + presetName + `</PresetName>
+				</SetPreset>`,
+	}
+	var result string
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifacePresetToken, err := response.ValueForPath("Envelope.Body.SetPresetResponse")
+	if err != nil{
+		return result, err
+	}
+
+	if mapProfileToken, ok := ifacePresetToken.(map[string] interface{}); ok{
+		result = interfaceToString(mapProfileToken["PresetToken"])
+	}
+
+	return result, err
+}
+
+func (device Device) GetPresets(profileToken string) ([]PTZPreset, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body:`<GetPresets xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+				</GetPresets>`,
+	}
+	result := []PTZPreset{}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifacePresets, err := response.ValuesForPath("Envelope.Body.GetPresetsResponse.Preset")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	for _, ifacePreset := range ifacePresets{
+		if mapPreset, ok := ifacePreset.(map[string] interface{}); ok{
+			Preset := PTZPreset{}
+
+			Preset.Token = interfaceToString(mapPreset["-token"])
+			Preset.Name = interfaceToString(mapPreset["Name"])
+			// parse PTZPosition
+			if mapPosition, ok := mapPreset["PTZPosition"].(map[string] interface{}); ok{
+				Position := PTZVector{}
+				// parse PanTilt
+				if mapPanTilt, ok := mapPosition["PanTilt"].(map[string] interface{}); ok{
+					Position.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
+					Position.PanTilt.X = interfaceToFloat64(mapPanTilt["-x"])
+					Position.PanTilt.Y = interfaceToFloat64(mapPanTilt["-y"])
+				}
+				// parse Zoom
+				if mapZoom, ok := mapPosition["Zoom"].(map[string] interface{}); ok{
+					Position.Zoom.Space = interfaceToString(mapZoom["-space"])
+					Position.Zoom.X = interfaceToFloat64(mapZoom["-x"])
+				}
+				Preset.PTZPosition = Position
+			}
+			// push into result
+			result = append(result, Preset)
+		}
+	}
+
+	return result, nil
+}
+
+func (device Device) GotoPreset(profileToken string, presetToken string) error {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GotoPreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+					<PresetToken>` + presetToken + `</PresetToken>
+				</GotoPreset>`,
+	}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return err
+	}
+
+	_, err = response.ValueForPath("Envelope.Body.GotoPresetResponse")
+	if err != nil{
+		return err
+	}
+
+	return nil
+}
+
+func (device Device) RemovePreset(profileToken string, presetToken string) error {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<RemovePreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+					<ProfileToken>` + profileToken + `</ProfileToken>
+					<PresetToken>` + presetToken + `</PresetToken>
+				</RemovePreset>`,
+	}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		glog.Info(err)
+		return err
+	}
+
+	_, err = response.ValueForPath("Envelope.Body.RemovePresetResponse")
 	if err != nil{
 		glog.Info(err)
 		return err
@@ -905,3 +1082,5 @@ func (device Device) Stop(profileToken string) error {
 
 	return nil
 }
+
+

@@ -596,7 +596,7 @@ type Vector1D struct {
 	X float64
 }
 
-type PTZSpeed struct {
+type PTZVector struct {
 	PanTilt Vector2D
 	Zoom Vector1D
 }
@@ -622,7 +622,7 @@ type PTZConfiguration struct {
 	DefaultRelativeZoomTranslationSpace string
 	DefaultContinuousPanTiltVelocitySpace string
 	DefaultContinuousZoomVelocitySpace string
-	DefaultPTZSpeed PTZSpeed
+	DefaultPTZSpeed PTZVector
 	DefaultPTZTimeout string
 	PanTiltLimits PanTiltLimits
 	ZoomLimits ZoomLimits
@@ -654,9 +654,15 @@ type MoveStatus struct {
 }
 
 type PTZStatus struct {
-	Position PTZSpeed
+	Position PTZVector
 	MoveStatus MoveStatus
 	UtcTime string
+}
+
+type PTZPreset struct {
+	Token string
+	Name string
+	PTZPosition PTZVector
 }
 
 

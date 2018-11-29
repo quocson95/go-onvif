@@ -81,7 +81,7 @@ func GetStatus(t *testing.T)  {
 
 func ContinuousMove(t *testing.T)  {
 	log.Println("Test ContinuousMove")
-	velocity := PTZSpeed{
+	velocity := PTZVector{
 		PanTilt: Vector2D{
 			X: 1,
 			Y: 1,
@@ -98,7 +98,7 @@ func ContinuousMove(t *testing.T)  {
 
 func AbsoluteMove(t *testing.T)  {
 	log.Println("Test AbsoluteMove")
-	position := PTZSpeed{
+	position := PTZVector{
 		PanTilt: Vector2D{
 			X: 1,
 			Y: 1,
@@ -116,7 +116,7 @@ func AbsoluteMove(t *testing.T)  {
 
 func RelativeMove(t *testing.T)  {
 	log.Println("Test RelativeMove")
-	translation := PTZSpeed{
+	translation := PTZVector{
 		PanTilt: Vector2D{
 			X: 1,
 			Y: 1,
@@ -139,3 +139,81 @@ func Stop(t *testing.T)  {
 		t.Error(err)
 	}
 }
+
+func GotoHomePosition(t *testing.T)  {
+	log.Println("Test GotoHomePosition")
+
+	err := testDevice.GotoHomePosition("mainStream_Profile_Token")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func SetHomePosition(t *testing.T)  {
+	log.Println("Test SetHomePosition")
+
+	log.Println("Change Position")
+	translation := PTZVector{
+		PanTilt: Vector2D{
+			X: 1,
+			Y: 1,
+		},
+		Zoom: Vector1D{
+			X: 1,
+		},
+	}
+
+	testDevice.RelativeMove("MediaProfile000", translation)
+
+	log.Println("Set Home Position")
+	err := testDevice.SetHomePosition("MediaProfile000")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func SetPreset(t *testing.T)  {
+	log.Println("Test SetPreset")
+
+	res, err := testDevice.SetPreset("MediaProfile000", "preset1")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GetPresets(t *testing.T)  {
+	log.Println("Test SetPreset")
+
+	res, err := testDevice.GetPresets("MediaProfile000")
+	if err != nil {
+		t.Error(err)
+	}
+
+	js := prettyJSON(&res)
+	fmt.Println(js)
+}
+
+func GotoPreset(t *testing.T)  {
+	log.Println("Test GotoPreset")
+
+	err := testDevice.GotoPreset("MediaProfile000", "1")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func RemovePreset(t *testing.T)  {
+	log.Println("Test RemovePreset")
+
+	err := testDevice.RemovePreset("MediaProfile000", "2")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+
+
+
