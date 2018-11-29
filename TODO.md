@@ -25,8 +25,8 @@
   - [X] getRelayOutputs
   - [X] getNTP
   - [X] setNTP
-  - [ ] getDynamicDNS
-  - [ ] getZeroConfiguration
+  - [X] getDynamicDNS
+  - [X] getZeroConfiguration
   - [X] getServices
   - [X] getServiceCapabilities
 - [ ] OnvifServiceMedia
