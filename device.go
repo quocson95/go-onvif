@@ -543,32 +543,38 @@ func (device Device) SetDNS(dnsInformation DNSInformation) error {
 	return nil
 }
 
-//func (device Device) GetDynamicDNS() (DynamicDNSInformation, error) {
-//	soap := SOAP{
-//		XMLNs: deviceXMLNs,
-//		User: device.User,
-//		Password: device.Password,
-//		Body: `<GetDynamicDNS xmlns="http://www.onvif.org/ver10/device/wsdl"/>`,
-//	}
-//	result := DynamicDNSInformation{}
-//
-//	// send resquest
-//	response, err := soap.SendRequest(device.XAddr)
-//	if err != nil{
-//		glog.Info(err)
-//		return result, err
-//	}
-//
-//	// parse response
-//	ifaceDynamicDNS, err := response.ValueForPath("Envelope.Body.GetDynamicDNSResponse.DynamicDNSInformation")
-//	if err != nil{
-//		glog.Info(err)
-//		return result, err
-//	}
-//
-//	glog.Info(ifaceDynamicDNS)
-//	return result, nil
-//}
+func (device Device) GetDynamicDNS() (DynamicDNSInformation, error) {
+	soap := SOAP{
+		XMLNs: deviceXMLNs,
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetDynamicDNS xmlns="http://www.onvif.org/ver10/device/wsdl"/>`,
+	}
+	result := DynamicDNSInformation{}
+
+	// send resquest
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		return result, err
+	}
+
+	// parse response
+	ifaceDynamicDNS, err := response.ValueForPath("Envelope.Body.GetDynamicDNSResponse")
+	if err != nil{
+		return result, err
+	}
+
+	// parse interface
+	if mapDynamicDNS, ok := ifaceDynamicDNS.(map[string] interface{});ok{
+		if mapDynamicDNSInformation, ok := mapDynamicDNS["DynamicDNSInformation"].(map[string] interface{});ok{
+			result.Type = interfaceToString(mapDynamicDNSInformation["Type"])
+			result.Name = interfaceToString(mapDynamicDNSInformation["Name"])
+			result.TTL = interfaceToString(mapDynamicDNSInformation["TTL"])
+		}
+	}
+
+	return result, nil
+}
 
 func (device Device) SetHostName (nameToken string) error{
 	// create soap
@@ -596,40 +602,6 @@ func (device Device) SetHostName (nameToken string) error{
 
 	return nil
 }
-
-//func (device Device) SetHostNameFromDHCP (fromDHCP bool) (bool, error){
-//	// create soap
-//	soap := SOAP{
-//		XMLNs: deviceXMLNs,
-//		User: device.User,
-//		Password: device.Password,
-//		Body: `<SetHostnameFromDHCP xmlns="http://www.onvif.org/ver10/device/wsdl">
-//				<FromDHCP xmlns="http://www.onvif.org/ver10/schema">` + boolToString(fromDHCP) + `</FromDHCP>
-//			   </SetHostnameFromDHCP>`,
-//	}
-//
-//	needReboot := false
-//
-//	// send request
-//	response, err := soap.SendRequest(device.XAddr)
-//	if err != nil{
-//		glog.Info(err)
-//		return needReboot, err
-//	}
-//
-//	// parse response into interface
-//	ifaceNeedReboot, err := response.ValueForPath("Envelope.Body.SetHostnameFromDHCPResponse")
-//	if err != nil{
-//		glog.Info(err)
-//		return needReboot, err
-//	}
-//	// parse result
-//	if mapNeedReboot, ok:= ifaceNeedReboot.(map[string]interface{}); ok{
-//		needReboot = interfaceToBool(mapNeedReboot["RebootNeeded"])
-//	}
-//
-//	return needReboot, nil
-//}
 
 func (device Device) GetNetworkProtocols() ([]NetworkProtocol, error)  {
 	// create soap
@@ -1023,33 +995,45 @@ func (device Device) GetRelayOutputs() (RelayOutput, error) {
 	return result, nil
 }
 
-//func (device Device) GetZeroConfiguration() (NetworkZeroConfiguration, error) {
-//	// create soap
-//	soap := SOAP{
-//		User: device.User,
-//		Password: device.Password,
-//		Body: `<GetZeroConfiguration xmlns="http://www.onvif.org/ver10/device/wsdl"/>`,
-//	}
-//
-//	result := NetworkZeroConfiguration{}
-//
-//	// send request
-//	response, err := soap.SendRequest(device.XAddr)
-//	if err != nil{
-//		glog.Info(err)
-//		return result, err
-//	}
-//
-//	//parse response
-//	ifaceNetworkZeroConfiguration, err := response.ValueForPath("Envelope.Body.GetZeroConfigurationResponse")
-//	if err != nil{
-//		glog.Info(err)
-//		return result, err
-//	}
-//
-//
-//	return result, nil
-//}
+func (device Device) GetZeroConfiguration() (NetworkZeroConfiguration, error) {
+	// create soap
+	soap := SOAP{
+		User: device.User,
+		Password: device.Password,
+		Body: `<GetZeroConfiguration xmlns="http://www.onvif.org/ver10/device/wsdl"/>`,
+	}
+
+	result := NetworkZeroConfiguration{}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil{
+		glog.Info(err)
+		return result, err
+	}
+
+	//parse response
+	ifaceNetworkZeroConfiguration, err := response.ValueForPath("Envelope.Body.GetZeroConfigurationResponse")
+	if err != nil{
+		glog.Info(err)
+		return result, err
+	}
+
+	// parse interface
+	if mapNetworkZeroConfiguration, ok := ifaceNetworkZeroConfiguration.(map[string] interface{});ok{
+		if mapZeroConfiguration, ok := mapNetworkZeroConfiguration["ZeroConfiguration"].(map[string]interface{});ok{
+			result.InterfaceToken = interfaceToString(mapZeroConfiguration["InterfaceToken"])
+			result.Enabled = interfaceToBool(mapZeroConfiguration["Enabled"])
+			// parse addresses
+			for _, address := range mapZeroConfiguration["Addresses"].([]interface{}){
+				result.Addresses = append(result.Addresses, interfaceToString(address))
+			}
+		}
+	}
+
+	glog.Info(result)
+	return result, nil
+}
 
 func (device Device) GetServices() ([]Service, error)  {
 	// create soap
