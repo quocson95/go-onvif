@@ -2,6 +2,7 @@ package onvif
 
 import (
 	"github.com/golang/glog"
+	"strconv"
 )
 
 var mediaXMLNs = []string{
@@ -239,12 +240,83 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 				videoEncoder.RateControl = rateControl
 			}
 
+			//parse H264
+			if mapH264, ok := mapVideoEncoder["H264"].(map[string]interface{}); ok{
+				videoEncoder.H264.GovLength = interfaceToInt(mapH264["GovLength"])
+				videoEncoder.H264.H264Profile = interfaceToString(mapH264["H264Profile"])
+			}
+
+			// parse Multicast
+			if mapMulticast, ok := mapVideoEncoder["Multicast"].(map[string]interface{}); ok{
+				videoEncoder.Multicast.TTL = interfaceToInt(mapMulticast["TTL"])
+				videoEncoder.Multicast.Port = interfaceToInt(mapMulticast["Port"])
+				videoEncoder.Multicast.AutoStart = interfaceToBool(mapMulticast["AutoStart"])
+
+				// parse Address
+				if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
+					videoEncoder.Multicast.Address.Type = interfaceToString(mapAddress["Type"])
+					videoEncoder.Multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
+					videoEncoder.Multicast.Address.IPv6Address = interfaceToString(mapAddress["IPv6Address"])
+				}
+			}
+
 			// add to result
 			result = append(result, videoEncoder)
 		}
 	}
 
+	glog.Info(result)
 	return result, nil
+}
+
+func (device Device) SetVideoEncoderConfiguration(profile MediaProfile) error {
+	soap := SOAP{
+		XMLNs:    mediaXMLNs,
+		User:     device.User,
+		Password: device.Password,
+		Body: `<trt:SetVideoEncoderConfiguration>
+					<trt:Configuration token="` + profile.VideoEncoderConfig.Token + `">
+						<tt:Name> ` + profile.VideoEncoderConfig.Name + `</tt:Name>
+						<tt:Encoding> ` + profile.VideoEncoderConfig.Encoding + `</tt:Encoding>
+						<tt:Quality> ` + strconv.Itoa(profile.VideoEncoderConfig.Quality) + `</tt:Quality>
+						<tt:SessionTimeout> ` + profile.VideoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
+						<tt:Resolution>
+							<tt:Width> ` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Width) + ` </tt:Width>
+							<tt:Height> ` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Height) + ` </tt:Height>
+						</tt:Resolution>
+						<tt:RateControl>
+							<tt:FrameRateLimit> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.FrameRateLimit) + ` </tt:FrameRateLimit>
+							<tt:EncodingInterval> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.EncodingInterval) + ` </tt:EncodingInterval>
+							<tt:BitrateLimit> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.BitrateLimit) + ` </tt:BitrateLimit>
+						</tt:RateControl>
+						<tt:H264>
+							<tt:GovLength> ` + strconv.Itoa(profile.VideoEncoderConfig.H264.GovLength) + ` </tt:GovLength>
+							<tt:H264Profile> ` + profile.VideoEncoderConfig.H264.H264Profile + ` </tt:H264Profile>
+						</tt:H264>
+						<tt:Multicast>
+							<tt:Address>
+								<tt:Type> ` + profile.VideoEncoderConfig.Multicast.Address.Type + ` </tt:Type>
+								<tt:IPv4Address> ` + profile.VideoEncoderConfig.Multicast.Address.IPv4Address + ` </tt:IPv4Address>
+							</tt:Address>
+							<tt:Port> ` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.Port) + ` </tt:Port>
+							<tt:TTL> ` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.TTL) + ` </tt:TTL>
+							<tt:AutoStart> ` + strconv.FormatBool(profile.VideoEncoderConfig.Multicast.AutoStart) + ` </tt:AutoStart>
+						</tt:Multicast>
+					</trt:Configuration>
+					<trt:ForcePersistence>true</trt:ForcePersistence>
+				</trt:SetVideoEncoderConfiguration>`,
+	}
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		glog.Error(err)
+		return err
+	}
+	_, err = response.ValueForPath("Envelope.Body.SetVideoEncoderConfigurationResponse")
+	if err != nil {
+		glog.Error(err)
+		return err
+	}
+	return nil
 }
 
 func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string) ([]VideoEncoderConfig, error) {

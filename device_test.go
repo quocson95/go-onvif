@@ -113,7 +113,6 @@ func  GetSetNTP(t *testing.T)  {
 		NTPNetworkHost: NetworkHost{
 			Type: "IPv4",
 			IPv4Address: "swisstime.ee.ethz.ch",
-			//IPv4Address: "time.windows.com",
 		},
 	}
 	res, err := testDevice.GetNTP()

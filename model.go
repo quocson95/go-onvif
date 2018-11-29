@@ -71,6 +71,11 @@ type VideoRateControl struct {
 }
 
 // VideoEncoderConfig contains configuration of a video encoder
+type H264Configuration struct {
+	GovLength int
+	H264Profile string //'Baseline', 'Main', 'Extended', 'High'
+}
+
 type VideoEncoderConfig struct {
 	Name           string
 	Token          string
@@ -79,6 +84,8 @@ type VideoEncoderConfig struct {
 	RateControl    VideoRateControl
 	Resolution     MediaBounds
 	SessionTimeout string
+	H264 H264Configuration
+	Multicast Multicast
 }
 
 // AudioEncoderConfig contains configuration of an audio encoder

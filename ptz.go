@@ -1083,4 +1083,3 @@ func (device Device) RemovePreset(profileToken string, presetToken string) error
 	return nil
 }
 
-
