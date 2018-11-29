@@ -70,9 +70,9 @@
   - [X] absoluteMove
   - [X] relativeMove
   - [X] stop
-  - [ ] gotoHomePosition
-  - [ ] setHomePosition
-  - [ ] setPreset
-  - [ ] getPresets
-  - [ ] gotoPreset
-  - [ ] removePreset
+  - [X] gotoHomePosition
+  - [X] setHomePosition
+  - [X] setPreset
+  - [X] getPresets
+  - [X] gotoPreset
+  - [X] removePreset
