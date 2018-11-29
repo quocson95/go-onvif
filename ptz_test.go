@@ -87,7 +87,7 @@ func ContinuousMove(t *testing.T)  {
 			Y: 1,
 		},
 		Zoom: Vector1D{
-			X: -1,
+			X: 0,
 		},
 	}
 	err := testDevice.ContinuousMove("mainStream_Profile_Token", velocity)
@@ -104,7 +104,7 @@ func AbsoluteMove(t *testing.T)  {
 			Y: 1,
 		},
 		Zoom: Vector1D{
-			X: -1,
+			X: 0,
 		},
 	}
 	err := testDevice.AbsoluteMove("mainStream_Profile_Token", position)
@@ -122,7 +122,7 @@ func RelativeMove(t *testing.T)  {
 			Y: 1,
 		},
 		Zoom: Vector1D{
-			X: -1,
+			X: 0,
 		},
 	}
 	err := testDevice.RelativeMove("mainStream_Profile_Token", translation)
@@ -159,7 +159,7 @@ func SetHomePosition(t *testing.T)  {
 			Y: 1,
 		},
 		Zoom: Vector1D{
-			X: 1,
+			X: 0,
 		},
 	}
 
