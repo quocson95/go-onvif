@@ -65,7 +65,7 @@ func (device Device) GetProfiles() ([]MediaProfile, error) {
 				videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 				videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
-				videoEncoder.Quality = interfaceToInt(mapVideoEncoder["Quality"])
+				videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 				videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 				// Parse video rate control
@@ -192,7 +192,6 @@ func (device Device) GetSnapshot(profileToken string) (string, error) {
 	}
 }
 
-
 func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, error) {
 	soap := SOAP{
 		Body: `<GetVideoEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
@@ -216,7 +215,7 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
-			videoEncoder.Quality = interfaceToInt(mapVideoEncoder["Quality"])
+			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// parse Resolution
@@ -276,36 +275,37 @@ func (device Device) SetVideoEncoderConfiguration(profile MediaProfile) error {
 		Password: device.Password,
 		Body: `<trt:SetVideoEncoderConfiguration>
 					<trt:Configuration token="` + profile.VideoEncoderConfig.Token + `">
-						<tt:Name> ` + profile.VideoEncoderConfig.Name + `</tt:Name>
-						<tt:Encoding> ` + profile.VideoEncoderConfig.Encoding + `</tt:Encoding>
-						<tt:Quality> ` + strconv.Itoa(profile.VideoEncoderConfig.Quality) + `</tt:Quality>
-						<tt:SessionTimeout> ` + profile.VideoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
+						<tt:Name>` + profile.VideoEncoderConfig.Name + `</tt:Name>
+						<tt:Encoding>` + profile.VideoEncoderConfig.Encoding + `</tt:Encoding>
+						<tt:Quality>` + float64ToString(profile.VideoEncoderConfig.Quality) + `</tt:Quality>
+						<tt:SessionTimeout>` + profile.VideoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
 						<tt:Resolution>
-							<tt:Width> ` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Width) + ` </tt:Width>
-							<tt:Height> ` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Height) + ` </tt:Height>
+							<tt:Width>` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Width) + `</tt:Width>
+							<tt:Height>` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Height) + `</tt:Height>
 						</tt:Resolution>
 						<tt:RateControl>
-							<tt:FrameRateLimit> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.FrameRateLimit) + ` </tt:FrameRateLimit>
-							<tt:EncodingInterval> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.EncodingInterval) + ` </tt:EncodingInterval>
-							<tt:BitrateLimit> ` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.BitrateLimit) + ` </tt:BitrateLimit>
+							<tt:FrameRateLimit>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.FrameRateLimit) + `</tt:FrameRateLimit>
+							<tt:EncodingInterval>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.EncodingInterval) + `</tt:EncodingInterval>
+							<tt:BitrateLimit>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.BitrateLimit) + `</tt:BitrateLimit>
 						</tt:RateControl>
 						<tt:H264>
-							<tt:GovLength> ` + strconv.Itoa(profile.VideoEncoderConfig.H264.GovLength) + ` </tt:GovLength>
-							<tt:H264Profile> ` + profile.VideoEncoderConfig.H264.H264Profile + ` </tt:H264Profile>
+							<tt:GovLength>` + strconv.Itoa(profile.VideoEncoderConfig.H264.GovLength) + `</tt:GovLength>
+							<tt:H264Profile>` + profile.VideoEncoderConfig.H264.H264Profile + `</tt:H264Profile>
 						</tt:H264>
 						<tt:Multicast>
 							<tt:Address>
-								<tt:Type> ` + profile.VideoEncoderConfig.Multicast.Address.Type + ` </tt:Type>
-								<tt:IPv4Address> ` + profile.VideoEncoderConfig.Multicast.Address.IPv4Address + ` </tt:IPv4Address>
+								<tt:Type>` + profile.VideoEncoderConfig.Multicast.Address.Type + `</tt:Type>
+								<tt:IPv4Address>` + profile.VideoEncoderConfig.Multicast.Address.IPv4Address + `</tt:IPv4Address>
 							</tt:Address>
-							<tt:Port> ` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.Port) + ` </tt:Port>
-							<tt:TTL> ` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.TTL) + ` </tt:TTL>
-							<tt:AutoStart> ` + strconv.FormatBool(profile.VideoEncoderConfig.Multicast.AutoStart) + ` </tt:AutoStart>
+							<tt:Port>` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.Port) + `</tt:Port>
+							<tt:TTL>` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.TTL) + `</tt:TTL>
+							<tt:AutoStart>` + strconv.FormatBool(profile.VideoEncoderConfig.Multicast.AutoStart) + `</tt:AutoStart>
 						</tt:Multicast>
 					</trt:Configuration>
 					<trt:ForcePersistence>true</trt:ForcePersistence>
 				</trt:SetVideoEncoderConfiguration>`,
 	}
+
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
 		glog.Error(err)
@@ -343,7 +343,7 @@ func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
-			videoEncoder.Quality = interfaceToInt(mapVideoEncoder["Quality"])
+			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// parse Resolution
@@ -542,7 +542,7 @@ func (device Device) GetProfileMedia(profileToken string) (MediaProfile, error) 
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
-			videoEncoder.Quality = interfaceToInt(mapVideoEncoder["Quality"])
+			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// Parse video rate control
@@ -651,7 +651,7 @@ func (device Device) CreateProfile(profileName string, profileToken string) (Med
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
-			videoEncoder.Quality = interfaceToInt(mapVideoEncoder["Quality"])
+			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// Parse video rate control

@@ -111,7 +111,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	request = regexp.MustCompile(`\s+`).ReplaceAllString(request, " ")
 
 	// Create UDP address for local and multicast address
-	localAddress, err := net.ResolveUDPAddr("udp4", u.String() + ":0")
+	localAddress, err := net.ResolveUDPAddr("udp4", ipAddr + ":0")
 	if err != nil {
 		return []Device{}, err
 	}

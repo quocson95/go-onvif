@@ -30,8 +30,6 @@ func TestGetStreamURI(t *testing.T) {
 	fmt.Println(js)
 }
 
-
-
 func GetVideoEncoderConfigurations(t *testing.T){
 	log.Println("Test GetVideoEncoderConfigurations")
 
@@ -42,6 +40,49 @@ func GetVideoEncoderConfigurations(t *testing.T){
 
 	js := prettyJSON(&res)
 	fmt.Println(js)
+}
+
+
+func SetVideoEncoderConfiguration(t *testing.T){
+	log.Println("Test SetVideoEncoderConfiguration")
+
+	profile := MediaProfile{
+		VideoEncoderConfig: VideoEncoderConfig{
+			Token:"thirdVideoStream_Encoder_Token",
+			Name: "thirdVideoStream",
+			Encoding:"H264",
+			Quality: 95,
+			Resolution: MediaBounds{
+				Height: 480,
+				Width: 720,
+			},
+			SessionTimeout: "PT0S",
+			RateControl: VideoRateControl{
+				FrameRateLimit: 20,
+				EncodingInterval: 1,
+				BitrateLimit: 192,
+			},
+			H264: H264Configuration{
+				GovLength: 45,
+				H264Profile: "Main",
+			},
+			Multicast: Multicast{
+				Address: IPAddress{
+					Type: "IPv4",
+					IPv4Address: "0.0.0.0",
+				},
+				Port: 8600,
+				TTL: 1,
+				AutoStart: false,
+			},
+		},
+	}
+
+
+	err := testDevice.SetVideoEncoderConfiguration(profile)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func GetCompatibleVideoEncoderConfigurations(t *testing.T){

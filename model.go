@@ -80,7 +80,7 @@ type VideoEncoderConfig struct {
 	Name           string
 	Token          string
 	Encoding       string
-	Quality        int
+	Quality        float64
 	RateControl    VideoRateControl
 	Resolution     MediaBounds
 	SessionTimeout string
