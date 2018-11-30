@@ -255,7 +255,6 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 				if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
 					videoEncoder.Multicast.Address.Type = interfaceToString(mapAddress["Type"])
 					videoEncoder.Multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
-					videoEncoder.Multicast.Address.IPv6Address = interfaceToString(mapAddress["IPv6Address"])
 				}
 			}
 

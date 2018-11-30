@@ -156,21 +156,19 @@ type SystemDateAndTime struct {
 type NetworkHost struct {
 	Type string
 	IPv4Address string
-	IPv6Address string
 	DNSname string
 }
 
 
 type NTPInformation struct {
 	FromDHCP bool
-	NTPNetworkHost NetworkHost // NetworkHost of NTPFromDHCP if FromDHCP is true, else of NTPManual
+	NTPNetworkHost []NetworkHost // NetworkHost of NTPFromDHCP if FromDHCP is true, else of NTPManual
 }
 
 // DNS Information struct
 type IPAddress struct {
 	Type string
 	IPv4Address string
-	IPv6Address string
 }
 
 
@@ -222,19 +220,6 @@ type IPv4NetworkInterface struct {
 	Config IPv4Configuration
 }
 
-type IPv6Configuration struct {
-	AcceptRouterAdvert bool
-	DHCP string // 'Auto' 'Stateful' 'Stateless' 'Off'
-	Manual PrefixedIPAdress
-	LinkLocal PrefixedIPAdress
-	FromDHCP PrefixedIPAdress
-	FromRA PrefixedIPAdress
-}
-
-type IPv6NetworkInterface struct {
-	Enable bool
-	Config IPv6Configuration
-}
 
 type NetworkInterface struct {
 	Token string
@@ -242,7 +227,6 @@ type NetworkInterface struct {
 	Info NetworkInterfaceInfo
 	Link NetworkInterfaceLink
 	IPv4 IPv4NetworkInterface
-	IPv6 IPv6NetworkInterface
 }
 
 // NetWork Protocols
@@ -261,7 +245,6 @@ type Scope struct {
 // Network GateWay
 type NetworkGateway struct {
 	IPv4Address string
-	IPv6Address string
 }
 
 // User
@@ -671,6 +654,3 @@ type PTZPreset struct {
 	Name string
 	PTZPosition PTZVector
 }
-
-
-
