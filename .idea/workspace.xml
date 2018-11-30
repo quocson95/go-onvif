@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="606cfb1f-023c-49d3-b88e-cdfe203a4a9f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/device.go" beforeDir="false" afterPath="$PROJECT_DIR$/device.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/device_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/device_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soap.go" beforeDir="false" afterPath="$PROJECT_DIR$/soap.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,17 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
+            <state relative-caret-position="-8327">
               <caret line="164" column="19" lean-forward="true" selection-start-line="164" selection-start-column="19" selection-end-line="164" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/media_test.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1296">
-              <caret line="85" column="1" lean-forward="true" selection-start-line="85" selection-start-column="1" selection-end-line="85" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -35,8 +26,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/device_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="112" column="36" selection-start-line="112" selection-start-column="36" selection-end-line="112" selection-end-column="36" />
+            <state relative-caret-position="136">
+              <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
             </state>
           </provider>
         </entry>
@@ -44,8 +35,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/device.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="423" column="66" selection-start-line="423" selection-start-column="66" selection-end-line="423" selection-end-column="66" />
+            <state relative-caret-position="299">
+              <caret line="303" column="40" lean-forward="true" selection-start-line="303" selection-start-column="40" selection-end-line="303" selection-end-column="40" />
               <folding>
                 <element signature="n#!!block;n#GetInformation#0" />
                 <element signature="n#!!block;n#GetNetworkInterfaces#0" />
@@ -54,6 +45,28 @@
                 <element signature="n#!!block;n#GetScopes#0" />
                 <element signature="n#!!block;n#GetHostname#0" />
                 <element signature="n#!!block;n#GetSystemDateAndTime#0" />
+                <element signature="n#!!block;n#GetNTP#0" />
+                <element signature="n#!!block;n#SetNTP#0" />
+                <element signature="n#!!block;n#SystemReboot#0" />
+                <element signature="n#!!block;n#GetDNS#0" />
+                <element signature="n#!!block;n#SetDNS#0" />
+                <element signature="n#!!block;n#GetDynamicDNS#0" />
+                <element signature="n#!!block;n#SetHostName#0" />
+                <element signature="n#!!block;n#GetNetworkProtocols#0" />
+                <element signature="n#!!block;n#SetNetworkProtocols#0" />
+                <element signature="n#!!block;n#SetScopes#0" />
+                <element signature="n#!!block;n#AddScopes#0" />
+                <element signature="n#!!block;n#RemoveScopes#0" />
+                <element signature="n#!!block;n#GetNetworkDefaultGateway#0" />
+                <element signature="n#!!block;n#SetNetworkDefaultGateway#0" />
+                <element signature="n#!!block;n#GetUsers#0" />
+                <element signature="n#!!block;n#SetUser#0" />
+                <element signature="n#!!block;n#DeleteUsers#0" />
+                <element signature="n#!!block;n#CreateUsers#0" />
+                <element signature="n#!!block;n#GetRelayOutputs#0" />
+                <element signature="n#!!block;n#GetZeroConfiguration#0" />
+                <element signature="n#!!block;n#GetServices#0" />
+                <element signature="n#!!block;n#GetServiceCapabilities#0" />
               </folding>
             </state>
           </provider>
@@ -112,12 +125,13 @@
         <option value="$PROJECT_DIR$/media.go" />
         <option value="$PROJECT_DIR$/model.go" />
         <option value="$PROJECT_DIR$/device_test.go" />
+        <option value="$PROJECT_DIR$/soap.go" />
         <option value="$PROJECT_DIR$/device.go" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="69" />
+    <option name="x" value="67" />
     <option name="y" value="27" />
     <option name="width" value="950" />
     <option name="height" value="1039" />
@@ -294,9 +308,6 @@
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/soap.go">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/TODO.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -398,6 +409,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8327">
+          <caret line="164" column="19" lean-forward="true" selection-start-line="164" selection-start-column="19" selection-end-line="164" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/media_test.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1296">
@@ -405,24 +423,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model.go">
+    <entry file="file://$PROJECT_DIR$/device_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="164" column="19" lean-forward="true" selection-start-line="164" selection-start-column="19" selection-end-line="164" selection-end-column="19" />
+        <state relative-caret-position="136">
+          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/device_test.go">
+    <entry file="file://$PROJECT_DIR$/soap.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="112" column="36" selection-start-line="112" selection-start-column="36" selection-end-line="112" selection-end-column="36" />
+        <state relative-caret-position="649">
+          <caret line="62" column="5" lean-forward="true" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/device.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="423" column="66" selection-start-line="423" selection-start-column="66" selection-end-line="423" selection-end-column="66" />
+        <state relative-caret-position="299">
+          <caret line="303" column="40" lean-forward="true" selection-start-line="303" selection-start-column="40" selection-end-line="303" selection-end-column="40" />
           <folding>
             <element signature="n#!!block;n#GetInformation#0" />
             <element signature="n#!!block;n#GetNetworkInterfaces#0" />
@@ -431,6 +449,28 @@
             <element signature="n#!!block;n#GetScopes#0" />
             <element signature="n#!!block;n#GetHostname#0" />
             <element signature="n#!!block;n#GetSystemDateAndTime#0" />
+            <element signature="n#!!block;n#GetNTP#0" />
+            <element signature="n#!!block;n#SetNTP#0" />
+            <element signature="n#!!block;n#SystemReboot#0" />
+            <element signature="n#!!block;n#GetDNS#0" />
+            <element signature="n#!!block;n#SetDNS#0" />
+            <element signature="n#!!block;n#GetDynamicDNS#0" />
+            <element signature="n#!!block;n#SetHostName#0" />
+            <element signature="n#!!block;n#GetNetworkProtocols#0" />
+            <element signature="n#!!block;n#SetNetworkProtocols#0" />
+            <element signature="n#!!block;n#SetScopes#0" />
+            <element signature="n#!!block;n#AddScopes#0" />
+            <element signature="n#!!block;n#RemoveScopes#0" />
+            <element signature="n#!!block;n#GetNetworkDefaultGateway#0" />
+            <element signature="n#!!block;n#SetNetworkDefaultGateway#0" />
+            <element signature="n#!!block;n#GetUsers#0" />
+            <element signature="n#!!block;n#SetUser#0" />
+            <element signature="n#!!block;n#DeleteUsers#0" />
+            <element signature="n#!!block;n#CreateUsers#0" />
+            <element signature="n#!!block;n#GetRelayOutputs#0" />
+            <element signature="n#!!block;n#GetZeroConfiguration#0" />
+            <element signature="n#!!block;n#GetServices#0" />
+            <element signature="n#!!block;n#GetServiceCapabilities#0" />
           </folding>
         </state>
       </provider>

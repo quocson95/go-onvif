@@ -29,7 +29,6 @@ type SOAP struct {
 func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 	// Create SOAP request
 	request := soap.createRequest()
-
 	// Make sure URL valid and add authentication in xAddr
 	urlXAddr, err := url.Parse(xaddr)
 	if err != nil {

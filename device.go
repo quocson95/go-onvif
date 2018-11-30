@@ -295,22 +295,27 @@ func (device Device) SetSystemDateAndTime(systemDT SystemDateAndTime) error {
 	if systemDT.DateTimeType == "Manual"{ // Manual mode
 		body = `<SetSystemDateAndTime xmlns="http://www.onvif.org/ver10/device/wsdl">
 					<DateTimeType>` + systemDT.DateTimeType + `</DateTimeType>
-					<DaylightSavings>` + boolToString(systemDT.DaylightSavings) +`</DayLightSavings>
-						<TimeZone><TZ xmlns="http://www.onvif.org/ver10/schema">`+ systemDT.TZ + `</TZ></TimeZone>
-						<UTCDateTime><Time xmlns="http://www.onvif.org/ver10/schema"><Hour>` + intToString(systemDT.Hour) + `</Hour>
-									<Minute>` + intToString(systemDT.Minute) +`</Minute>
-									<Second>`+ intToString(systemDT.Second) + `</Second>
-							 	 </Time>
-								 <Date xmlns="http://www.onvif.org/ver10/schema"><Year>` + intToString(systemDT.Year) + `</Year>
-									<Month>` + intToString(systemDT.Month) + `</Month>
-									<Day>` + intToString(systemDT.Day) + `</Day>
-								 </Date>
+					<DaylightSavings>`+ boolToString(systemDT.DaylightSavings) + `</DaylightSavings>
+					<TimeZone>
+						<TZ xmlns="http://www.onvif.org/ver10/schema">` + systemDT.TZ + `</TZ>
+					</TimeZone>
+					<UTCDateTime>
+						<Time xmlns="http://www.onvif.org/ver10/schema">
+							<Hour>`+ intToString(systemDT.Hour) +`</Hour>
+							<Minute>`+ intToString(systemDT.Minute) +`</Minute>
+							<Second>`+ intToString(systemDT.Second) +`</Second>
+						</Time>
+						<Date xmlns="http://www.onvif.org/ver10/schema">
+							<Year>`+ intToString(systemDT.Year) +`</Year>
+							<Month>`+ intToString(systemDT.Month) +`</Month>
+							<Day>`+ intToString(systemDT.Day) +`</Day>
+						</Date>
 					</UTCDateTime>
 				</SetSystemDateAndTime>`
 	} else {							// NTP mode
 		body = `<SetSystemDateAndTime xmlns="http://www.onvif.org/ver10/device/wsdl">
 					<DateTimeType>` + systemDT.DateTimeType + `</DateTimeType>
-					<DaylightSavings>` + boolToString(systemDT.DaylightSavings)  +`</DayLightSavings>`
+					<DaylightSavings>` + boolToString(systemDT.DaylightSavings)  +`</DaylightSavings>`
 
 		if systemDT.TZ != ""{
 			body += `<TimeZone><TZ xmlns="http://www.onvif.org/ver10/schema">`+ systemDT.TZ + `</TZ></TimeZone>`
@@ -321,7 +326,6 @@ func (device Device) SetSystemDateAndTime(systemDT SystemDateAndTime) error {
 
 	// Create SOAP
 	soap := SOAP{
-		XMLNs:deviceXMLNs,
 		User:     device.User,
 		Password: device.Password,
 		Body: body,
