@@ -1,7 +1,5 @@
 package onvif
 
-import "github.com/golang/glog"
-
 func (device Device) GetNodes() ([]PTZNode, error) {
 	//create soap
 	soap := SOAP{
@@ -1070,16 +1068,13 @@ func (device Device) RemovePreset(profileToken string, presetToken string) error
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.RemovePresetResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	return nil
 }
-

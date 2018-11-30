@@ -250,14 +250,12 @@ func (device Device) GetSystemDateAndTime() (interface{}, error) {
 	// send SOAP request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info("Error", err)
 		return systemDT, err
 	}
 
 	// Parse response to interface
 	ifaceSystemDateTime, err := response.ValueForPath("Envelope.Body.GetSystemDateAndTimeResponse.SystemDateAndTime")
 	if err != nil{
-		glog.Info("Error",err)
 		return systemDT, err
 	}
 
@@ -332,13 +330,11 @@ func (device Device) SetSystemDateAndTime(systemDT SystemDateAndTime) error {
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr);
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetSystemDateAndTimeResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -360,14 +356,12 @@ func (device Device) GetNTP() (NTPInformation, error) {
 	response, err := soap.SendRequest(device.XAddr)
 
 	if err != nil{
-		glog.Info(err)
 		return ntpInformation, err
 	}
 
 	// parse response into interface
 	ifaceNTPInformation, err := response.ValueForPath("Envelope.Body.GetNTPResponse.NTPInformation")
 	if err != nil{
-		glog.Info(err)
 		return ntpInformation, err
 	}
 
@@ -415,13 +409,11 @@ func (device Device) SetNTP(ntpInformation NTPInformation) error {
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetNTPResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -443,14 +435,12 @@ func (device Device) SystemReboot() (string, error) {
 	response, err := soap.SendRequest(device.XAddr)
 
 	if err != nil{
-		glog.Info(err)
 		return message, err
 	}
 
 	// parse response into interface
 	ifaceMessage, err := response.ValueForPath("Envelope.Body.SystemRebootResponse")
 	if err != nil{
-		glog.Info(err)
 		return message, err
 	}
 
@@ -475,7 +465,6 @@ func (device Device) GetDNS() (DNSInformation, error){
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
-		glog.Info(err)
 		return dnsInformation, err
 	}
 
@@ -483,7 +472,6 @@ func (device Device) GetDNS() (DNSInformation, error){
 	ifaceDNSInformation, err := response.ValueForPath("Envelope.Body.GetDNSResponse.DNSInformation")
 
 	if err != nil{
-		glog.Info(err)
 		return dnsInformation, err
 	}
 
@@ -530,13 +518,11 @@ func (device Device) SetDNS(dnsInformation DNSInformation) error {
 	response, err := soap.SendRequest(device.XAddr)
 
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetDNSResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -590,13 +576,11 @@ func (device Device) SetHostName (nameToken string) error{
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetHostnameResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -616,14 +600,12 @@ func (device Device) GetNetworkProtocols() ([]NetworkProtocol, error)  {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response to interface
 	ifaceNetworkProtocols, err := response.ValuesForPath("Envelope.Body.GetNetworkProtocolsResponse.NetworkProtocols")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -664,13 +646,11 @@ func (device Device) SetNetworkProtocols(protocols []NetworkProtocol) error {
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetNetworkProtocolsResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -695,13 +675,11 @@ func (device Device) SetScopes(listScopes []string) error{
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if  err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetScopesResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -726,13 +704,11 @@ func (device Device) AddScopes(listScopes []string) error {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if  err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.AddScopesResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -757,7 +733,6 @@ func (device Device) RemoveScopes(listScopes []string) ([]string, error){
 	// send request
 	respone, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -782,14 +757,12 @@ func (device Device) GetNetworkDefaultGateway() (NetworkGateway, error) {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response
 	ifaceNetworkGateway, err := response.ValueForPath("Envelope.Body.GetNetworkDefaultGatewayResponse.NetworkGateway")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -815,13 +788,11 @@ func (device Device) SetNetworkDefaultGateway(defaultGateway NetworkGateway) err
 	response, err := soap.SendRequest(device.XAddr)
 
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetNetworkDefaultGatewayResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 	return nil
@@ -840,14 +811,12 @@ func (device Device) GetUsers() ([]User, error) {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceUsers, err := response.ValuesForPath("Envelope.Body.GetUsersResponse.User")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -880,13 +849,11 @@ func (device Device) SetUser(user User) error{
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return  err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetUserResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -910,13 +877,11 @@ func (device Device) DeleteUsers(usernames []string) error {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.DeleteUsersResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -944,13 +909,11 @@ func (device Device) CreateUsers(users []User) error{
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.CreateUsersResponse")
 	if err != nil{
-		glog.Info(err)
 		return err
 	}
 
@@ -970,14 +933,12 @@ func (device Device) GetRelayOutputs() (RelayOutput, error) {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response
 	ifaceRelayOutput, err := response.ValueForPath("Envelope.Body.GetRelayOutputsResponse.RelayOutputs")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -1008,14 +969,12 @@ func (device Device) GetZeroConfiguration() (NetworkZeroConfiguration, error) {
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	//parse response
 	ifaceNetworkZeroConfiguration, err := response.ValueForPath("Envelope.Body.GetZeroConfigurationResponse")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -1048,14 +1007,12 @@ func (device Device) GetServices() ([]Service, error)  {
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceServices, err := response.ValuesForPath("Envelope.Body.GetServicesResponse.Service")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
@@ -1092,14 +1049,12 @@ func (device Device) GetServiceCapabilities() ([]Service, error)  {
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceServices, err := response.ValuesForPath("Envelope.Body.GetServicesResponse.Service")
 	if err != nil{
-		glog.Info(err)
 		return result, err
 	}
 

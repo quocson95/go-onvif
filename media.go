@@ -308,12 +308,10 @@ func (device Device) SetVideoEncoderConfiguration(profile MediaProfile) error {
 
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
-		glog.Error(err)
 		return err
 	}
 	_, err = response.ValueForPath("Envelope.Body.SetVideoEncoderConfigurationResponse")
 	if err != nil {
-		glog.Error(err)
 		return err
 	}
 	return nil
@@ -1349,14 +1347,12 @@ func (device Device) GetAudioSourceConfigurations() ([]AudioSourceConfiguration,
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSourceConfigurations, err := response.ValuesForPath("Envelope.Body.GetAudioSourceConfigurationsResponse.Configurations")
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
@@ -1440,14 +1436,12 @@ func (device Device) GetAudioSourceConfigurationOptions(configurationToken strin
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
 	// parse response
 	iface, err := response.ValueForPath("Envelope.Body.GetAudioSourceConfigurationOptionsResponse.Options")
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
@@ -1600,14 +1594,12 @@ func (device Device) GetAudioEncoderConfigurationOptions(configurationToken stri
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioEncoderConfigurationOptions, err := response.ValuesForPath("Envelope.Body.GetAudioEncoderConfigurationOptionsResponse.Options.Options")
 	if err != nil{
-		glog.Error(err)
 		return result, err
 	}
 
