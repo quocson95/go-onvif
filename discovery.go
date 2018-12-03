@@ -156,6 +156,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 		return []Device{}, err
 	}
 
+
 	// Create initial discovery results
 	var discoveryResults []Device
 

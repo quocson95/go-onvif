@@ -55,3 +55,9 @@ func boolToString(src bool) string{
 
 	return "false"
 }
+
+// kiem tra co phai loi chung thuc hay khong
+func CheckAuthorizedError(msg string) bool {
+	msg = strings.ToLower(msg)
+	return strings.Index(msg, "authorized") != -1;
+}
