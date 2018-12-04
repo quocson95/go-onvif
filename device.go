@@ -238,7 +238,7 @@ func (device Device) GetHostname() (HostnameInformation, error) {
 	return hostnameInfo, nil
 }
 
-func (device Device) GetSystemDateAndTime() (interface{}, error) {
+func (device Device) GetSystemDateAndTime() (SystemDateAndTime, error) {
 	// Create SOAP
 	soap := SOAP{
 		XMLNs:deviceXMLNs,

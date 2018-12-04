@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func GetNodes(t *testing.T)  {
+func TestGetNodes(t *testing.T)  {
 	log.Println("Test GetNodes")
 
 	res, err := testDevice.GetNodes()
@@ -18,7 +18,7 @@ func GetNodes(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetNode(t *testing.T)  {
+func TestGetNode(t *testing.T)  {
 	log.Println("Test GetNode")
 
 	res, err := testDevice.GetNode("onvif_ptz_0")
@@ -30,7 +30,7 @@ func GetNode(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetConfigurations(t *testing.T)  {
+func TestGetConfigurations(t *testing.T)  {
 	log.Println("Test GetConfigurations")
 
 	res, err := testDevice.GetNode("onvif_ptz_0")
@@ -42,7 +42,7 @@ func GetConfigurations(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetConfiguration(t *testing.T)  {
+func TestGetConfiguration(t *testing.T)  {
 	log.Println("Test GetConfiguration")
 
 	res, err := testDevice.GetConfiguration("onvif_ptz_0")
@@ -55,7 +55,7 @@ func GetConfiguration(t *testing.T)  {
 }
 
 
-func GetConfigurationOptions(t *testing.T)  {
+func TestGetConfigurationOptions(t *testing.T)  {
 	log.Println("Test GetConfigurationOptions")
 
 	res, err := testDevice.GetConfigurationOptions("onvif_ptz_0")
@@ -67,7 +67,7 @@ func GetConfigurationOptions(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetStatus(t *testing.T)  {
+func TestGetStatus(t *testing.T)  {
 	log.Println("Test GetStatus")
 
 	res, err := testDevice.GetStatus("mainStream_Profile_Token")
@@ -79,7 +79,7 @@ func GetStatus(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func ContinuousMove(t *testing.T)  {
+func TestContinuousMove(t *testing.T)  {
 	log.Println("Test ContinuousMove")
 	velocity := PTZVector{
 		PanTilt: Vector2D{
@@ -96,7 +96,7 @@ func ContinuousMove(t *testing.T)  {
 	}
 }
 
-func AbsoluteMove(t *testing.T)  {
+func TestAbsoluteMove(t *testing.T)  {
 	log.Println("Test AbsoluteMove")
 	position := PTZVector{
 		PanTilt: Vector2D{
@@ -114,7 +114,7 @@ func AbsoluteMove(t *testing.T)  {
 }
 
 
-func RelativeMove(t *testing.T)  {
+func TestRelativeMove(t *testing.T)  {
 	log.Println("Test RelativeMove")
 	translation := PTZVector{
 		PanTilt: Vector2D{
@@ -131,7 +131,7 @@ func RelativeMove(t *testing.T)  {
 	}
 }
 
-func Stop(t *testing.T)  {
+func TestStop(t *testing.T)  {
 	log.Println("Test Stop")
 
 	err := testDevice.Stop("mainStream_Profile_Token")
@@ -140,7 +140,7 @@ func Stop(t *testing.T)  {
 	}
 }
 
-func GotoHomePosition(t *testing.T)  {
+func TestGotoHomePosition(t *testing.T)  {
 	log.Println("Test GotoHomePosition")
 
 	err := testDevice.GotoHomePosition("mainStream_Profile_Token")
@@ -149,7 +149,7 @@ func GotoHomePosition(t *testing.T)  {
 	}
 }
 
-func SetHomePosition(t *testing.T)  {
+func TestSetHomePosition(t *testing.T)  {
 	log.Println("Test SetHomePosition")
 
 	log.Println("Change Position")
@@ -172,7 +172,7 @@ func SetHomePosition(t *testing.T)  {
 	}
 }
 
-func SetPreset(t *testing.T)  {
+func TestSetPreset(t *testing.T)  {
 	log.Println("Test SetPreset")
 
 	res, err := testDevice.SetPreset("MediaProfile000", "preset1")
@@ -184,7 +184,7 @@ func SetPreset(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetPresets(t *testing.T)  {
+func TestGetPresets(t *testing.T)  {
 	log.Println("Test SetPreset")
 
 	res, err := testDevice.GetPresets("MediaProfile000")
@@ -196,7 +196,7 @@ func GetPresets(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GotoPreset(t *testing.T)  {
+func TestGotoPreset(t *testing.T)  {
 	log.Println("Test GotoPreset")
 
 	err := testDevice.GotoPreset("MediaProfile000", "1")
@@ -205,7 +205,7 @@ func GotoPreset(t *testing.T)  {
 	}
 }
 
-func RemovePreset(t *testing.T)  {
+func TestRemovePreset(t *testing.T)  {
 	log.Println("Test RemovePreset")
 
 	err := testDevice.RemovePreset("MediaProfile000", "2")

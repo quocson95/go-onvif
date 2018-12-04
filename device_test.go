@@ -105,7 +105,7 @@ func GetSetSystemDateAndTime(t *testing.T){
 
 /// Todo Test Set Get NTP, SetSytemDateAndTime mode NTP
 // Todo Config NTP
-func  GetSetNTP(t *testing.T)  {
+func  TestGetSetNTP(t *testing.T)  {
 	log.Println("Test GetSetNTP")
 
 	ntpInformation := NTPInformation{
@@ -151,7 +151,7 @@ func  GetSetSystemTimeNTP(t *testing.T)  {
 }
 
 //// Todo Reboot Device
-func SystemReboot(t *testing.T)  {
+func TestSystemReboot(t *testing.T)  {
 	log.Println("Test SystemReboot")
 
 	res, err := testDevice.SystemReboot()
@@ -286,7 +286,7 @@ func GetSetNetworkDefaultGateway(t *testing.T){
 	//res, err := testDevice.SetNetworkDefaultGateway(gateway)
 }
 
-func GetUsers(t *testing.T)  {
+func TestGetUsers(t *testing.T)  {
 	log.Println("Test GetUsers")
 
 	res, err := testDevice.GetUsers()
@@ -319,7 +319,7 @@ func CreateSetDeleteUser(t *testing.T)  {
 	}
 }
 
-func GetRelayOutputs(t *testing.T){
+func TestGetRelayOutputs(t *testing.T){
 	log.Println("Test GetRelayOutputs")
 
 	res, err := testDevice.GetRelayOutputs()
@@ -330,15 +330,7 @@ func GetRelayOutputs(t *testing.T){
 	fmt.Println(js)
 }
 
-//func GetDynamicDNS(){
-//	res, err := testDevice.GetDynamicDNS()
-//}
-
-//func GetZeroConfiguration(){
-//	res, err := testDevice.GetZeroConfiguration()
-//}
-
-func GetServices(t *testing.T){
+func TestGetServices(t *testing.T){
 	log.Println("Test GetServices")
 
 	res, err := testDevice.GetServices()
@@ -349,7 +341,7 @@ func GetServices(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetServiceCapabilities(t *testing.T){
+func TestGetServiceCapabilities(t *testing.T){
 	log.Println("Test GetServiceCapabilities")
 
 	res, err := testDevice.GetServiceCapabilities()

@@ -30,7 +30,7 @@ func TestGetStreamURI(t *testing.T) {
 	fmt.Println(js)
 }
 
-func GetVideoEncoderConfigurations(t *testing.T){
+func TestGetVideoEncoderConfigurations(t *testing.T){
 	log.Println("Test GetVideoEncoderConfigurations")
 
 	res, err := testDevice.GetVideoEncoderConfigurations()
@@ -43,7 +43,7 @@ func GetVideoEncoderConfigurations(t *testing.T){
 }
 
 
-func SetVideoEncoderConfiguration(t *testing.T){
+func TestSetVideoEncoderConfiguration(t *testing.T){
 	log.Println("Test SetVideoEncoderConfiguration")
 
 	profile := MediaProfile{
@@ -85,7 +85,7 @@ func SetVideoEncoderConfiguration(t *testing.T){
 	}
 }
 
-func GetCompatibleVideoEncoderConfigurations(t *testing.T){
+func TestGetCompatibleVideoEncoderConfigurations(t *testing.T){
 	log.Println("Test GetCompatibleVideoEncoderConfigurations")
 
 	res, err := testDevice.GetCompatibleVideoEncoderConfigurations( "")
@@ -97,7 +97,7 @@ func GetCompatibleVideoEncoderConfigurations(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetVideoEncoderConfigurationOptions(t *testing.T){
+func TestGetVideoEncoderConfigurationOptions(t *testing.T){
 	log.Println("Test GetVideoEncoderConfigurationOptions")
 
 	res, err := testDevice.GetVideoEncoderConfigurationOptions( "mainVideoStream_Encoder_Token", "")
@@ -109,7 +109,7 @@ func GetVideoEncoderConfigurationOptions(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetGuaranteedNumberOfVideoEncoderInstances(t *testing.T){
+func TestGetGuaranteedNumberOfVideoEncoderInstances(t *testing.T){
 	log.Println("Test GetGuaranteedNumberOfVideoEncoderInstances")
 
 	//res, err := testDevice.GetGuaranteedNumberOfVideoEncoderInstances( "")
@@ -122,7 +122,7 @@ func GetGuaranteedNumberOfVideoEncoderInstances(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetProfileMedia(t *testing.T){
+func TestGetProfileMedia(t *testing.T){
 	log.Println("Test GetProfileMedia")
 
 	res, err := testDevice.GetProfileMedia( "mainStream_Profile_Token")
@@ -146,7 +146,7 @@ func CreateDeleteProfile(t *testing.T) {
 }
 
 
-func GetVideoSources(t *testing.T) {
+func TestGetVideoSources(t *testing.T) {
 	log.Println("Test GetVideoSources")
 
 	res, err := testDevice.GetVideoSources()
@@ -158,7 +158,7 @@ func GetVideoSources(t *testing.T) {
 	fmt.Println(js)
 }
 
-func GetVideoSourceConfiguration(t *testing.T) {
+func TestGetVideoSourceConfiguration(t *testing.T) {
 	log.Println("Test GetVideoSourceConfiguration")
 
 	res, err := testDevice.GetVideoSourceConfiguration( "VideoStream_Config_Token")
@@ -170,7 +170,7 @@ func GetVideoSourceConfiguration(t *testing.T) {
 	fmt.Println(js)
 }
 
-func GetVideoSourceConfigurations(t *testing.T) {
+func TestGetVideoSourceConfigurations(t *testing.T) {
 	log.Println("Test GetVideoSourceConfigurations")
 
 	res, err := testDevice.GetVideoSourceConfigurations()
@@ -182,7 +182,7 @@ func GetVideoSourceConfigurations(t *testing.T) {
 	fmt.Println(js)
 }
 
-func GetCompatibleVideoSourceConfigurations(t *testing.T) {
+func TestGetCompatibleVideoSourceConfigurations(t *testing.T) {
 	log.Println("Test GetCompatibleVideoSourceConfigurations")
 
 	res, err := testDevice.GetCompatibleVideoSourceConfigurations( "mainStream_Profile_Token")
@@ -194,7 +194,7 @@ func GetCompatibleVideoSourceConfigurations(t *testing.T) {
 	fmt.Println(js)
 }
 
-func GetVideoSourceConfigurationOptions(t *testing.T){
+func TestGetVideoSourceConfigurationOptions(t *testing.T){
 	log.Println("Test GetVideoSourceConfigurationOptions")
 
 	res, err := testDevice.GetVideoSourceConfigurationOptions( "VideoStream_Config_Token", "")
@@ -206,7 +206,7 @@ func GetVideoSourceConfigurationOptions(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetMetadataConfiguration(t *testing.T){
+func TestGetMetadataConfiguration(t *testing.T){
 	log.Println("Test GetMetadataConfiguration")
 
 	res, err := testDevice.GetMetadataConfiguration( "metadata0")
@@ -218,7 +218,7 @@ func GetMetadataConfiguration(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetMetadataConfigurations(t *testing.T){
+func TestGetMetadataConfigurations(t *testing.T){
 	log.Println("Test GetMetadataConfigurations")
 
 	res, err := testDevice.GetMetadataConfigurations()
@@ -230,7 +230,7 @@ func GetMetadataConfigurations(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetCompatibleMetadataConfigurations(t *testing.T){
+func TestGetCompatibleMetadataConfigurations(t *testing.T){
 	log.Println("Test GetCompatibleMetadataConfigurations")
 
 	res, err := testDevice.GetCompatibleMetadataConfigurations( "mainStream_Profile_Token")
@@ -242,7 +242,7 @@ func GetCompatibleMetadataConfigurations(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetMetadataConfigurationOptions(t *testing.T){
+func TestGetMetadataConfigurationOptions(t *testing.T){
 	log.Println("Test GetMetadataConfigurationOptions")
 
 	res, err := testDevice.GetMetadataConfigurationOptions( "metadata0", "")
@@ -254,7 +254,7 @@ func GetMetadataConfigurationOptions(t *testing.T){
 	fmt.Println(js)
 }
 
-func GetAudioSources(t *testing.T)  {
+func TestGetAudioSources(t *testing.T)  {
 	log.Println("Test GetAudioSources")
 
 	res, err := testDevice.GetAudioSources()
@@ -266,7 +266,7 @@ func GetAudioSources(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetAudioSourceConfiguration(t *testing.T)  {
+func TestGetAudioSourceConfiguration(t *testing.T)  {
 	log.Println("Test GetAudioSourceConfiguration")
 
 	res, err := testDevice.GetAudioSourceConfiguration("AudioStream_Config_Token")
@@ -278,7 +278,7 @@ func GetAudioSourceConfiguration(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetAudioSourceConfigurations(t *testing.T)  {
+func TestGetAudioSourceConfigurations(t *testing.T)  {
 	log.Println("Test GetAudioSourceConfigurations")
 
 	res, err := testDevice.GetAudioSourceConfigurations()
@@ -290,7 +290,7 @@ func GetAudioSourceConfigurations(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetCompatibleAudioSourceConfigurations(t *testing.T)  {
+func TestGetCompatibleAudioSourceConfigurations(t *testing.T)  {
 	log.Println("Test GetCompatibleAudioSourceConfigurations")
 
 	res, err := testDevice.GetCompatibleAudioSourceConfigurations("mainStream_Profile_Token")
@@ -302,7 +302,7 @@ func GetCompatibleAudioSourceConfigurations(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetAudioSourceConfigurationOptions(t *testing.T)  {
+func TestGetAudioSourceConfigurationOptions(t *testing.T)  {
 	log.Println("Test GetAudioSourceConfigurationOptions")
 
 	res, err := testDevice.GetAudioSourceConfigurationOptions("AudioStream_Config_Token", "")
@@ -315,7 +315,7 @@ func GetAudioSourceConfigurationOptions(t *testing.T)  {
 }
 
 
-func GetAudioEncoderConfiguration(t *testing.T)  {
+func TestGetAudioEncoderConfiguration(t *testing.T)  {
 	log.Println("Test GetAudioEncoderConfiguration")
 
 	res, err := testDevice.GetAudioEncoderConfiguration("AudioStream_Encoder_Token")
@@ -328,7 +328,7 @@ func GetAudioEncoderConfiguration(t *testing.T)  {
 }
 
 
-func GetAudioEncoderConfigurations(t *testing.T)  {
+func TestGetAudioEncoderConfigurations(t *testing.T)  {
 	log.Println("Test GetAudioEncoderConfigurations")
 
 	res, err := testDevice.GetAudioEncoderConfigurations()
@@ -340,7 +340,7 @@ func GetAudioEncoderConfigurations(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetCompatibleAudioEncoderConfigurations(t *testing.T)  {
+func TestGetCompatibleAudioEncoderConfigurations(t *testing.T)  {
 	log.Println("Test GetCompatibleAudioEncoderConfigurations")
 
 	res, err := testDevice.GetCompatibleAudioEncoderConfigurations("")
@@ -352,7 +352,7 @@ func GetCompatibleAudioEncoderConfigurations(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func GetAudioEncoderConfigurationOptions(t *testing.T)  {
+func TestGetAudioEncoderConfigurationOptions(t *testing.T)  {
 	log.Println("Test GetAudioEncoderConfigurationOptions")
 
 	res, err := testDevice.GetAudioEncoderConfigurationOptions("AudioStream_Encoder_Token", "")
