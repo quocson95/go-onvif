@@ -372,6 +372,7 @@ func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string
 	return result, nil
 }
 
+// truyen vao mot trong 2 tham so
 func (device Device) GetVideoEncoderConfigurationOptions(configurationToken string, profileToken string) (VideoEncoderConfigurationOptions, error)  {
 	// create token body
 	tokenBody := ``
@@ -995,6 +996,7 @@ func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string)
 	return result, nil
 }
 
+// truyen vao mot trong 2 tham so
 func (device Device) GetVideoSourceConfigurationOptions(configurationToken string, profileToken string) (VideoSourceConfigurationOption, error) {
 	// create token body
 	tokenBody := ``
@@ -1216,6 +1218,7 @@ func (device Device) GetCompatibleMetadataConfigurations(profileToken string) ([
 	return result, nil
 }
 
+// truyen vao mot trong 2 tham so
 func (device Device) GetMetadataConfigurationOptions(configurationToken string, profileToken string) (MetadataConfigurationOptions, error) {
 	// create token body
 	tokenBody := ``
@@ -1415,6 +1418,7 @@ func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string)
 }
 
 // fetch input tokens available
+// truyen vao mot trong 2 tham so
 func (device Device) GetAudioSourceConfigurationOptions(configurationToken string, profileToken string) (string, error) {
 	// create token body
 	tokenBody := ``
@@ -1572,6 +1576,7 @@ func (device Device) GetCompatibleAudioEncoderConfigurations(profileToken string
 	return  result, nil
 }
 
+// truyen vao mot trong 2 tham so
 func (device Device) GetAudioEncoderConfigurationOptions(configurationToken string, profileToken string) ([]AudioEncoderConfigurationOption, error) {
 	// create token body
 	tokenBody := ``

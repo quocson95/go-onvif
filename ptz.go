@@ -844,6 +844,10 @@ func (device Device) AbsoluteMove(profileToken string, position PTZVector) error
 	return nil
 }
 
+/// PTZ Control RPC
+// x: positive => go to right || negative => go to left
+// y: positive => go to up || negative => go to down
+// z: positive => zoom in || negative => zoom out
 func (device Device) RelativeMove(profileToken string, translation PTZVector) error{
 	// create soap
 	soap := SOAP{
