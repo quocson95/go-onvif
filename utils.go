@@ -2,12 +2,13 @@ package onvif
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
 
 var testDevice = Device{
-	XAddr: "http://192.168.1.75:5000/onvif/device_service",
+	XAddr: "http://192.168.1.231/onvif/device_service",
 }
 
 func interfaceToString(src interface{}) string {
@@ -29,4 +30,34 @@ func interfaceToInt(src interface{}) int {
 func prettyJSON(src interface{}) string {
 	result, _ := json.MarshalIndent(&src, "", "    ")
 	return string(result)
+}
+
+func interfaceToFloat64(src interface{}) float64 {
+	strNumber := interfaceToString(src)
+	number, _ := strconv.ParseFloat(strNumber, 64)
+	return number
+}
+
+func intToString(src int) string  {
+	strInt := strconv.Itoa(src)
+	return strInt
+}
+
+func float64ToString(src float64) string  {
+	strFloat64 := fmt.Sprint(src)
+	return strFloat64
+}
+
+func boolToString(src bool) string{
+	if src {
+		return "true"
+	}
+
+	return "false"
+}
+
+// kiem tra co phai loi chung thuc hay khong
+func CheckAuthorizedError(msg string) bool {
+	msg = strings.ToLower(msg)
+	return strings.Index(msg, "authorized") != -1;
 }

@@ -1,78 +1,78 @@
 - [X] Camera discovery
 - [ ] OnvifServiceDevice
   - [X] getInformation
-  - [ ] getSystemDateAndTime
+  - [X] getSystemDateAndTime
   - [X] getCapabilities
   - [X] getDiscoveryMode
   - [X] getScopes
   - [X] getHostname
-  - [ ] getDNS
-  - [ ] getNetworkInterfaces
-  - [ ] getNetworkProtocols
-  - [ ] setScopes
-  - [ ] addScopes
-  - [ ] removeScopes
-  - [ ] setHostname
-  - [ ] setDNS
-  - [ ] setNetworkProtocols
-  - [ ] getNetworkDefaultGateway
-  - [ ] setNetworkDefaultGateway
-  - [ ] reboot
-  - [ ] getUsers
-  - [ ] createUsers
-  - [ ] deleteUsers
-  - [ ] setUser
-  - [ ] getRelayOutputs
-  - [ ] getNTP
-  - [ ] setNTP
-  - [ ] getDynamicDNS
-  - [ ] getZeroConfiguration
-  - [ ] getServices
-  - [ ] getServiceCapabilities
+  - [X] getDNS
+  - [X] getNetworkInterfaces
+  - [X] getNetworkProtocols
+  - [X] setScopes
+  - [X] addScopes
+  - [X] removeScopes
+  - [X] setHostname
+  - [X] setDNS
+  - [X] setNetworkProtocols
+  - [X] getNetworkDefaultGateway
+  - [X] setNetworkDefaultGateway
+  - [X] reboot
+  - [X] getUsers
+  - [X] createUsers
+  - [X] deleteUsers
+  - [X] setUser
+  - [X] getRelayOutputs
+  - [X] getNTP
+  - [X] setNTP
+  - [X] getDynamicDNS
+  - [X] getZeroConfiguration
+  - [X] getServices
+  - [X] getServiceCapabilities
 - [ ] OnvifServiceMedia
   - [X] getProfiles
   - [X] getStreamUri
-  - [ ] getVideoEncoderConfigurations
-  - [ ] getVideoEncoderConfiguration
-  - [ ] getCompatibleVideoEncoderConfigurations
-  - [ ] getVideoEncoderConfigurationOptions
-  - [ ] getGuaranteedNumberOfVideoEncoderInstances
-  - [ ] getProfile
-  - [ ] createProfile
-  - [ ] deleteProfile
-  - [ ] getVideoSources
-  - [ ] getVideoSourceConfiguration
-  - [ ] getVideoSourceConfigurations
-  - [ ] getCompatibleVideoSourceConfigurations
-  - [ ] getVideoSourceConfigurationOptions
-  - [ ] getMetadataConfiguration
-  - [ ] getMetadataConfigurations
-  - [ ] getCompatibleMetadataConfigurations
-  - [ ] getMetadataConfigurationOptions
-  - [ ] getAudioSources
-  - [ ] getAudioSourceConfiguration
-  - [ ] getAudioSourceConfigurations
-  - [ ] getCompatibleAudioSourceConfigurations
-  - [ ] getAudioSourceConfigurationOptions
-  - [ ] getAudioEncoderConfiguration
-  - [ ] getAudioEncoderConfigurations
-  - [ ] getCompatibleAudioEncoderConfigurations
-  - [ ] getAudioEncoderConfigurationOptions
-  - [ ] getSnapshotUri
+  - [X] getVideoEncoderConfigurations
+  - [X] getVideoEncoderConfiguration
+  - [X] getCompatibleVideoEncoderConfigurations
+  - [X] getVideoEncoderConfigurationOptions
+  - [X] getGuaranteedNumberOfVideoEncoderInstances
+  - [X] getProfile
+  - [X] createProfile
+  - [X] deleteProfile
+  - [X] getVideoSources
+  - [X] getVideoSourceConfiguration
+  - [X] getVideoSourceConfigurations
+  - [X] getCompatibleVideoSourceConfigurations
+  - [X] getVideoSourceConfigurationOptions
+  - [X] getMetadataConfiguration
+  - [X] getMetadataConfigurations
+  - [X] getCompatibleMetadataConfigurations
+  - [X] getMetadataConfigurationOptions
+  - [X] getAudioSources
+  - [X] getAudioSourceConfiguration
+  - [X] getAudioSourceConfigurations
+  - [X] getCompatibleAudioSourceConfigurations
+  - [X] getAudioSourceConfigurationOptions
+  - [X] getAudioEncoderConfiguration
+  - [X] getAudioEncoderConfigurations
+  - [X] getCompatibleAudioEncoderConfigurations
+  - [X] getAudioEncoderConfigurationOptions
+  - [X] getSnapshotUri
 - [ ] OnvifServicePtz
-  - [ ] getNodes
-  - [ ] getNode
-  - [ ] getConfigurations
-  - [ ] getConfiguration
-  - [ ] getConfigurationOptions
-  - [ ] getStatus
-  - [ ] continuousMove
-  - [ ] absoluteMove
-  - [ ] relativeMove
-  - [ ] stop
-  - [ ] gotoHomePosition
-  - [ ] setHomePosition
-  - [ ] setPreset
-  - [ ] getPresets
-  - [ ] gotoPreset
-  - [ ] removePreset
+  - [X] getNodes
+  - [X] getNode
+  - [X] getConfigurations
+  - [X] getConfiguration
+  - [X] getConfigurationOptions
+  - [X] getStatus
+  - [X] continuousMove
+  - [X] absoluteMove
+  - [X] relativeMove
+  - [X] stop
+  - [X] gotoHomePosition
+  - [X] setHomePosition
+  - [X] setPreset
+  - [X] getPresets
+  - [X] gotoPreset
+  - [X] removePreset
