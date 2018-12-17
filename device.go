@@ -140,10 +140,20 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		mediaCap.XAddr = interfaceToString(mapMediaCap["XAddr"])
 	}
 
+	// Get Ptz capabilities
+	ifacePtzCap, err := response.ValueForPath(envelopeBodyPath + ".PTZ")
+	ptzCap := PTZCapabilities{}
+	if err == nil{
+		if mapPtzCap, ok := ifacePtzCap.(map[string]interface{}); ok {
+			ptzCap.XAddr = interfaceToString(mapPtzCap["XAddr"])
+		}
+	}
+
 	// Create final result
 	deviceCapabilities := DeviceCapabilities{
 		Network:   netCap,
 		Media:	   mediaCap,
+		Ptz:	   ptzCap,
 		Events:    eventsCap,
 		Streaming: streamingCap,
 	}
