@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="606cfb1f-023c-49d3-b88e-cdfe203a4a9f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/events.go" beforeDir="false" afterPath="$PROJECT_DIR$/events.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,11 +53,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/device.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-216">
-              <caret line="117" column="33" lean-forward="true" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+            <state relative-caret-position="1188">
+              <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
               <folding>
                 <element signature="n#!!block;n#GetInformation#0" />
                 <element signature="n#!!block;n#GetNetworkInterfaces#0" />
@@ -119,11 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/events.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+            <state relative-caret-position="234">
+              <caret line="13" column="5" lean-forward="true" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -200,8 +201,8 @@
         <option value="$PROJECT_DIR$/media.go" />
         <option value="$PROJECT_DIR$/ptz.go" />
         <option value="$PROJECT_DIR$/discovery.go" />
-        <option value="$PROJECT_DIR$/events.go" />
         <option value="$PROJECT_DIR$/device.go" />
+        <option value="$PROJECT_DIR$/events.go" />
       </list>
     </option>
   </component>
@@ -448,56 +449,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ptz.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="818" selection-start-line="818" selection-end-line="818" />
-          <folding>
-            <element signature="n#!!block;n#GetNodes#0" />
-            <element signature="n#!!block;n#GetNode#0" />
-            <element signature="n#!!block;n#GetConfigurations#0" />
-            <element signature="n#!!block;n#GetConfiguration#0" />
-            <element signature="n#!!block;n#GetConfigurationOptions#0" />
-            <element signature="n#!!block;n#GetStatus#0" />
-            <element signature="n#!!block;n#ContinuousMove#0" />
-            <element signature="n#!!block;n#AbsoluteMove#0" />
-            <element signature="n#!!block;n#RelativeMove#0" />
-            <element signature="n#!!block;n#Stop#0" />
-            <element signature="n#!!block;n#GotoHomePosition#0" />
-            <element signature="n#!!block;n#SetHomePosition#0" />
-            <element signature="n#!!block;n#SetPreset#0" />
-            <element signature="n#!!block;n#GetPresets#0" />
-            <element signature="n#!!block;n#GotoPreset#0" />
-            <element signature="n#!!block;n#RemovePreset#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/events.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/media_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2862">
-          <caret line="163" column="33" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/soap.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/device.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-216">
-          <caret line="117" column="33" lean-forward="true" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+        <state relative-caret-position="1188">
+          <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
           <folding>
             <element signature="n#!!block;n#GetInformation#0" />
             <element signature="n#!!block;n#GetNetworkInterfaces#0" />
@@ -529,6 +484,52 @@
             <element signature="n#!!block;n#GetServices#0" />
             <element signature="n#!!block;n#GetServiceCapabilities#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ptz.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="818" selection-start-line="818" selection-end-line="818" />
+          <folding>
+            <element signature="n#!!block;n#GetNodes#0" />
+            <element signature="n#!!block;n#GetNode#0" />
+            <element signature="n#!!block;n#GetConfigurations#0" />
+            <element signature="n#!!block;n#GetConfiguration#0" />
+            <element signature="n#!!block;n#GetConfigurationOptions#0" />
+            <element signature="n#!!block;n#GetStatus#0" />
+            <element signature="n#!!block;n#ContinuousMove#0" />
+            <element signature="n#!!block;n#AbsoluteMove#0" />
+            <element signature="n#!!block;n#RelativeMove#0" />
+            <element signature="n#!!block;n#Stop#0" />
+            <element signature="n#!!block;n#GotoHomePosition#0" />
+            <element signature="n#!!block;n#SetHomePosition#0" />
+            <element signature="n#!!block;n#SetPreset#0" />
+            <element signature="n#!!block;n#GetPresets#0" />
+            <element signature="n#!!block;n#GotoPreset#0" />
+            <element signature="n#!!block;n#RemovePreset#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/media_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2862">
+          <caret line="163" column="33" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/soap.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/events.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="5" lean-forward="true" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
         </state>
       </provider>
     </entry>

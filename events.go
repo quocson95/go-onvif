@@ -1,6 +1,6 @@
 package onvif
 
-func (device Device) Subscribe(address string) (error) {
+func (device Device) Subscribe(address string, timeout string) (error) {
 	// create soap
 	soap := SOAP{
 		User: device.User,
@@ -9,6 +9,7 @@ func (device Device) Subscribe(address string) (error) {
 					<ConsumerReference>
 						<Address>` + address + `</Address>
 					</ConsumerReference>
+					<InitialTerminationTime>` + timeout +`</InitialTerminationTime>
 			   </Subscribe>`,
 	}
 
