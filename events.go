@@ -9,7 +9,6 @@ func (device Device) Subscribe(address string) (error) {
 					<ConsumerReference>
 						<Address>` + address + `</Address>
 					</ConsumerReference>
-					<InitialTerminationTime>PT60S</InitialTerminationTime>
 			   </Subscribe>`,
 	}
 
