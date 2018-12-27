@@ -40,6 +40,7 @@ type PTZCapabilities struct {
 }
 
 type EventsCapabilities struct {
+	Events    map[string]bool
 	XAddr     string
 }
 
@@ -49,7 +50,6 @@ type DeviceCapabilities struct {
 	Media	  MediaCapabilities
 	Ptz		  PTZCapabilities
 	EventsCap EventsCapabilities
-	Events    map[string]bool
 	Streaming map[string]bool
 }
 

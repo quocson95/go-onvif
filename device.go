@@ -103,17 +103,17 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		return DeviceCapabilities{}, err
 	}
 
-	eventsCap := make(map[string]bool)
-	eventsXaddr := EventsCapabilities{}
+	eventsCap := EventsCapabilities{}
+	eventsCap.Events = map[string]bool{}
 	if mapEventsCap, ok := ifaceEventsCap.(map[string]interface{}); ok {
 		for key, value := range mapEventsCap {
 			if strings.ToLower(key) == "xaddr" {
-				eventsXaddr.XAddr = interfaceToString(value)
+				eventsCap.XAddr = interfaceToString(value)
 				continue
 			}
 
 			key = strings.Replace(key, "WS", "", 1)
-			eventsCap[key] = interfaceToBool(value)
+			eventsCap.Events[key] = interfaceToBool(value)
 		}
 	}
 
@@ -156,8 +156,7 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		Network:   netCap,
 		Media:	   mediaCap,
 		Ptz:	   ptzCap,
-		EventsCap: eventsXaddr,
-		Events:    eventsCap,
+		EventsCap: eventsCap,
 		Streaming: streamingCap,
 	}
 
