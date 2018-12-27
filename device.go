@@ -104,9 +104,11 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 	}
 
 	eventsCap := make(map[string]bool)
+	eventsXaddr := EventsCapabilities{}
 	if mapEventsCap, ok := ifaceEventsCap.(map[string]interface{}); ok {
 		for key, value := range mapEventsCap {
 			if strings.ToLower(key) == "xaddr" {
+				eventsXaddr.XAddr = interfaceToString(value)
 				continue
 			}
 
@@ -154,6 +156,7 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		Network:   netCap,
 		Media:	   mediaCap,
 		Ptz:	   ptzCap,
+		EventsCap: eventsXaddr,
 		Events:    eventsCap,
 		Streaming: streamingCap,
 	}

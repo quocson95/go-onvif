@@ -10,6 +10,7 @@ func (device Device) Subscribe(address string) (string, error) {
 		Body: `<Subscribe xmlns="http://docs.oasis-open.org/wsn/b-2">
 					<ConsumerReference>
 						<Address>` + address + `</Address>
+						<InitialTerminationTime>PT300S</InitialTerminationTime>
 					</ConsumerReference>
 				</Subscribe>`,
 	}
