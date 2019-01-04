@@ -103,15 +103,17 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		return DeviceCapabilities{}, err
 	}
 
-	eventsCap := make(map[string]bool)
+	eventsCap := EventsCapabilities{}
+	eventsCap.Events = map[string]bool{}
 	if mapEventsCap, ok := ifaceEventsCap.(map[string]interface{}); ok {
 		for key, value := range mapEventsCap {
 			if strings.ToLower(key) == "xaddr" {
+				eventsCap.XAddr = interfaceToString(value)
 				continue
 			}
 
 			key = strings.Replace(key, "WS", "", 1)
-			eventsCap[key] = interfaceToBool(value)
+			eventsCap.Events[key] = interfaceToBool(value)
 		}
 	}
 
@@ -140,11 +142,21 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		mediaCap.XAddr = interfaceToString(mapMediaCap["XAddr"])
 	}
 
+	// Get Ptz capabilities
+	ifacePtzCap, err := response.ValueForPath(envelopeBodyPath + ".PTZ")
+	ptzCap := PTZCapabilities{}
+	if err == nil{
+		if mapPtzCap, ok := ifacePtzCap.(map[string]interface{}); ok {
+			ptzCap.XAddr = interfaceToString(mapPtzCap["XAddr"])
+		}
+	}
+
 	// Create final result
 	deviceCapabilities := DeviceCapabilities{
 		Network:   netCap,
 		Media:	   mediaCap,
-		Events:    eventsCap,
+		Ptz:	   ptzCap,
+		EventsCap: eventsCap,
 		Streaming: streamingCap,
 	}
 

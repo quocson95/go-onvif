@@ -35,11 +35,21 @@ type MediaCapabilities struct {
 	XAddr     string
 }
 
+type PTZCapabilities struct {
+	XAddr     string
+}
+
+type EventsCapabilities struct {
+	Events    map[string]bool
+	XAddr     string
+}
+
 // DeviceCapabilities contains capabilities of an ONVIF camera
 type DeviceCapabilities struct {
 	Network   NetworkCapabilities
 	Media	  MediaCapabilities
-	Events    map[string]bool
+	Ptz		  PTZCapabilities
+	EventsCap EventsCapabilities
 	Streaming map[string]bool
 }
 
