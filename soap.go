@@ -23,6 +23,7 @@ type SOAP struct {
 	User     string
 	Password string
 	TokenAge time.Duration
+	Action string
 }
 
 // SendRequest sends SOAP request to xAddr
@@ -38,7 +39,7 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 	if soap.User != "" {
 		urlXAddr.User = url.UserPassword(soap.User, soap.Password)
 	}
-
+	//glog.Info(request)
 	// Create HTTP request
 	buffer := bytes.NewBuffer([]byte(request))
 	req, err := http.NewRequest("POST", urlXAddr.String(), buffer)
@@ -91,8 +92,14 @@ func (soap SOAP) createRequest() string {
 	request += ">"
 
 	// Set request header
+	request += "<s:Header>"
+	if  soap.Action != ""{
+		request+= `<Action mustUnderstand="1"
+						   xmlns="http://www.w3.org/2005/08/addressing">` + soap.Action + `</Action>`
+	}
+
 	if soap.User != "" {
-		request += "<s:Header>" + soap.createUserToken() + "</s:Header>"
+		request += soap.createUserToken() + "</s:Header>"
 	}
 
 	// Set request body

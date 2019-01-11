@@ -1,5 +1,11 @@
 package onvif
 
+var ptzXMLNs = []string{
+	`xmlns:i="http://www.w3.org/2001/XMLSchema-instance"`,
+	`xmlns:d="http://www.w3.org/2001/XMLSchema"`,
+	`xmlns:c="http://www.w3.org/2003/05/soap-encoding"`,
+}
+
 func (device Device) GetNodes() ([]PTZNode, error) {
 	//create soap
 	soap := SOAP{
@@ -796,10 +802,12 @@ func (device Device) ContinuousMove(profileToken string, velocity PTZVector) err
 		Body: `<ContinuousMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Velocity>
-						<PanTilt x="`+ float64ToString(velocity.PanTilt.X) +`" y="` + float64ToString(velocity.PanTilt.Y) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(velocity.PanTilt.X) +`" y="` + float64ToString(velocity.PanTilt.Y) + `"/>
 						<Zoom x="` + float64ToString(velocity.Zoom.X) + `"/>
 					</Velocity>
 				</ContinuousMove>`,
+		XMLNs: ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/ContinuousMove",
 	}
 
 	//send request
@@ -824,10 +832,12 @@ func (device Device) AbsoluteMove(profileToken string, position PTZVector) error
 		Body: `<AbsoluteMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Position>
-						<PanTilt x="`+ float64ToString(position.PanTilt.X) +`" y="` + float64ToString(position.PanTilt.Y) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(position.PanTilt.X) +`" y="` + float64ToString(position.PanTilt.Y) + `"/>
 						<Zoom x="` + float64ToString(position.Zoom.X) + `"/>
 					</Position>
 				</AbsoluteMove>`,
+		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/AbsoluteMove",
 	}
 
 	//send request
@@ -856,10 +866,12 @@ func (device Device) RelativeMove(profileToken string, translation PTZVector) er
 		Body: `<RelativeMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Translation>
-						<PanTilt x="`+ float64ToString(translation.PanTilt.X) +`" y="` + float64ToString(translation.PanTilt.Y) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(translation.PanTilt.X) +`" y="` + float64ToString(translation.PanTilt.Y) + `"/>
 						<Zoom x="` + float64ToString(translation.Zoom.X) + `"/>
 					</Translation>
 				</RelativeMove>`,
+		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/RelativeMove",
 	}
 
 	//send request
@@ -883,7 +895,10 @@ func (device Device) Stop(profileToken string) error {
 		Password: device.Password,
 		Body:`<Stop xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 				<ProfileToken>` + profileToken + `</ProfileToken>
-				</Stop>`,
+				<PanTilt>true</PanTilt><Zoom>true</Zoom>
+			  </Stop>`,
+		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/Stop",
 	}
 
 	//send request
