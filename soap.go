@@ -39,7 +39,7 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 	if soap.User != "" {
 		urlXAddr.User = url.UserPassword(soap.User, soap.Password)
 	}
-	glog.Info(request)
+	//glog.Info(request)
 	// Create HTTP request
 	buffer := bytes.NewBuffer([]byte(request))
 	req, err := http.NewRequest("POST", urlXAddr.String(), buffer)
