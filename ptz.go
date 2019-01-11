@@ -807,6 +807,7 @@ func (device Device) ContinuousMove(profileToken string, velocity PTZVector) err
 					</Velocity>
 				</ContinuousMove>`,
 		XMLNs: ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/ContinuousMove",
 	}
 
 	//send request
@@ -836,6 +837,7 @@ func (device Device) AbsoluteMove(profileToken string, position PTZVector) error
 					</Position>
 				</AbsoluteMove>`,
 		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/AbsoluteMove",
 	}
 
 	//send request
@@ -868,6 +870,8 @@ func (device Device) RelativeMove(profileToken string, translation PTZVector) er
 						<Zoom x="` + float64ToString(translation.Zoom.X) + `"/>
 					</Translation>
 				</RelativeMove>`,
+		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/RelativeMove",
 	}
 
 	//send request
@@ -891,7 +895,10 @@ func (device Device) Stop(profileToken string) error {
 		Password: device.Password,
 		Body:`<Stop xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 				<ProfileToken>` + profileToken + `</ProfileToken>
-				</Stop>`,
+				<PanTilt>true</PanTilt><Zoom>true</Zoom>
+			  </Stop>`,
+		XMLNs:ptzXMLNs,
+		Action:"http://www.onvif.org/ver20/ptz/wsdl/Stop",
 	}
 
 	//send request
