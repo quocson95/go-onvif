@@ -92,14 +92,19 @@ func (soap SOAP) createRequest() string {
 	request += ">"
 
 	// Set request header
-	request += "<s:Header>"
-	if  soap.Action != ""{
-		request+= `<Action mustUnderstand="1"
-						   xmlns="http://www.w3.org/2005/08/addressing">` + soap.Action + `</Action>`
-	}
+	if soap.Action != "" || soap.User != "" {
+		request += "<s:Header>"
 
-	if soap.User != "" {
-		request += soap.createUserToken() + "</s:Header>"
+		if  soap.Action != ""{
+			request+= `<Action mustUnderstand="1"
+							   xmlns="http://www.w3.org/2005/08/addressing">` + soap.Action + `</Action>`
+		}
+
+		if soap.User != "" {
+			request += soap.createUserToken()
+		} 
+		
+		request += "</s:Header>"
 	}
 
 	// Set request body
