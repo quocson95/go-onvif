@@ -2,13 +2,13 @@ package onvif
 
 import (
 	"errors"
+	"github.com/clbanning/mxj"
+	"github.com/golang/glog"
+	"github.com/satori/go.uuid"
 	"net"
 	"regexp"
 	"strings"
 	"time"
-	"github.com/golang/glog"
-	"github.com/clbanning/mxj"
-	"github.com/satori/go.uuid"
 )
 
 var errWrongDiscoveryResponse = errors.New("Response is not related to discovery request ")
@@ -127,7 +127,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	request = regexp.MustCompile(`\s+`).ReplaceAllString(request, " ")
 
 	// Create UDP address for local and multicast address
-	localAddress, err := net.ResolveUDPAddr("udp4", ipAddr + ":0")
+	localAddress, err := net.ResolveUDPAddr("udp4", ipAddr+":0")
 	if err != nil {
 		return []Device{}, err
 	}
@@ -155,7 +155,6 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	if err != nil {
 		return []Device{}, err
 	}
-
 
 	// Create initial discovery results
 	var discoveryResults []Device
@@ -210,13 +209,16 @@ func readDiscoveryResponse(messageID string, buffer []byte) (Device, error) {
 		return result, err
 	}
 
-	if responseMessageMap, ok := responseMessageID.(map[string] interface{}); ok{
+	if responseMessageMap, ok := responseMessageID.(map[string]interface{}); ok {
 		responseMessage := responseMessageMap["#text"].(string)
 		if responseMessage != messageID {
 			glog.Info(responseMessage)
 			glog.Info(messageID)
 			return result, errWrongDiscoveryResponse
 		}
+	} else {
+		glog.Warningf("Parse message id error %v", err)
+		return result, errWrongDiscoveryResponse
 	}
 
 	// Get device's ID and clean it
