@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	//"fmt"
+	"github.com/golang/glog"
 	"github.com/clbanning/mxj"
 	"github.com/satori/go.uuid"
 )
@@ -191,24 +191,69 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 
 // readDiscoveryResponse reads and parses WS-Discovery response
 func readDiscoveryResponse(messageID string, buffer []byte) (Device, error) {
+	glog.Infof("Discover response: %s", string(buffer))
+
 	// Inital result
 	result := Device{}
+
+	buffer = []byte(`<?xml version="1.0" encoding="utf-8"?>
+<SOAP-ENV:Envelope
+   xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+   xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+   xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+   xmlns:wsd="http://schemas.xmlsoap.org/ws/2005/04/discovery"
+   xmlns:dn="http://www.onvif.org/ver10/network/wsdl">
+   <SOAP-ENV:Header>
+       <wsa:MessageID SOAP-ENV:mustUnderstand="true">urn:uuid:D5F76F58-99EF-444A-9995-cc43127dcb5c</wsa:MessageID>
+       <wsa:RelatesTo SOAP-ENV:mustUnderstandard="true">uuid:c396c249-a721-493c-b34c-29cb9028a31a</wsa:RelatesTo>
+       <wsa:To SOAP-ENV:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</wsa:To>
+       <wsa:Action SOAP-ENV:mustUnderstand="true">http://schemas.xmlsoap.org/ws/2005/04/discovery/ProbeMatches</wsa:Action>
+       <wsd:AppSequence MessageNumber="9" InstanceId="1543855428"></wsd:AppSequence>
+   </SOAP-ENV:Header>
+   <SOAP-ENV:Body>
+       <wsd:ProbeMatches>
+           <wsd:ProbeMatch>
+               <wsa:EndpointReference>
+                   <wsa:Address>urn:uuid:5A946080-C4AE-4A5F-9238-7682c8a9f37e</wsa:Address>
+               </wsa:EndpointReference>
+               <wsd:Types>dn:NetworkVideoTransmitter</wsd:Types>
+               <wsd:Scopes>onvif://www.onvif.org/type/video_encoder onvif://www.onvif.org/type/audio_encoder onvif://www.onvif.org/Profile/Streaming onvif://www.onvif.org/hardware/LNB5100 onvif://www.onvif.org/location/GMT onvif://www.onvif.org/name/LNB5100-C04DEE</wsd:Scopes>
+               <wsd:XAddrs>http://192.168.88.237/onvif/device_service</wsd:XAddrs>
+               <wsd:MetadataVersion>1543855428</wsd:MetadataVersion>
+           </wsd:ProbeMatch>
+       </wsd:ProbeMatches>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>`)
 
 	// Parse XML to map
 	mapXML, err := mxj.NewMapXml(buffer)
 	if err != nil {
+		glog.Warningf("Parse response error %v", err)
 		return result, err
 	}
 
 	// Check if this response is for our request
-	responseMessageID, _ := mapXML.ValueForPathString("Envelope.Header.RelatesTo")
-	if responseMessageID != messageID {
-		return result, errWrongDiscoveryResponse
+	responseMessageID, err := mapXML.ValueForPath("Envelope.Header.RelatesTo")
+	if err != nil {
+		glog.Warningf("Parse message id error %v", err)
+		return result, err
+	}
+
+	if responseMessageMap, ok := responseMessageID.(map[string] interface{}); ok{
+		responseMessage := responseMessageMap["#text"].(string)
+		if responseMessage != messageID {
+			glog.Info(responseMessage)
+			glog.Info(messageID)
+			return result, errWrongDiscoveryResponse
+		}
 	}
 
 	// Get device's ID and clean it
 	deviceID, _ := mapXML.ValueForPathString("Envelope.Body.ProbeMatches.ProbeMatch.EndpointReference.Address")
 	deviceID = strings.Replace(deviceID, "urn:uuid:", "", 1)
+	glog.Infof("Discover device id: %s", deviceID)
 
 	// Get device's name
 	deviceName := ""
@@ -224,7 +269,9 @@ func readDiscoveryResponse(messageID string, buffer []byte) (Device, error) {
 	// Get device's xAddrs
 	xAddrs, _ := mapXML.ValueForPathString("Envelope.Body.ProbeMatches.ProbeMatch.XAddrs")
 	listXAddr := strings.Split(xAddrs, " ")
+	glog.Infof("Discover address: %s", xAddrs)
 	if len(listXAddr) == 0 {
+		glog.Warning("Discover address len 0")
 		return result, errors.New("Device does not have any xAddr ")
 	}
 
