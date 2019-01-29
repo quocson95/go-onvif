@@ -217,8 +217,11 @@ func readDiscoveryResponse(messageID string, buffer []byte) (Device, error) {
 			return result, errWrongDiscoveryResponse
 		}
 	} else {
-		glog.Warningf("Parse message id error %v", err)
-		return result, errWrongDiscoveryResponse
+		if responseMessageID != messageID {
+			glog.Info(responseMessageID)
+			glog.Info(messageID)
+			return result, errWrongDiscoveryResponse
+		}
 	}
 
 	// Get device's ID and clean it
