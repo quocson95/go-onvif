@@ -803,7 +803,7 @@ func (device Device) ContinuousMove(profileToken string, velocity PTZVector) err
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Velocity>
 						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(velocity.PanTilt.X) +`" y="` + float64ToString(velocity.PanTilt.Y) + `"/>
-						<Zoom xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(velocity.Zoom.X) + `"/>
+						<Zoom x="` + float64ToString(velocity.Zoom.X) + `"/>
 					</Velocity>
 				</ContinuousMove>`,
 		XMLNs: ptzXMLNs,
@@ -833,7 +833,7 @@ func (device Device) AbsoluteMove(profileToken string, position PTZVector) error
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Position>
 						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(position.PanTilt.X) +`" y="` + float64ToString(position.PanTilt.Y) + `"/>
-						<Zoom xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(position.Zoom.X) + `"/>
+						<Zoom x="` + float64ToString(position.Zoom.X) + `"/>
 					</Position>
 				</AbsoluteMove>`,
 		XMLNs:ptzXMLNs,
@@ -867,7 +867,7 @@ func (device Device) RelativeMove(profileToken string, translation PTZVector) er
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Translation>
 						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(translation.PanTilt.X) +`" y="` + float64ToString(translation.PanTilt.Y) + `"/>
-						<Zoom xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(translation.Zoom.X) + `"/>
+						<Zoom x="` + float64ToString(translation.Zoom.X) + `"/>
 					</Translation>
 				</RelativeMove>`,
 		XMLNs:ptzXMLNs,
