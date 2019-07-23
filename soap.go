@@ -5,6 +5,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"errors"
+	"github.com/bobziuchkovski/digest"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -12,8 +13,8 @@ import (
 	"time"
 
 	"github.com/clbanning/mxj"
-	"github.com/satori/go.uuid"
 	"github.com/golang/glog"
+	"github.com/satori/go.uuid"
 )
 
 // SOAP contains data for SOAP request
@@ -23,7 +24,7 @@ type SOAP struct {
 	User     string
 	Password string
 	TokenAge time.Duration
-	Action string
+	Action   string
 }
 
 // SendRequest sends SOAP request to xAddr
@@ -52,6 +53,65 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 	// Send request
 	var httpClient = &http.Client{Timeout: time.Second * 3}
 	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		glog.Info("Http digest auth => change to use digest client")
+		return soap.SendRequestDigest(xaddr)
+	}
+
+	// Read response body
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	glog.Infof("Onvif response: %s", string(responseBody))
+
+	// Parse XML to map
+	mapXML, err := mxj.NewMapXml(responseBody)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if SOAP returns fault
+	fault, _ := mapXML.ValueForPathString("Envelope.Body.Fault.Reason.Text.#text")
+	if fault != "" {
+		return nil, errors.New(fault)
+	}
+
+	return mapXML, nil
+}
+
+// SendRequestDigest sends SOAP request to xAddr with digest authenticate
+func (soap SOAP) SendRequestDigest(xaddr string) (mxj.Map, error) {
+	// Create SOAP request
+	request := soap.createRequest()
+	// Make sure URL valid and add authentication in xAddr
+	urlXAddr, err := url.Parse(xaddr)
+	if err != nil {
+		return nil, err
+	}
+
+	if soap.User != "" {
+		urlXAddr.User = url.UserPassword(soap.User, soap.Password)
+	}
+	//glog.Info(request)
+	// Create HTTP request
+	buffer := bytes.NewBuffer([]byte(request))
+	req, err := http.NewRequest("POST", urlXAddr.String(), buffer)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/soap+xml")
+	req.Header.Set("Charset", "utf-8")
+
+	// Send request
+	var httpDigestClient = digest.NewTransport(soap.User, soap.Password)
+	resp, err := httpDigestClient.RoundTrip(req)
 	if err != nil {
 		return nil, err
 	}
@@ -95,15 +155,15 @@ func (soap SOAP) createRequest() string {
 	if soap.Action != "" || soap.User != "" {
 		request += "<s:Header>"
 
-		if  soap.Action != ""{
-			request+= `<Action mustUnderstand="1"
+		if soap.Action != "" {
+			request += `<Action mustUnderstand="1"
 							   xmlns="http://www.w3.org/2005/08/addressing">` + soap.Action + `</Action>`
 		}
 
 		if soap.User != "" {
 			request += soap.createUserToken()
-		} 
-		
+		}
+
 		request += "</s:Header>"
 	}
 
@@ -121,7 +181,7 @@ func (soap SOAP) createRequest() string {
 }
 
 func (soap SOAP) createUserToken() string {
-	u,_ := uuid.NewV4()
+	u, _ := uuid.NewV4()
 	nonce := u.Bytes()
 	nonce64 := base64.StdEncoding.EncodeToString(nonce)
 	timestamp := time.Now().Add(soap.TokenAge).UTC().Format(time.RFC3339)
