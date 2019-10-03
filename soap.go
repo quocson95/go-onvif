@@ -27,67 +27,8 @@ type SOAP struct {
 	Action   string
 }
 
-// SendRequest sends SOAP request to xAddr
+// SendRequest sends SOAP request to xAddr with digest authenticate
 func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
-	// Create SOAP request
-	request := soap.createRequest()
-	// Make sure URL valid and add authentication in xAddr
-	urlXAddr, err := url.Parse(xaddr)
-	if err != nil {
-		return nil, err
-	}
-
-	if soap.User != "" {
-		urlXAddr.User = url.UserPassword(soap.User, soap.Password)
-	}
-	//glog.Info(request)
-	// Create HTTP request
-	buffer := bytes.NewBuffer([]byte(request))
-	req, err := http.NewRequest("POST", urlXAddr.String(), buffer)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/soap+xml")
-	req.Header.Set("Charset", "utf-8")
-
-	// Send request
-	var httpClient = &http.Client{Timeout: time.Second * 3}
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusUnauthorized {
-		glog.Info("Http digest auth => change to use digest client")
-		return soap.SendRequestDigest(xaddr)
-	}
-
-	// Read response body
-	responseBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	glog.Infof("Onvif response: %s", string(responseBody))
-
-	// Parse XML to map
-	mapXML, err := mxj.NewMapXml(responseBody)
-	if err != nil {
-		return nil, err
-	}
-
-	// Check if SOAP returns fault
-	fault, _ := mapXML.ValueForPathString("Envelope.Body.Fault.Reason.Text.#text")
-	if fault != "" {
-		return nil, errors.New(fault)
-	}
-
-	return mapXML, nil
-}
-
-// SendRequestDigest sends SOAP request to xAddr with digest authenticate
-func (soap SOAP) SendRequestDigest(xaddr string) (mxj.Map, error) {
 	// Create SOAP request
 	request := soap.createRequest()
 	// Make sure URL valid and add authentication in xAddr
