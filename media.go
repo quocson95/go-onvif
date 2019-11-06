@@ -14,9 +14,9 @@ var mediaXMLNs = []string{
 func (device Device) GetProfiles() ([]MediaProfile, error) {
 	// Create SOAP
 	soap := SOAP{
-		Body:  "<trt:GetProfiles/>",
-		XMLNs: mediaXMLNs,
-		User: device.User,
+		Body:     "<trt:GetProfiles/>",
+		XMLNs:    mediaXMLNs,
+		User:     device.User,
 		Password: device.Password,
 	}
 
@@ -64,7 +64,7 @@ func (device Device) GetProfiles() ([]MediaProfile, error) {
 			if mapVideoEncoder, ok := mapProfile["VideoEncoderConfiguration"].(map[string]interface{}); ok {
 				videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 				videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
-				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["-encoding"])
 				videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 				videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
@@ -138,7 +138,7 @@ func (device Device) GetStreamURI(profileToken, protocol string) (MediaURI, erro
 			</trt:StreamSetup>
 			<trt:ProfileToken>` + profileToken + `</trt:ProfileToken>
 		</trt:GetStreamUri>`,
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 	}
 
@@ -192,9 +192,9 @@ func (device Device) GetSnapshot(profileToken string) (string, error) {
 	}
 }
 
-func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, error) {
+func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, error) {
 	soap := SOAP{
-		Body: `<GetVideoEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetVideoEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 		User:     device.User,
 		Password: device.Password,
 	}
@@ -214,12 +214,12 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
-			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["-encoding"])
 			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// parse Resolution
-			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string] interface{}); ok{
+			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string]interface{}); ok {
 				resolution := MediaBounds{}
 
 				resolution.Width = interfaceToInt(mapResolution["Width"])
@@ -229,7 +229,7 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 			}
 
 			// parse Rate Control
-			if mapRateControl, ok := mapVideoEncoder["RateControl"].(map[string] interface{}); ok{
+			if mapRateControl, ok := mapVideoEncoder["RateControl"].(map[string]interface{}); ok {
 				rateControl := VideoRateControl{}
 
 				rateControl.FrameRateLimit = interfaceToInt(mapRateControl["FrameRateLimit"])
@@ -240,19 +240,19 @@ func (device Device) GetVideoEncoderConfigurations()  ([]VideoEncoderConfig, err
 			}
 
 			//parse H264
-			if mapH264, ok := mapVideoEncoder["H264"].(map[string]interface{}); ok{
+			if mapH264, ok := mapVideoEncoder["H264"].(map[string]interface{}); ok {
 				videoEncoder.H264.GovLength = interfaceToInt(mapH264["GovLength"])
 				videoEncoder.H264.H264Profile = interfaceToString(mapH264["H264Profile"])
 			}
 
 			// parse Multicast
-			if mapMulticast, ok := mapVideoEncoder["Multicast"].(map[string]interface{}); ok{
+			if mapMulticast, ok := mapVideoEncoder["Multicast"].(map[string]interface{}); ok {
 				videoEncoder.Multicast.TTL = interfaceToInt(mapMulticast["TTL"])
 				videoEncoder.Multicast.Port = interfaceToInt(mapMulticast["Port"])
 				videoEncoder.Multicast.AutoStart = interfaceToBool(mapMulticast["AutoStart"])
 
 				// parse Address
-				if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
+				if mapAddress, ok := mapMulticast["Address"].(map[string]interface{}); ok {
 					videoEncoder.Multicast.Address.Type = interfaceToString(mapAddress["Type"])
 					videoEncoder.Multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
 				}
@@ -344,7 +344,7 @@ func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
 			// parse Resolution
-			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string] interface{}); ok{
+			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string]interface{}); ok {
 				resolution := MediaBounds{}
 
 				resolution.Width = interfaceToInt(mapResolution["Width"])
@@ -354,7 +354,7 @@ func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string
 			}
 
 			// parse Rate Control
-			if mapRateControl, ok := mapVideoEncoder["RateControl"].(map[string] interface{}); ok{
+			if mapRateControl, ok := mapVideoEncoder["RateControl"].(map[string]interface{}); ok {
 				rateControl := VideoRateControl{}
 
 				rateControl.FrameRateLimit = interfaceToInt(mapRateControl["FrameRateLimit"])
@@ -373,10 +373,10 @@ func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string
 }
 
 // truyen vao mot trong 2 tham so
-func (device Device) GetVideoEncoderConfigurationOptions(configurationToken string, profileToken string) (VideoEncoderConfigurationOptions, error)  {
+func (device Device) GetVideoEncoderConfigurationOptions(configurationToken string, profileToken string) (VideoEncoderConfigurationOptions, error) {
 	// create token body
 	tokenBody := ``
-	if configurationToken != ""{
+	if configurationToken != "" {
 		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
 	} else {
 		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
@@ -384,29 +384,29 @@ func (device Device) GetVideoEncoderConfigurationOptions(configurationToken stri
 
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetVideoEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoEncoderConfigurationOptions>`,
+		Body:     `<GetVideoEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoEncoderConfigurationOptions>`,
 	}
 
 	result := VideoEncoderConfigurationOptions{}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceVideoEncoderConfOption, err := response.ValueForPath("Envelope.Body.GetVideoEncoderConfigurationOptionsResponse.Options")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if  mapOptions, ok := ifaceVideoEncoderConfOption.(map[string] interface{}); ok{
+	if mapOptions, ok := ifaceVideoEncoderConfOption.(map[string]interface{}); ok {
 		// parse Quality Range
-		if mapQualityRange, ok := mapOptions["QualityRange"].(map[string] interface{}); ok{
+		if mapQualityRange, ok := mapOptions["QualityRange"].(map[string]interface{}); ok {
 			qualityRange := IntRange{}
 
 			qualityRange.Min = interfaceToInt(mapQualityRange["Min"])
@@ -416,33 +416,33 @@ func (device Device) GetVideoEncoderConfigurationOptions(configurationToken stri
 		}
 
 		// parse H264
-		if mapH264, ok := mapOptions["H264"].(map[string] interface{}); ok{
+		if mapH264, ok := mapOptions["H264"].(map[string]interface{}); ok {
 			h264Options := H264Options{}
 
 			// parse Resolution Available
-			if mapResolution, ok := mapH264["ResolutionsAvailable"].(map[string] interface{}); ok{
+			if mapResolution, ok := mapH264["ResolutionsAvailable"].(map[string]interface{}); ok {
 				h264Options.ResolutionsAvailable.Height = interfaceToInt(mapResolution["Height"])
 				h264Options.ResolutionsAvailable.Width = interfaceToInt(mapResolution["Width"])
 			}
 			// parse GovLengthRange
-			if mapGovLengthRange, ok := mapH264["GovLengthRange"].(map[string] interface{}); ok{
+			if mapGovLengthRange, ok := mapH264["GovLengthRange"].(map[string]interface{}); ok {
 				h264Options.GovLengthRange.Min = interfaceToInt(mapGovLengthRange["Min"])
 				h264Options.GovLengthRange.Max = interfaceToInt(mapGovLengthRange["Max"])
 			}
 			// parse Frame Rate Range
-			if mapFrameRateRange, ok := mapH264["FrameRateRange"].(map[string] interface{}); ok{
+			if mapFrameRateRange, ok := mapH264["FrameRateRange"].(map[string]interface{}); ok {
 				h264Options.FrameRateRange.Min = interfaceToInt(mapFrameRateRange["Min"])
 				h264Options.FrameRateRange.Max = interfaceToInt(mapFrameRateRange["Max"])
 			}
 			// parse Encoding Interval Range
-			if mapEncodingIntervalRange, ok := mapH264["EncodingIntervalRange"].(map[string]interface{}); ok{
+			if mapEncodingIntervalRange, ok := mapH264["EncodingIntervalRange"].(map[string]interface{}); ok {
 				h264Options.EncodingIntervalRange.Min = interfaceToInt(mapEncodingIntervalRange["Min"])
 				h264Options.EncodingIntervalRange.Max = interfaceToInt(mapEncodingIntervalRange["Max"])
 			}
 			// parse H264 Profiles Supported
-			if H264ProfilesSupported, ok := mapH264["H264ProfilesSupported"].([]interface{}); ok{
+			if H264ProfilesSupported, ok := mapH264["H264ProfilesSupported"].([]interface{}); ok {
 				h264Supported := []string{}
-				for _,H264ProfileSupported := range H264ProfilesSupported{
+				for _, H264ProfileSupported := range H264ProfilesSupported {
 					h264Supported = append(h264Supported, interfaceToString(H264ProfileSupported))
 				}
 				h264Options.H264ProfilesSupported = h264Supported
@@ -455,10 +455,10 @@ func (device Device) GetVideoEncoderConfigurationOptions(configurationToken stri
 	return result, nil
 }
 
-func (device Device) GetGuaranteedNumberOfVideoEncoderInstances(configurationToken string) (GuaranteedNumberOfVideoEncoderInstances, error)  {
+func (device Device) GetGuaranteedNumberOfVideoEncoderInstances(configurationToken string) (GuaranteedNumberOfVideoEncoderInstances, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetGuaranteedNumberOfVideoEncoderInstances xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
@@ -469,18 +469,18 @@ func (device Device) GetGuaranteedNumberOfVideoEncoderInstances(configurationTok
 
 	//send reuest
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceVideoEncoderInstances, err := response.ValueForPath("Envelope.Body.GetGuaranteedNumberOfVideoEncoderInstancesResponse")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapVideoEncoderInstances, ok := ifaceVideoEncoderInstances.(map[string] interface{}); ok{
+	if mapVideoEncoderInstances, ok := ifaceVideoEncoderInstances.(map[string]interface{}); ok {
 		result.TotalNumber = interfaceToInt(mapVideoEncoderInstances["TotalNumber"])
 		result.H264 = interfaceToInt(mapVideoEncoderInstances["H264"])
 	}
@@ -491,7 +491,7 @@ func (device Device) GetGuaranteedNumberOfVideoEncoderInstances(configurationTok
 func (device Device) GetProfileMedia(profileToken string) (MediaProfile, error) {
 	// Create SOAP
 	soap := SOAP{
-		Body:     `<GetProfile xmlns="http://www.onvif.org/ver10/media/wsdl">
+		Body: `<GetProfile xmlns="http://www.onvif.org/ver10/media/wsdl">
 						<ProfileToken>` + profileToken + `</ProfileToken>
 					</GetProfile>`,
 		User:     device.User,
@@ -599,7 +599,7 @@ func (device Device) GetProfileMedia(profileToken string) (MediaProfile, error) 
 func (device Device) CreateProfile(profileName string, profileToken string) (MediaProfile, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<CreateProfile xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<Name>` + profileName + `</Name>
@@ -709,7 +709,7 @@ func (device Device) CreateProfile(profileName string, profileToken string) (Med
 func (device Device) DeleteProfile(profileToken string) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<DeleteProfile xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -718,59 +718,59 @@ func (device Device) DeleteProfile(profileToken string) error {
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.DeleteProfileResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (device Device) GetVideoSources() ([]VideoSource, error){
+func (device Device) GetVideoSources() ([]VideoSource, error) {
 	//create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetVideoSources xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetVideoSources xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []VideoSource{}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceVideoSources, err := response.ValuesForPath("Envelope.Body.GetVideoSourcesResponse.VideoSources")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceVideoSource := range ifaceVideoSources{
-		if mapVideoSource, ok := ifaceVideoSource.(map[string] interface{}); ok{
+	for _, ifaceVideoSource := range ifaceVideoSources {
+		if mapVideoSource, ok := ifaceVideoSource.(map[string]interface{}); ok {
 			videoSource := VideoSource{}
 
 			videoSource.Token = interfaceToString(mapVideoSource["-token"])
 			videoSource.Framerate = interfaceToFloat64(mapVideoSource["Framerate"])
 
 			// parse resolution
-			if mapResolution, ok := mapVideoSource["Resolution"].(map[string] interface{}); ok{
+			if mapResolution, ok := mapVideoSource["Resolution"].(map[string]interface{}); ok {
 				videoSource.Resolution.Height = interfaceToInt(mapResolution["Height"])
 				videoSource.Resolution.Width = interfaceToInt(mapResolution["Width"])
 			}
 			// parse imaging
-			if mapImaging, ok := mapVideoSource["Imaging"].(map[string]interface{}); ok{
+			if mapImaging, ok := mapVideoSource["Imaging"].(map[string]interface{}); ok {
 				imaging := ImagingSettings{}
 
 				// parse Backlight Compensation
-				if mapBacklightCompensation, ok := mapImaging["BacklightCompensation"].(map[string] interface{}); ok{
+				if mapBacklightCompensation, ok := mapImaging["BacklightCompensation"].(map[string]interface{}); ok {
 					imaging.BacklightCompensation.Mode = interfaceToString(mapBacklightCompensation["Mode"])
 					imaging.BacklightCompensation.Level = interfaceToFloat64(mapBacklightCompensation["Level"])
 				}
@@ -780,7 +780,7 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 				imaging.Contrast = interfaceToFloat64(mapImaging["Contrast"])
 
 				// parse Exposure
-				if mapExposure, ok := mapImaging["Exposure"].(map[string] interface{}); ok{
+				if mapExposure, ok := mapImaging["Exposure"].(map[string]interface{}); ok {
 					exposure := Exposure{}
 
 					exposure.Mode = interfaceToString(mapExposure["Mode"])
@@ -797,7 +797,7 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 					exposure.Iris = interfaceToFloat64(mapExposure["Iris"])
 
 					// parse window
-					if mapWindow, ok := mapExposure["Window"].(map[string] interface{}); ok{
+					if mapWindow, ok := mapExposure["Window"].(map[string]interface{}); ok {
 						exposure.Window.Top = interfaceToInt(mapWindow["-top"])
 						exposure.Window.Bottom = interfaceToInt(mapWindow["-bottom"])
 						exposure.Window.Left = interfaceToInt(mapWindow["-left"])
@@ -808,7 +808,7 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 				}
 
 				// parse focus
-				if mapFocus, ok := mapImaging["Focus"].(map[string] interface{}); ok{
+				if mapFocus, ok := mapImaging["Focus"].(map[string]interface{}); ok {
 					focus := FocusConfiguration{}
 
 					focus.AutoFocusMode = interfaceToString(mapFocus["AutoFocusMode"])
@@ -823,13 +823,13 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 				imaging.Sharpness = interfaceToFloat64(mapImaging["Sharpness"])
 
 				// parse WideDynamicRange
-				if mapWideDynamicRange, ok := mapImaging["WideDynamicRange"].(map[string] interface{}); ok{
+				if mapWideDynamicRange, ok := mapImaging["WideDynamicRange"].(map[string]interface{}); ok {
 					imaging.WideDynamicRange.Mode = interfaceToString(mapWideDynamicRange["Mode"])
 					imaging.WideDynamicRange.Level = interfaceToFloat64(mapWideDynamicRange["Level"])
 				}
 
 				// parse WhiteBalance
-				if mapWhiteBalance, ok := mapImaging["WhiteBalance"].(map[string] interface{}); ok{
+				if mapWhiteBalance, ok := mapImaging["WhiteBalance"].(map[string]interface{}); ok {
 					whiteBalance := WhiteBalance{}
 
 					whiteBalance.Mode = interfaceToString(mapWhiteBalance["Mode"])
@@ -853,9 +853,9 @@ func (device Device) GetVideoSources() ([]VideoSource, error){
 func (device Device) GetVideoSourceConfiguration(configurationToken string) (VideoSourceConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetVideoSourceConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+		Body: `<GetVideoSourceConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
 				</GetVideoSourceConfiguration>`,
 	}
@@ -864,23 +864,23 @@ func (device Device) GetVideoSourceConfiguration(configurationToken string) (Vid
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse rsponse into interface
 	ifaceVideoSouceConfiguration, err := response.ValueForPath("Envelope.Body.GetVideoSourceConfigurationResponse.Configuration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface into struct
-	if mapVideoSouceConfiguration, ok := ifaceVideoSouceConfiguration.(map[string] interface{}); ok{
+	if mapVideoSouceConfiguration, ok := ifaceVideoSouceConfiguration.(map[string]interface{}); ok {
 		result.Token = interfaceToString(mapVideoSouceConfiguration["-token"])
 		result.Name = interfaceToString(mapVideoSouceConfiguration["Name"])
 		result.SourceToken = interfaceToString(mapVideoSouceConfiguration["SourceToken"])
 		// parse bounds
-		if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string] interface{}); ok{
+		if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string]interface{}); ok {
 			bounds := IntRectangle{}
 
 			bounds.X = interfaceToInt(mapBounds["-x"])
@@ -898,35 +898,35 @@ func (device Device) GetVideoSourceConfiguration(configurationToken string) (Vid
 func (device Device) GetVideoSourceConfigurations() ([]VideoSourceConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetVideoSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetVideoSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []VideoSourceConfiguration{}
 
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceConfigurations, err := response.ValuesForPath("Envelope.Body.GetVideoSourceConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
-	for _, ifaceConfiguration := range ifaceConfigurations{
+	for _, ifaceConfiguration := range ifaceConfigurations {
 		// parse interface into struct
-		if mapVideoSouceConfiguration, ok := ifaceConfiguration.(map[string] interface{}); ok{
+		if mapVideoSouceConfiguration, ok := ifaceConfiguration.(map[string]interface{}); ok {
 			videoSourceConfiguration := VideoSourceConfiguration{}
 
 			videoSourceConfiguration.Token = interfaceToString(mapVideoSouceConfiguration["-token"])
 			videoSourceConfiguration.Name = interfaceToString(mapVideoSouceConfiguration["Name"])
 			videoSourceConfiguration.SourceToken = interfaceToString(mapVideoSouceConfiguration["SourceToken"])
 			// parse bounds
-			if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string] interface{}); ok{
+			if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string]interface{}); ok {
 				bounds := IntRectangle{}
 
 				bounds.X = interfaceToInt(mapBounds["-x"])
@@ -945,10 +945,10 @@ func (device Device) GetVideoSourceConfigurations() ([]VideoSourceConfiguration,
 	return result, nil
 }
 
-func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string) ([]VideoSourceConfiguration, error)  {
+func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string) ([]VideoSourceConfiguration, error) {
 	//create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetCompatibleVideoSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -958,26 +958,26 @@ func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string)
 
 	// send soap request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleVideoSourceConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
-	for _, ifaceConfiguration := range ifaceConfigurations{
+	for _, ifaceConfiguration := range ifaceConfigurations {
 		// parse interface into struct
-		if mapVideoSouceConfiguration, ok := ifaceConfiguration.(map[string] interface{}); ok{
+		if mapVideoSouceConfiguration, ok := ifaceConfiguration.(map[string]interface{}); ok {
 			videoSourceConfiguration := VideoSourceConfiguration{}
 
 			videoSourceConfiguration.Token = interfaceToString(mapVideoSouceConfiguration["-token"])
 			videoSourceConfiguration.Name = interfaceToString(mapVideoSouceConfiguration["Name"])
 			videoSourceConfiguration.SourceToken = interfaceToString(mapVideoSouceConfiguration["SourceToken"])
 			// parse bounds
-			if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string] interface{}); ok{
+			if mapBounds, ok := mapVideoSouceConfiguration["Bounds"].(map[string]interface{}); ok {
 				bounds := IntRectangle{}
 
 				bounds.X = interfaceToInt(mapBounds["-x"])
@@ -1000,7 +1000,7 @@ func (device Device) GetCompatibleVideoSourceConfigurations(profileToken string)
 func (device Device) GetVideoSourceConfigurationOptions(configurationToken string, profileToken string) (VideoSourceConfigurationOption, error) {
 	// create token body
 	tokenBody := ``
-	if configurationToken != ""{
+	if configurationToken != "" {
 		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
 	} else {
 		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
@@ -1008,51 +1008,51 @@ func (device Device) GetVideoSourceConfigurationOptions(configurationToken strin
 
 	//create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetVideoSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoSourceConfigurationOptions>`,
+		Body:     `<GetVideoSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetVideoSourceConfigurationOptions>`,
 	}
 
 	result := VideoSourceConfigurationOption{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceConfiguration, err := response.ValueForPath("Envelope.Body.GetVideoSourceConfigurationOptionsResponse.Options")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapConfigurationOption, ok := ifaceConfiguration.(map[string] interface{}); ok{
+	if mapConfigurationOption, ok := ifaceConfiguration.(map[string]interface{}); ok {
 		result.MaximumNumberOfProfiles = interfaceToInt(mapConfigurationOption["MaximumNumberOfProfiles"])
 		// parse BoundsRange
-		if mapBoundsRange, ok := mapConfigurationOption["BoundsRange"].(map[string] interface{}); ok{
+		if mapBoundsRange, ok := mapConfigurationOption["BoundsRange"].(map[string]interface{}); ok {
 			boundsRange := IntRectangleRange{}
 			// parse XRange
-			if mapXRange, ok := mapBoundsRange["XRange"].(map[string] interface{}); ok{
+			if mapXRange, ok := mapBoundsRange["XRange"].(map[string]interface{}); ok {
 				boundsRange.XRange.Max = interfaceToInt(mapXRange["Max"])
 				boundsRange.XRange.Min = interfaceToInt(mapXRange["Min"])
 			}
 			// parse YRange
-			if mapYRange, ok := mapBoundsRange["YRange"].(map[string] interface{}); ok{
+			if mapYRange, ok := mapBoundsRange["YRange"].(map[string]interface{}); ok {
 				boundsRange.YRange.Max = interfaceToInt(mapYRange["Max"])
 				boundsRange.YRange.Min = interfaceToInt(mapYRange["Min"])
 			}
 			// parse WidthRange
-			if mapWidthRange, ok := mapBoundsRange["WidthRange"].(map[string] interface{}); ok{
+			if mapWidthRange, ok := mapBoundsRange["WidthRange"].(map[string]interface{}); ok {
 				boundsRange.WidthRange.Max = interfaceToInt(mapWidthRange["Max"])
 				boundsRange.WidthRange.Min = interfaceToInt(mapWidthRange["Min"])
 			}
 			// parse HeightRange
-			if mapHeightRange, ok := mapBoundsRange["HeightRange"].(map[string] interface{}); ok{
+			if mapHeightRange, ok := mapBoundsRange["HeightRange"].(map[string]interface{}); ok {
 				boundsRange.HeightRange.Max = interfaceToInt(mapHeightRange["Max"])
 				boundsRange.HeightRange.Min = interfaceToInt(mapHeightRange["Min"])
 			}
-			result.BoundsRange = boundsRange;
+			result.BoundsRange = boundsRange
 		}
 		result.VideoSourceTokensAvailable = interfaceToString(mapConfigurationOption["VideoSourceTokensAvailable"])
 	}
@@ -1063,7 +1063,7 @@ func (device Device) GetVideoSourceConfigurationOptions(configurationToken strin
 func (device Device) GetMetadataConfiguration(configurationToken string) (MetadataConfiguration, error) {
 	//send soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetMetadataConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
@@ -1073,26 +1073,26 @@ func (device Device) GetMetadataConfiguration(configurationToken string) (Metada
 	result := MetadataConfiguration{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response into interface
 	ifaceMetadata, err := response.ValueForPath("Envelope.Body.GetMetadataConfigurationResponse.Configuration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapMetadata, ok := ifaceMetadata.(map[string] interface{}); ok{
+	if mapMetadata, ok := ifaceMetadata.(map[string]interface{}); ok {
 		result.Name = interfaceToString(mapMetadata["Name"])
 		result.Token = interfaceToString(mapMetadata["-token"])
 		result.SessionTimeout = interfaceToString(mapMetadata["SessionTimeout"])
 		// parse Multicast
-		if mapMulticast, ok := mapMetadata["Multicast"].(map[string] interface{}); ok{
+		if mapMulticast, ok := mapMetadata["Multicast"].(map[string]interface{}); ok {
 			multicast := Multicast{}
 			// parse address
-			if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
+			if mapAddress, ok := mapMulticast["Address"].(map[string]interface{}); ok {
 				multicast.Address.Type = interfaceToString(mapAddress["Type"])
 				multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
 			}
@@ -1105,44 +1105,44 @@ func (device Device) GetMetadataConfiguration(configurationToken string) (Metada
 		}
 	}
 
-	return  result, nil
+	return result, nil
 }
 
 func (device Device) GetMetadataConfigurations() ([]MetadataConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetMetadataConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetMetadataConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []MetadataConfiguration{}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceMetaConfigurations, err := response.ValuesForPath("Envelope.Body.GetMetadataConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceMetaConfiguration := range ifaceMetaConfigurations{
-		if mapMetadataConfiguration, ok := ifaceMetaConfiguration.(map[string] interface{}); ok{
+	for _, ifaceMetaConfiguration := range ifaceMetaConfigurations {
+		if mapMetadataConfiguration, ok := ifaceMetaConfiguration.(map[string]interface{}); ok {
 			metadataConfiguration := MetadataConfiguration{}
 
 			metadataConfiguration.Name = interfaceToString(mapMetadataConfiguration["Name"])
 			metadataConfiguration.Token = interfaceToString(mapMetadataConfiguration["-token"])
 			metadataConfiguration.SessionTimeout = interfaceToString(mapMetadataConfiguration["SessionTimeout"])
 			// parse Multicast
-			if mapMulticast, ok := mapMetadataConfiguration["Multicast"].(map[string] interface{}); ok{
+			if mapMulticast, ok := mapMetadataConfiguration["Multicast"].(map[string]interface{}); ok {
 				multicast := Multicast{}
 				// parse address
-				if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
+				if mapAddress, ok := mapMulticast["Address"].(map[string]interface{}); ok {
 					multicast.Address.Type = interfaceToString(mapAddress["Type"])
 					multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
 				}
@@ -1165,7 +1165,7 @@ func (device Device) GetMetadataConfigurations() ([]MetadataConfiguration, error
 func (device Device) GetCompatibleMetadataConfigurations(profileToken string) ([]MetadataConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetCompatibleMetadataConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -1176,29 +1176,29 @@ func (device Device) GetCompatibleMetadataConfigurations(profileToken string) ([
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceMetaConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleMetadataConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceMetaConfiguration := range ifaceMetaConfigurations{
-		if mapMetadataConfiguration, ok := ifaceMetaConfiguration.(map[string] interface{}); ok{
+	for _, ifaceMetaConfiguration := range ifaceMetaConfigurations {
+		if mapMetadataConfiguration, ok := ifaceMetaConfiguration.(map[string]interface{}); ok {
 			metadataConfiguration := MetadataConfiguration{}
 
 			metadataConfiguration.Name = interfaceToString(mapMetadataConfiguration["Name"])
 			metadataConfiguration.Token = interfaceToString(mapMetadataConfiguration["-token"])
 			metadataConfiguration.SessionTimeout = interfaceToString(mapMetadataConfiguration["SessionTimeout"])
 			// parse Multicast
-			if mapMulticast, ok := mapMetadataConfiguration["Multicast"].(map[string] interface{}); ok{
+			if mapMulticast, ok := mapMetadataConfiguration["Multicast"].(map[string]interface{}); ok {
 				multicast := Multicast{}
 				// parse address
-				if mapAddress, ok := mapMulticast["Address"].(map[string] interface{}); ok{
+				if mapAddress, ok := mapMulticast["Address"].(map[string]interface{}); ok {
 					multicast.Address.Type = interfaceToString(mapAddress["Type"])
 					multicast.Address.IPv4Address = interfaceToString(mapAddress["IPv4Address"])
 				}
@@ -1222,7 +1222,7 @@ func (device Device) GetCompatibleMetadataConfigurations(profileToken string) ([
 func (device Device) GetMetadataConfigurationOptions(configurationToken string, profileToken string) (MetadataConfigurationOptions, error) {
 	// create token body
 	tokenBody := ``
-	if configurationToken != ""{
+	if configurationToken != "" {
 		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
 	} else {
 		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
@@ -1230,27 +1230,27 @@ func (device Device) GetMetadataConfigurationOptions(configurationToken string, 
 
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetMetadataConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">`+ tokenBody +`</GetMetadataConfigurationOptions>`,
+		Body:     `<GetMetadataConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetMetadataConfigurationOptions>`,
 	}
 	result := MetadataConfigurationOptions{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceMetadataConfigurationOptions, err := response.ValueForPath("Envelope.Body.GetMetadataConfigurationOptionsResponse.Options")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 	// parse interface
-	if mapMetadataConfigurationOptions, ok := ifaceMetadataConfigurationOptions.(map[string] interface{}); ok{
+	if mapMetadataConfigurationOptions, ok := ifaceMetadataConfigurationOptions.(map[string]interface{}); ok {
 		result.GeoLocation = interfaceToBool(mapMetadataConfigurationOptions["GeoLocation"])
 		// parse PTZStatusFilterOptions
-		if mapPTZStatusFilterOptions, ok := mapMetadataConfigurationOptions["PTZStatusFilterOptions"].(map[string]interface{});ok{
+		if mapPTZStatusFilterOptions, ok := mapMetadataConfigurationOptions["PTZStatusFilterOptions"].(map[string]interface{}); ok {
 			PTZStatusFilterOptions := PTZStatusFilterOptions{}
 
 			PTZStatusFilterOptions.PanTiltPositionSupported = interfaceToBool(mapPTZStatusFilterOptions["PanTiltPositionSupported"])
@@ -1264,31 +1264,31 @@ func (device Device) GetMetadataConfigurationOptions(configurationToken string, 
 	return result, nil
 }
 
-func (device Device) GetAudioSources() ([]AudioSource, error){
+func (device Device) GetAudioSources() ([]AudioSource, error) {
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetAudioSources xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetAudioSources xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []AudioSource{}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSources, err := response.ValuesForPath("Envelope.Body.GetAudioSourcesResponse.AudioSources")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioSource := range ifaceAudioSources{
-		if mapAudioSource, ok := ifaceAudioSource.(map[string]interface{}); ok{
+	for _, ifaceAudioSource := range ifaceAudioSources {
+		if mapAudioSource, ok := ifaceAudioSource.(map[string]interface{}); ok {
 			audioSource := AudioSource{}
 
 			audioSource.Token = interfaceToString(mapAudioSource["-token"])
@@ -1302,12 +1302,12 @@ func (device Device) GetAudioSources() ([]AudioSource, error){
 	return result, nil
 }
 
-func (device Device) GetAudioSourceConfiguration(configurationToken string) (AudioSourceConfiguration, error){
+func (device Device) GetAudioSourceConfiguration(configurationToken string) (AudioSourceConfiguration, error) {
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetAudioSourceConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+		Body: `<GetAudioSourceConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
 				</GetAudioSourceConfiguration>`,
 	}
@@ -1316,18 +1316,18 @@ func (device Device) GetAudioSourceConfiguration(configurationToken string) (Aud
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSourceConfiguration, err := response.ValueForPath("Envelope.Body.GetAudioSourceConfigurationResponse.Configuration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok{
+	if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok {
 		result.Token = interfaceToString(mapAudioSourceConfiguration["-token"])
 		result.Name = interfaceToString(mapAudioSourceConfiguration["Name"])
 		result.SourceToken = interfaceToString(mapAudioSourceConfiguration["SourceToken"])
@@ -1336,31 +1336,31 @@ func (device Device) GetAudioSourceConfiguration(configurationToken string) (Aud
 	return result, nil
 }
 
-func (device Device) GetAudioSourceConfigurations() ([]AudioSourceConfiguration, error){
+func (device Device) GetAudioSourceConfigurations() ([]AudioSourceConfiguration, error) {
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []AudioSourceConfiguration{}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSourceConfigurations, err := response.ValuesForPath("Envelope.Body.GetAudioSourceConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioSourceConfiguration:= range  ifaceAudioSourceConfigurations{
-		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok{
+	for _, ifaceAudioSourceConfiguration := range ifaceAudioSourceConfigurations {
+		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok {
 			audioSourceConfiguration := AudioSourceConfiguration{}
 
 			audioSourceConfiguration.Token = interfaceToString(mapAudioSourceConfiguration["-token"])
@@ -1376,12 +1376,12 @@ func (device Device) GetAudioSourceConfigurations() ([]AudioSourceConfiguration,
 	return result, nil
 }
 
-func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string) ([]AudioSourceConfiguration, error){
+func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string) ([]AudioSourceConfiguration, error) {
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetCompatibleAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
+		Body: `<GetCompatibleAudioSourceConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 				</GetCompatibleAudioSourceConfigurations>`,
 	}
@@ -1390,19 +1390,19 @@ func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string)
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioSourceConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleAudioSourceConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioSourceConfiguration:= range  ifaceAudioSourceConfigurations{
-		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok{
+	for _, ifaceAudioSourceConfiguration := range ifaceAudioSourceConfigurations {
+		if mapAudioSourceConfiguration, ok := ifaceAudioSourceConfiguration.(map[string]interface{}); ok {
 			audioSourceConfiguration := AudioSourceConfiguration{}
 
 			audioSourceConfiguration.Token = interfaceToString(mapAudioSourceConfiguration["-token"])
@@ -1422,7 +1422,7 @@ func (device Device) GetCompatibleAudioSourceConfigurations(profileToken string)
 func (device Device) GetAudioSourceConfigurationOptions(configurationToken string, profileToken string) (string, error) {
 	// create token body
 	tokenBody := ``
-	if configurationToken != ""{
+	if configurationToken != "" {
 		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
 	} else {
 		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
@@ -1430,26 +1430,26 @@ func (device Device) GetAudioSourceConfigurationOptions(configurationToken strin
 
 	// create soap request
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetAudioSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody +`</GetAudioSourceConfigurationOptions>`,
+		Body:     `<GetAudioSourceConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetAudioSourceConfigurationOptions>`,
 	}
 
 	var result string
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	iface, err := response.ValueForPath("Envelope.Body.GetAudioSourceConfigurationOptionsResponse.Options")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapAudioSourceConfigurationOption, ok := iface.(map[string] interface{}); ok{
+	if mapAudioSourceConfigurationOption, ok := iface.(map[string]interface{}); ok {
 		result = interfaceToString(mapAudioSourceConfigurationOption["InputTokensAvailable"])
 	}
 
@@ -1460,7 +1460,7 @@ func (device Device) GetAudioSourceConfigurationOptions(configurationToken strin
 func (device Device) GetAudioEncoderConfiguration(configurationToken string) (AudioEncoderConfig, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetAudioEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
@@ -1470,18 +1470,18 @@ func (device Device) GetAudioEncoderConfiguration(configurationToken string) (Au
 	result := AudioEncoderConfig{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioEncoder, err := response.ValueForPath("Envelope.Body.GetAudioEncoderConfigurationResponse.Configuration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapAudioEncoder, ok := ifaceAudioEncoder.(map[string]interface{}); ok{
+	if mapAudioEncoder, ok := ifaceAudioEncoder.(map[string]interface{}); ok {
 		result.Token = interfaceToString(mapAudioEncoder["-token"])
 		result.Name = interfaceToString(mapAudioEncoder["Name"])
 		result.Bitrate = interfaceToInt(mapAudioEncoder["Bitrate"])
@@ -1490,33 +1490,33 @@ func (device Device) GetAudioEncoderConfiguration(configurationToken string) (Au
 		result.SessionTimeout = interfaceToString(mapAudioEncoder["SessionTimeout"])
 	}
 
-	return  result, nil
+	return result, nil
 }
 
 func (device Device) GetAudioEncoderConfigurations() ([]AudioEncoderConfig, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetAudioEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
+		Body:     `<GetAudioEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl"/>`,
 	}
 
 	result := []AudioEncoderConfig{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioEncoderConfigurations, err := response.ValuesForPath("Envelope.Body.GetAudioEncoderConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations{
-		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok{
+	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations {
+		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok {
 			audioEncoderConfig := AudioEncoderConfig{}
 
 			audioEncoderConfig.Token = interfaceToString(mapAudioEncoderConf["-token"])
@@ -1531,13 +1531,13 @@ func (device Device) GetAudioEncoderConfigurations() ([]AudioEncoderConfig, erro
 		}
 	}
 
-	return  result, nil
+	return result, nil
 }
 
 func (device Device) GetCompatibleAudioEncoderConfigurations(profileToken string) ([]AudioEncoderConfig, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetCompatibleAudioEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -1547,19 +1547,19 @@ func (device Device) GetCompatibleAudioEncoderConfigurations(profileToken string
 	result := []AudioEncoderConfig{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioEncoderConfigurations, err := response.ValuesForPath("Envelope.Body.GetCompatibleAudioEncoderConfigurationsResponse.Configurations")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations{
-		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok{
+	for _, ifaceAudioEncoderConfiguration := range ifaceAudioEncoderConfigurations {
+		if mapAudioEncoderConf, ok := ifaceAudioEncoderConfiguration.(map[string]interface{}); ok {
 			audioEncoderConfig := AudioEncoderConfig{}
 
 			audioEncoderConfig.Token = interfaceToString(mapAudioEncoderConf["-token"])
@@ -1573,14 +1573,14 @@ func (device Device) GetCompatibleAudioEncoderConfigurations(profileToken string
 			result = append(result, audioEncoderConfig)
 		}
 	}
-	return  result, nil
+	return result, nil
 }
 
 // truyen vao mot trong 2 tham so
 func (device Device) GetAudioEncoderConfigurationOptions(configurationToken string, profileToken string) ([]AudioEncoderConfigurationOption, error) {
 	// create token body
 	tokenBody := ``
-	if configurationToken != ""{
+	if configurationToken != "" {
 		tokenBody = `<ConfigurationToken>` + configurationToken + `</ConfigurationToken>`
 	} else {
 		tokenBody = `<ProfileToken>` + profileToken + `</ProfileToken>`
@@ -1588,34 +1588,33 @@ func (device Device) GetAudioEncoderConfigurationOptions(configurationToken stri
 
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body: `<GetAudioEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetAudioEncoderConfigurationOptions>`,
+		Body:     `<GetAudioEncoderConfigurationOptions xmlns="http://www.onvif.org/ver10/media/wsdl">` + tokenBody + `</GetAudioEncoderConfigurationOptions>`,
 	}
 
 	result := []AudioEncoderConfigurationOption{}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifaceAudioEncoderConfigurationOptions, err := response.ValuesForPath("Envelope.Body.GetAudioEncoderConfigurationOptionsResponse.Options.Options")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifaceAudioEncoderConfigurationOption := range  ifaceAudioEncoderConfigurationOptions{
-		if mapAudioEncoderConfigurationOption, ok := ifaceAudioEncoderConfigurationOption.(map[string]interface{});ok{
+	for _, ifaceAudioEncoderConfigurationOption := range ifaceAudioEncoderConfigurationOptions {
+		if mapAudioEncoderConfigurationOption, ok := ifaceAudioEncoderConfigurationOption.(map[string]interface{}); ok {
 			audioEncoderConfigOption := AudioEncoderConfigurationOption{}
 
 			audioEncoderConfigOption.Encoding = interfaceToString(mapAudioEncoderConfigurationOption["Encoding"])
 			audioEncoderConfigOption.BitrateList = interfaceToInt(mapAudioEncoderConfigurationOption["BitrateList"])
 			audioEncoderConfigOption.SampleRateList = interfaceToInt(mapAudioEncoderConfigurationOption["SampleRateList"])
-
 
 			result = append(result, audioEncoderConfigOption)
 		}
