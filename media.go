@@ -65,6 +65,9 @@ func (device Device) GetProfiles() ([]MediaProfile, error) {
 				videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 				videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["-encoding"])
+				if videoEncoder.Encoding == "" {
+					videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+				}
 				videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 				videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
@@ -215,6 +218,9 @@ func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, erro
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
 			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["-encoding"])
+			if videoEncoder.Encoding == "" {
+				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+			}
 			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
@@ -539,7 +545,10 @@ func (device Device) GetProfileMedia(profileToken string) (MediaProfile, error) 
 		if mapVideoEncoder, ok := mapProfile["VideoEncoderConfiguration"].(map[string]interface{}); ok {
 			videoEncoder.Name = interfaceToString(mapVideoEncoder["Name"])
 			videoEncoder.Token = interfaceToString(mapVideoEncoder["-token"])
-			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+			videoEncoder.Encoding = interfaceToString(mapVideoEncoder["-encoding"])
+			if videoEncoder.Encoding == "" {
+				videoEncoder.Encoding = interfaceToString(mapVideoEncoder["Encoding"])
+			}
 			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 
