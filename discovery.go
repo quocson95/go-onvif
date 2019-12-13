@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/clbanning/mxj"
 	"github.com/golang/glog"
-	"github.com/satori/go.uuid"
+	"github.com/google/uuid"
 	"net"
 	"regexp"
 	"strings"
@@ -83,8 +83,7 @@ func StartDiscovery(interfaceName string, duration time.Duration) ([]Device, err
 
 func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	// Create WS-Discovery request
-	u, _ := uuid.NewV4()
-	requestID := "uuid:" + u.String()
+	requestID := "uuid:" + uuid.New().String()
 	//request := `
 	//	<?xml version="1.0" encoding="UTF-8"?>
 	//	<e:Envelope
