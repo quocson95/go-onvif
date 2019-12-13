@@ -8,7 +8,9 @@ import (
 )
 
 var testDevice = Device{
-	XAddr: "http://192.168.1.231/onvif/device_service",
+	XAddr:    "http://192.168.0.11/onvif/device_service",
+	User:     "admin",
+	Password: "Admin123",
 }
 
 func interfaceToString(src interface{}) string {
@@ -38,17 +40,17 @@ func interfaceToFloat64(src interface{}) float64 {
 	return number
 }
 
-func intToString(src int) string  {
+func intToString(src int) string {
 	strInt := strconv.Itoa(src)
 	return strInt
 }
 
-func float64ToString(src float64) string  {
+func float64ToString(src float64) string {
 	strFloat64 := fmt.Sprint(src)
 	return strFloat64
 }
 
-func boolToString(src bool) string{
+func boolToString(src bool) string {
 	if src {
 		return "true"
 	}
@@ -59,5 +61,5 @@ func boolToString(src bool) string{
 // kiem tra co phai loi chung thuc hay khong
 func CheckAuthorizedError(msg string) bool {
 	msg = strings.ToLower(msg)
-	return strings.Index(msg, "authorized") != -1;
+	return strings.Index(msg, "authorized") != -1
 }

@@ -14,7 +14,7 @@ import (
 
 	"github.com/clbanning/mxj"
 	"github.com/golang/glog"
-	"github.com/satori/go.uuid"
+	"github.com/google/uuid"
 )
 
 // SOAP contains data for SOAP request
@@ -122,9 +122,8 @@ func (soap SOAP) createRequest() string {
 }
 
 func (soap SOAP) createUserToken() string {
-	u, _ := uuid.NewV4()
-	nonce := u.Bytes()
-	nonce64 := base64.StdEncoding.EncodeToString(nonce)
+	nonce := uuid.New().String()
+	nonce64 := base64.StdEncoding.EncodeToString(([]byte)(nonce))
 	timestamp := time.Now().Add(soap.TokenAge).UTC().Format(time.RFC3339)
 	token := string(nonce) + timestamp + soap.Password
 
