@@ -9,27 +9,27 @@ var ptzXMLNs = []string{
 func (device Device) GetNodes() ([]PTZNode, error) {
 	//create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetNodes xmlns="http://www.onvif.org/ver20/ptz/wsdl"/>`,
+		Body:     `<GetNodes xmlns="http://www.onvif.org/ver20/ptz/wsdl"/>`,
 	}
 	result := []PTZNode{}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePTZNodes, err := response.ValuesForPath("Envelope.Body.GetNodesResponse.PTZNode")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifacePTZNode := range ifacePTZNodes{
-		if mapPTZNode, ok := ifacePTZNode.(map[string]interface{}); ok{
+	for _, ifacePTZNode := range ifacePTZNodes {
+		if mapPTZNode, ok := ifacePTZNode.(map[string]interface{}); ok {
 			PTZNode := PTZNode{}
 
 			PTZNode.Token = interfaceToString(mapPTZNode["-token"])
@@ -40,21 +40,21 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 			PTZNode.HomeSupported = interfaceToBool(mapPTZNode["HomeSupported"])
 
 			// parse SupportedPTZSpaces
-			if mapSupportedPTZSpaces, ok := mapPTZNode["SupportedPTZSpaces"].(map[string]interface{}); ok{
+			if mapSupportedPTZSpaces, ok := mapPTZNode["SupportedPTZSpaces"].(map[string]interface{}); ok {
 				SupportedPTZSpaces := PTZSpaces{}
 
 				// parse AbsolutePanTiltPositionSpace
-				if mapAbsolutePanTiltPositionSpace, ok := mapSupportedPTZSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{});ok{
+				if mapAbsolutePanTiltPositionSpace, ok := mapSupportedPTZSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{}); ok {
 					AbsolutePanTiltPositionSpace := Space2DDescription{}
 
 					AbsolutePanTiltPositionSpace.URI = interfaceToString(mapAbsolutePanTiltPositionSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{}); ok {
 						AbsolutePanTiltPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						AbsolutePanTiltPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
 					// parse YRange
-					if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{});ok{
+					if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{}); ok {
 						AbsolutePanTiltPositionSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 						AbsolutePanTiltPositionSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 					}
@@ -63,12 +63,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse AbsoluteZoomPositionSpace
-				if mapAbsoluteZoomPositionSpace, ok := mapSupportedPTZSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{});ok{
+				if mapAbsoluteZoomPositionSpace, ok := mapSupportedPTZSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{}); ok {
 					AbsoluteZoomPositionSpace := Space1DDescription{}
 
 					AbsoluteZoomPositionSpace.URI = interfaceToString(mapAbsoluteZoomPositionSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{}); ok {
 						AbsoluteZoomPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						AbsoluteZoomPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -77,17 +77,17 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse RelativePanTiltTranslationSpace
-				if mapRelativePanTiltTranslationSpace, ok := mapSupportedPTZSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{});ok{
+				if mapRelativePanTiltTranslationSpace, ok := mapSupportedPTZSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{}); ok {
 					RelativePanTiltTranslationSpace := Space2DDescription{}
 
 					RelativePanTiltTranslationSpace.URI = interfaceToString(mapRelativePanTiltTranslationSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{}); ok {
 						RelativePanTiltTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						RelativePanTiltTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
 					// parse YRange
-					if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{});ok{
+					if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{}); ok {
 						RelativePanTiltTranslationSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 						RelativePanTiltTranslationSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 					}
@@ -96,12 +96,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse RelativeZoomTranslationSpace
-				if mapRelativeZoomTranslationSpace, ok := mapSupportedPTZSpaces["RelativeZoomTranslationSpace"].(map[string]interface{});ok{
+				if mapRelativeZoomTranslationSpace, ok := mapSupportedPTZSpaces["RelativeZoomTranslationSpace"].(map[string]interface{}); ok {
 					RelativeZoomTranslationSpace := Space1DDescription{}
 
 					RelativeZoomTranslationSpace.URI = interfaceToString(mapRelativeZoomTranslationSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{}); ok {
 						RelativeZoomTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						RelativeZoomTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -110,17 +110,17 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse ContinuousPanTiltVelocitySpace
-				if mapContinuousPanTiltVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{});ok{
+				if mapContinuousPanTiltVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{}); ok {
 					ContinuousPanTiltVelocitySpace := Space2DDescription{}
 
 					ContinuousPanTiltVelocitySpace.URI = interfaceToString(mapContinuousPanTiltVelocitySpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{}); ok {
 						ContinuousPanTiltVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						ContinuousPanTiltVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
 					// parse YRange
-					if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{});ok{
+					if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{}); ok {
 						ContinuousPanTiltVelocitySpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 						ContinuousPanTiltVelocitySpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 					}
@@ -129,12 +129,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse ContinuousZoomVelocitySpace
-				if mapContinuousZoomVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{});ok{
+				if mapContinuousZoomVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{}); ok {
 					ContinuousZoomVelocitySpace := Space1DDescription{}
 
 					ContinuousZoomVelocitySpace.URI = interfaceToString(mapContinuousZoomVelocitySpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{}); ok {
 						ContinuousZoomVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						ContinuousZoomVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -143,12 +143,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse PanTiltSpeedSpace
-				if mapPanTiltSpeedSpace, ok := mapSupportedPTZSpaces["PanTiltSpeedSpace"].(map[string]interface{});ok{
+				if mapPanTiltSpeedSpace, ok := mapSupportedPTZSpaces["PanTiltSpeedSpace"].(map[string]interface{}); ok {
 					PanTiltSpeedSpace := Space1DDescription{}
 
 					PanTiltSpeedSpace.URI = interfaceToString(mapPanTiltSpeedSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{}); ok {
 						PanTiltSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						PanTiltSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -157,12 +157,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 				}
 
 				// parse ZoomSpeedSpace
-				if mapZoomSpeedSpace, ok := mapSupportedPTZSpaces["ZoomSpeedSpace"].(map[string]interface{});ok{
+				if mapZoomSpeedSpace, ok := mapSupportedPTZSpaces["ZoomSpeedSpace"].(map[string]interface{}); ok {
 					ZoomSpeedSpace := Space1DDescription{}
 
 					ZoomSpeedSpace.URI = interfaceToString(mapZoomSpeedSpace["URI"])
 					// parse XRange
-					if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{}); ok {
 						ZoomSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						ZoomSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -181,12 +181,12 @@ func (device Device) GetNodes() ([]PTZNode, error) {
 	return result, nil
 }
 
-func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
+func (device Device) GetNode(nodeToken string) (PTZNode, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetNode xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<GetNode xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<NodeToken>` + nodeToken + `</NodeToken>
 				</GetNode>`,
 	}
@@ -195,17 +195,17 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePTZNode, err := response.ValueForPath("Envelope.Body.GetNodeResponse.PTZNode")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
-	if mapPTZNode, ok := ifacePTZNode.(map[string]interface{}); ok{
+	if mapPTZNode, ok := ifacePTZNode.(map[string]interface{}); ok {
 		result.Token = interfaceToString(mapPTZNode["-token"])
 		result.Name = interfaceToString(mapPTZNode["Name"])
 		result.FixedHomePosition = interfaceToBool(mapPTZNode["FixedHomePosition"])
@@ -214,21 +214,21 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 		result.HomeSupported = interfaceToBool(mapPTZNode["HomeSupported"])
 
 		// parse SupportedPTZSpaces
-		if mapSupportedPTZSpaces, ok := mapPTZNode["SupportedPTZSpaces"].(map[string]interface{}); ok{
+		if mapSupportedPTZSpaces, ok := mapPTZNode["SupportedPTZSpaces"].(map[string]interface{}); ok {
 			SupportedPTZSpaces := PTZSpaces{}
 
 			// parse AbsolutePanTiltPositionSpace
-			if mapAbsolutePanTiltPositionSpace, ok := mapSupportedPTZSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{});ok{
+			if mapAbsolutePanTiltPositionSpace, ok := mapSupportedPTZSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{}); ok {
 				AbsolutePanTiltPositionSpace := Space2DDescription{}
 
 				AbsolutePanTiltPositionSpace.URI = interfaceToString(mapAbsolutePanTiltPositionSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{}); ok {
 					AbsolutePanTiltPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					AbsolutePanTiltPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{}); ok {
 					AbsolutePanTiltPositionSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					AbsolutePanTiltPositionSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -237,12 +237,12 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse AbsoluteZoomPositionSpace
-			if mapAbsoluteZoomPositionSpace, ok := mapSupportedPTZSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{});ok{
+			if mapAbsoluteZoomPositionSpace, ok := mapSupportedPTZSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{}); ok {
 				AbsoluteZoomPositionSpace := Space1DDescription{}
 
 				AbsoluteZoomPositionSpace.URI = interfaceToString(mapAbsoluteZoomPositionSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{}); ok {
 					AbsoluteZoomPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					AbsoluteZoomPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -251,17 +251,17 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse RelativePanTiltTranslationSpace
-			if mapRelativePanTiltTranslationSpace, ok := mapSupportedPTZSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{});ok{
+			if mapRelativePanTiltTranslationSpace, ok := mapSupportedPTZSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{}); ok {
 				RelativePanTiltTranslationSpace := Space2DDescription{}
 
 				RelativePanTiltTranslationSpace.URI = interfaceToString(mapRelativePanTiltTranslationSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{}); ok {
 					RelativePanTiltTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					RelativePanTiltTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{}); ok {
 					RelativePanTiltTranslationSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					RelativePanTiltTranslationSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -270,12 +270,12 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse RelativeZoomTranslationSpace
-			if mapRelativeZoomTranslationSpace, ok := mapSupportedPTZSpaces["RelativeZoomTranslationSpace"].(map[string]interface{});ok{
+			if mapRelativeZoomTranslationSpace, ok := mapSupportedPTZSpaces["RelativeZoomTranslationSpace"].(map[string]interface{}); ok {
 				RelativeZoomTranslationSpace := Space1DDescription{}
 
 				RelativeZoomTranslationSpace.URI = interfaceToString(mapRelativeZoomTranslationSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{}); ok {
 					RelativeZoomTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					RelativeZoomTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -284,17 +284,17 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse ContinuousPanTiltVelocitySpace
-			if mapContinuousPanTiltVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{});ok{
+			if mapContinuousPanTiltVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{}); ok {
 				ContinuousPanTiltVelocitySpace := Space2DDescription{}
 
 				ContinuousPanTiltVelocitySpace.URI = interfaceToString(mapContinuousPanTiltVelocitySpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{}); ok {
 					ContinuousPanTiltVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ContinuousPanTiltVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{}); ok {
 					ContinuousPanTiltVelocitySpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					ContinuousPanTiltVelocitySpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -303,12 +303,12 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse ContinuousZoomVelocitySpace
-			if mapContinuousZoomVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{});ok{
+			if mapContinuousZoomVelocitySpace, ok := mapSupportedPTZSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{}); ok {
 				ContinuousZoomVelocitySpace := Space1DDescription{}
 
 				ContinuousZoomVelocitySpace.URI = interfaceToString(mapContinuousZoomVelocitySpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{}); ok {
 					ContinuousZoomVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ContinuousZoomVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -317,12 +317,12 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse PanTiltSpeedSpace
-			if mapPanTiltSpeedSpace, ok := mapSupportedPTZSpaces["PanTiltSpeedSpace"].(map[string]interface{});ok{
+			if mapPanTiltSpeedSpace, ok := mapSupportedPTZSpaces["PanTiltSpeedSpace"].(map[string]interface{}); ok {
 				PanTiltSpeedSpace := Space1DDescription{}
 
 				PanTiltSpeedSpace.URI = interfaceToString(mapPanTiltSpeedSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{}); ok {
 					PanTiltSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					PanTiltSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -331,12 +331,12 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 			}
 
 			// parse ZoomSpeedSpace
-			if mapZoomSpeedSpace, ok := mapSupportedPTZSpaces["ZoomSpeedSpace"].(map[string]interface{});ok{
+			if mapZoomSpeedSpace, ok := mapSupportedPTZSpaces["ZoomSpeedSpace"].(map[string]interface{}); ok {
 				ZoomSpeedSpace := Space1DDescription{}
 
 				ZoomSpeedSpace.URI = interfaceToString(mapZoomSpeedSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{}); ok {
 					ZoomSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ZoomSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -354,28 +354,28 @@ func (device Device) GetNode(nodeToken string) (PTZNode, error)  {
 func (device Device) GetConfigurations() ([]PTZConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetConfigurations xmlns="http://www.onvif.org/ver20/ptz/wsdl"/>`,
+		Body:     `<GetConfigurations xmlns="http://www.onvif.org/ver20/ptz/wsdl"/>`,
 	}
 
 	result := []PTZConfiguration{}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePTZConfigurations, err := response.ValuesForPath("Envelope.Body.GetConfigurationsResponse.PTZConfiguration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifacePTZConfiguration := range ifacePTZConfigurations{
-		if mapPTZConfiguration, ok := ifacePTZConfiguration.(map[string]interface{}); ok{
+	for _, ifacePTZConfiguration := range ifacePTZConfigurations {
+		if mapPTZConfiguration, ok := ifacePTZConfiguration.(map[string]interface{}); ok {
 			PTZConfiguration := PTZConfiguration{}
 
 			PTZConfiguration.Token = interfaceToString(mapPTZConfiguration["-token"])
@@ -393,37 +393,36 @@ func (device Device) GetConfigurations() ([]PTZConfiguration, error) {
 			PTZConfiguration.DefaultContinuousZoomVelocitySpace = interfaceToString(mapPTZConfiguration["DefaultContinuousZoomVelocitySpace"])
 
 			// parse DefaultPTZSpeed
-			if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{});ok{
+			if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{}); ok {
 				DefaultPTZSpeed := PTZVector{}
 				// parse PanTilt
-				if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok{
+				if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok {
 					DefaultPTZSpeed.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
 					DefaultPTZSpeed.PanTilt.X = interfaceToFloat64(mapPanTilt["-x"])
 					DefaultPTZSpeed.PanTilt.Y = interfaceToFloat64(mapPanTilt["-y"])
 				}
 				// parse Zoom
-				if mapZoom, ok := mapDefaultPTZSpeed["Zoom"].(map[string]interface{}); ok{
+				if mapZoom, ok := mapDefaultPTZSpeed["Zoom"].(map[string]interface{}); ok {
 					DefaultPTZSpeed.Zoom.Space = interfaceToString(mapZoom["-space"])
 					DefaultPTZSpeed.Zoom.X = interfaceToFloat64(mapZoom["-x"])
 				}
 				PTZConfiguration.DefaultPTZSpeed = DefaultPTZSpeed
 			}
 
-
 			PTZConfiguration.DefaultPTZTimeout = interfaceToString(mapPTZConfiguration["DefaultPTZTimeout"])
 			// parse PanTiltLimits
-			if mapPanTiltLimits, ok := mapPTZConfiguration["PanTiltLimits"].(map[string]interface{}); ok{
-				if mapRange, ok := mapPanTiltLimits["Range"].(map[string]interface{});ok{
+			if mapPanTiltLimits, ok := mapPTZConfiguration["PanTiltLimits"].(map[string]interface{}); ok {
+				if mapRange, ok := mapPanTiltLimits["Range"].(map[string]interface{}); ok {
 					PanTiltLimits := PanTiltLimits{}
 
 					PanTiltLimits.Range.URI = interfaceToString(mapRange["URI"])
 					// parse XRange
-					if mapXRange, ok := mapRange["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapRange["XRange"].(map[string]interface{}); ok {
 						PanTiltLimits.Range.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						PanTiltLimits.Range.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
 					// parse YRange
-					if mapYRange, ok := mapRange["YRange"].(map[string]interface{});ok{
+					if mapYRange, ok := mapRange["YRange"].(map[string]interface{}); ok {
 						PanTiltLimits.Range.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 						PanTiltLimits.Range.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 					}
@@ -433,13 +432,13 @@ func (device Device) GetConfigurations() ([]PTZConfiguration, error) {
 			}
 
 			// parse ZoomLimits
-			if mapZoomLimits, ok := mapPTZConfiguration["ZoomLimits"].(map[string]interface{}); ok{
-				if mapRange, ok := mapZoomLimits["Range"].(map[string]interface{});ok{
+			if mapZoomLimits, ok := mapPTZConfiguration["ZoomLimits"].(map[string]interface{}); ok {
+				if mapRange, ok := mapZoomLimits["Range"].(map[string]interface{}); ok {
 					ZoomLimits := ZoomLimits{}
 
 					ZoomLimits.Range.URI = interfaceToString(mapRange["URI"])
 					// parse XRange
-					if mapXRange, ok := mapRange["XRange"].(map[string]interface{});ok{
+					if mapXRange, ok := mapRange["XRange"].(map[string]interface{}); ok {
 						ZoomLimits.Range.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 						ZoomLimits.Range.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 					}
@@ -458,9 +457,9 @@ func (device Device) GetConfigurations() ([]PTZConfiguration, error) {
 func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfiguration, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetConfiguration xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<GetConfiguration xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<PTZConfigurationToken>` + ptzConfigurationToken + `</PTZConfigurationToken>
 				</GetConfiguration>`,
 	}
@@ -469,18 +468,18 @@ func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfigur
 
 	// send response
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePTZConfiguration, err := response.ValueForPath("Envelope.Body.GetConfigurationResponse.PTZConfiguration")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapPTZConfiguration, ok := ifacePTZConfiguration.(map[string]interface{}); ok{
+	if mapPTZConfiguration, ok := ifacePTZConfiguration.(map[string]interface{}); ok {
 		result.Token = interfaceToString(mapPTZConfiguration["-token"])
 		result.Name = interfaceToString(mapPTZConfiguration["Name"])
 		result.MoveRamp = interfaceToInt(mapPTZConfiguration["MoveRamp"])
@@ -496,37 +495,36 @@ func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfigur
 		result.DefaultContinuousZoomVelocitySpace = interfaceToString(mapPTZConfiguration["DefaultContinuousZoomVelocitySpace"])
 
 		// parse DefaultPTZSpeed
-		if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{});ok{
+		if mapDefaultPTZSpeed, ok := mapPTZConfiguration["DefaultPTZSpeed"].(map[string]interface{}); ok {
 			DefaultPTZSpeed := PTZVector{}
 			// parse PanTilt
-			if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok{
+			if mapPanTilt, ok := mapDefaultPTZSpeed["PanTilt"].(map[string]interface{}); ok {
 				DefaultPTZSpeed.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
 				DefaultPTZSpeed.PanTilt.X = interfaceToFloat64(mapPanTilt["-x"])
 				DefaultPTZSpeed.PanTilt.Y = interfaceToFloat64(mapPanTilt["-y"])
 			}
 			// parse Zoom
-			if mapZoom, ok := mapDefaultPTZSpeed["Zoom"].(map[string]interface{}); ok{
+			if mapZoom, ok := mapDefaultPTZSpeed["Zoom"].(map[string]interface{}); ok {
 				DefaultPTZSpeed.Zoom.Space = interfaceToString(mapZoom["-space"])
 				DefaultPTZSpeed.Zoom.X = interfaceToFloat64(mapZoom["-x"])
 			}
 			result.DefaultPTZSpeed = DefaultPTZSpeed
 		}
 
-
 		result.DefaultPTZTimeout = interfaceToString(mapPTZConfiguration["DefaultPTZTimeout"])
 		// parse PanTiltLimits
-		if mapPanTiltLimits, ok := mapPTZConfiguration["PanTiltLimits"].(map[string]interface{}); ok{
-			if mapRange, ok := mapPanTiltLimits["Range"].(map[string]interface{});ok{
+		if mapPanTiltLimits, ok := mapPTZConfiguration["PanTiltLimits"].(map[string]interface{}); ok {
+			if mapRange, ok := mapPanTiltLimits["Range"].(map[string]interface{}); ok {
 				PanTiltLimits := PanTiltLimits{}
 
 				PanTiltLimits.Range.URI = interfaceToString(mapRange["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRange["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRange["XRange"].(map[string]interface{}); ok {
 					PanTiltLimits.Range.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					PanTiltLimits.Range.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapRange["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapRange["YRange"].(map[string]interface{}); ok {
 					PanTiltLimits.Range.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					PanTiltLimits.Range.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -536,13 +534,13 @@ func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfigur
 		}
 
 		// parse ZoomLimits
-		if mapZoomLimits, ok := mapPTZConfiguration["ZoomLimits"].(map[string]interface{}); ok{
-			if mapRange, ok := mapZoomLimits["Range"].(map[string]interface{});ok{
+		if mapZoomLimits, ok := mapPTZConfiguration["ZoomLimits"].(map[string]interface{}); ok {
+			if mapRange, ok := mapZoomLimits["Range"].(map[string]interface{}); ok {
 				ZoomLimits := ZoomLimits{}
 
 				ZoomLimits.Range.URI = interfaceToString(mapRange["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRange["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRange["XRange"].(map[string]interface{}); ok {
 					ZoomLimits.Range.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ZoomLimits.Range.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -558,7 +556,7 @@ func (device Device) GetConfiguration(ptzConfigurationToken string) (PTZConfigur
 func (device Device) GetConfigurationOptions(configurationToken string) (PTZConfigurationOptions, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GetConfigurationOptions xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
@@ -569,34 +567,34 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePTZConfigurationOptions, err := response.ValueForPath("Envelope.Body.GetConfigurationOptionsResponse.PTZConfigurationOptions")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapPTZConfigurationOptions, ok := ifacePTZConfigurationOptions.(map[string]interface{});ok{
+	if mapPTZConfigurationOptions, ok := ifacePTZConfigurationOptions.(map[string]interface{}); ok {
 		// parse Spaces
-		if mapSpaces, ok := mapPTZConfigurationOptions["Spaces"].(map[string]interface{}); ok{
+		if mapSpaces, ok := mapPTZConfigurationOptions["Spaces"].(map[string]interface{}); ok {
 			Spaces := PTZSpaces{}
 
 			// parse AbsolutePanTiltPositionSpace
-			if mapAbsolutePanTiltPositionSpace, ok := mapSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{});ok{
+			if mapAbsolutePanTiltPositionSpace, ok := mapSpaces["AbsolutePanTiltPositionSpace"].(map[string]interface{}); ok {
 				AbsolutePanTiltPositionSpace := Space2DDescription{}
 
 				AbsolutePanTiltPositionSpace.URI = interfaceToString(mapAbsolutePanTiltPositionSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapAbsolutePanTiltPositionSpace["XRange"].(map[string]interface{}); ok {
 					AbsolutePanTiltPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					AbsolutePanTiltPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapAbsolutePanTiltPositionSpace["YRange"].(map[string]interface{}); ok {
 					AbsolutePanTiltPositionSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					AbsolutePanTiltPositionSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -605,12 +603,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse AbsoluteZoomPositionSpace
-			if mapAbsoluteZoomPositionSpace, ok := mapSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{});ok{
+			if mapAbsoluteZoomPositionSpace, ok := mapSpaces["AbsoluteZoomPositionSpace"].(map[string]interface{}); ok {
 				AbsoluteZoomPositionSpace := Space1DDescription{}
 
 				AbsoluteZoomPositionSpace.URI = interfaceToString(mapAbsoluteZoomPositionSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapAbsoluteZoomPositionSpace["XRange"].(map[string]interface{}); ok {
 					AbsoluteZoomPositionSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					AbsoluteZoomPositionSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -619,17 +617,17 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse RelativePanTiltTranslationSpace
-			if mapRelativePanTiltTranslationSpace, ok := mapSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{});ok{
+			if mapRelativePanTiltTranslationSpace, ok := mapSpaces["RelativePanTiltTranslationSpace"].(map[string]interface{}); ok {
 				RelativePanTiltTranslationSpace := Space2DDescription{}
 
 				RelativePanTiltTranslationSpace.URI = interfaceToString(mapRelativePanTiltTranslationSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRelativePanTiltTranslationSpace["XRange"].(map[string]interface{}); ok {
 					RelativePanTiltTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					RelativePanTiltTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapRelativePanTiltTranslationSpace["YRange"].(map[string]interface{}); ok {
 					RelativePanTiltTranslationSpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					RelativePanTiltTranslationSpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -638,12 +636,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse RelativeZoomTranslationSpace
-			if mapRelativeZoomTranslationSpace, ok := mapSpaces["RelativeZoomTranslationSpace"].(map[string]interface{});ok{
+			if mapRelativeZoomTranslationSpace, ok := mapSpaces["RelativeZoomTranslationSpace"].(map[string]interface{}); ok {
 				RelativeZoomTranslationSpace := Space1DDescription{}
 
 				RelativeZoomTranslationSpace.URI = interfaceToString(mapRelativeZoomTranslationSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapRelativeZoomTranslationSpace["XRange"].(map[string]interface{}); ok {
 					RelativeZoomTranslationSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					RelativeZoomTranslationSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -652,17 +650,17 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse ContinuousPanTiltVelocitySpace
-			if mapContinuousPanTiltVelocitySpace, ok := mapSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{});ok{
+			if mapContinuousPanTiltVelocitySpace, ok := mapSpaces["ContinuousPanTiltVelocitySpace"].(map[string]interface{}); ok {
 				ContinuousPanTiltVelocitySpace := Space2DDescription{}
 
 				ContinuousPanTiltVelocitySpace.URI = interfaceToString(mapContinuousPanTiltVelocitySpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapContinuousPanTiltVelocitySpace["XRange"].(map[string]interface{}); ok {
 					ContinuousPanTiltVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ContinuousPanTiltVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
 				// parse YRange
-				if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{});ok{
+				if mapYRange, ok := mapContinuousPanTiltVelocitySpace["YRange"].(map[string]interface{}); ok {
 					ContinuousPanTiltVelocitySpace.YRange.Min = interfaceToFloat64(mapYRange["Min"])
 					ContinuousPanTiltVelocitySpace.YRange.Max = interfaceToFloat64(mapYRange["Max"])
 				}
@@ -671,12 +669,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse ContinuousZoomVelocitySpace
-			if mapContinuousZoomVelocitySpace, ok := mapSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{});ok{
+			if mapContinuousZoomVelocitySpace, ok := mapSpaces["ContinuousZoomVelocitySpace"].(map[string]interface{}); ok {
 				ContinuousZoomVelocitySpace := Space1DDescription{}
 
 				ContinuousZoomVelocitySpace.URI = interfaceToString(mapContinuousZoomVelocitySpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapContinuousZoomVelocitySpace["XRange"].(map[string]interface{}); ok {
 					ContinuousZoomVelocitySpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ContinuousZoomVelocitySpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -685,12 +683,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse PanTiltSpeedSpace
-			if mapPanTiltSpeedSpace, ok := mapSpaces["PanTiltSpeedSpace"].(map[string]interface{});ok{
+			if mapPanTiltSpeedSpace, ok := mapSpaces["PanTiltSpeedSpace"].(map[string]interface{}); ok {
 				PanTiltSpeedSpace := Space1DDescription{}
 
 				PanTiltSpeedSpace.URI = interfaceToString(mapPanTiltSpeedSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapPanTiltSpeedSpace["XRange"].(map[string]interface{}); ok {
 					PanTiltSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					PanTiltSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -699,12 +697,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 			}
 
 			// parse ZoomSpeedSpace
-			if mapZoomSpeedSpace, ok := mapSpaces["ZoomSpeedSpace"].(map[string]interface{});ok{
+			if mapZoomSpeedSpace, ok := mapSpaces["ZoomSpeedSpace"].(map[string]interface{}); ok {
 				ZoomSpeedSpace := Space1DDescription{}
 
 				ZoomSpeedSpace.URI = interfaceToString(mapZoomSpeedSpace["URI"])
 				// parse XRange
-				if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{});ok{
+				if mapXRange, ok := mapZoomSpeedSpace["XRange"].(map[string]interface{}); ok {
 					ZoomSpeedSpace.XRange.Min = interfaceToFloat64(mapXRange["Min"])
 					ZoomSpeedSpace.XRange.Max = interfaceToFloat64(mapXRange["Max"])
 				}
@@ -716,20 +714,20 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 		}
 
 		// parse PTZTimeout
-		if mapPTZTimeout, ok := mapPTZConfigurationOptions["PTZTimeout"].(map[string]interface{});ok{
+		if mapPTZTimeout, ok := mapPTZConfigurationOptions["PTZTimeout"].(map[string]interface{}); ok {
 			result.PTZTimeout.Min = interfaceToString(mapPTZTimeout["Min"])
 			result.PTZTimeout.Max = interfaceToString(mapPTZTimeout["Max"])
 		}
 
 		// parse PTControlDirection
-		if mapPTControlDirection, ok := mapPTZConfigurationOptions["PTControlDirection"].(map[string]interface{});ok{
+		if mapPTControlDirection, ok := mapPTZConfigurationOptions["PTControlDirection"].(map[string]interface{}); ok {
 			// parse EFlip
-			if mapEFlip, ok := mapPTControlDirection["EFlip"].(map[string]interface{});ok{
+			if mapEFlip, ok := mapPTControlDirection["EFlip"].(map[string]interface{}); ok {
 				result.PTControlDirection.EFlip.Mode = interfaceToString(mapEFlip["Mode"])
 			}
 
 			// parse Reverse
-			if mapReverse, ok := mapPTControlDirection["Reverse"].(map[string]interface{});ok{
+			if mapReverse, ok := mapPTControlDirection["Reverse"].(map[string]interface{}); ok {
 				result.PTControlDirection.Reverse.Mode = interfaceToString(mapReverse["Mode"])
 			}
 		}
@@ -738,12 +736,12 @@ func (device Device) GetConfigurationOptions(configurationToken string) (PTZConf
 	return result, nil
 }
 
-func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
+func (device Device) GetStatus(profileToken string) (PTZStatus, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetStatus xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<GetStatus xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 				</GetStatus>`,
 	}
@@ -752,30 +750,30 @@ func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
 
 	//send soap
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
-	ifacePTZStatus, err :=response.ValueForPath("Envelope.Body.GetStatusResponse.PTZStatus")
-	if err != nil{
+	ifacePTZStatus, err := response.ValueForPath("Envelope.Body.GetStatusResponse.PTZStatus")
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	if mapPTZStatus, ok := ifacePTZStatus.(map[string]interface{}); ok{
+	if mapPTZStatus, ok := ifacePTZStatus.(map[string]interface{}); ok {
 		// parse position
-		if mapPosition, ok := mapPTZStatus["Position"].(map[string]interface{}); ok{
+		if mapPosition, ok := mapPTZStatus["Position"].(map[string]interface{}); ok {
 			Position := PTZVector{}
 
 			//parse PanTilt
-			if mapPanTilt, ok := mapPosition["PanTilt"].(map[string]interface{});ok{
+			if mapPanTilt, ok := mapPosition["PanTilt"].(map[string]interface{}); ok {
 				Position.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
 				Position.PanTilt.X = interfaceToFloat64(mapPanTilt["-x"])
 				Position.PanTilt.Y = interfaceToFloat64(mapPanTilt["-y"])
 			}
 			//parse Zoom
-			if mapZoom, ok := mapPosition["Zoom"].(map[string]interface{});ok{
+			if mapZoom, ok := mapPosition["Zoom"].(map[string]interface{}); ok {
 				Position.Zoom.Space = interfaceToString(mapZoom["-space"])
 				Position.Zoom.X = interfaceToFloat64(mapZoom["-x"])
 			}
@@ -783,7 +781,7 @@ func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
 		}
 
 		// parse Move Status
-		if mapMoveStatus, ok := mapPTZStatus["MoveStatus"].(map[string]interface{}); ok{
+		if mapMoveStatus, ok := mapPTZStatus["MoveStatus"].(map[string]interface{}); ok {
 			result.MoveStatus.PanTilt = interfaceToString(mapMoveStatus["PanTilt"])
 			result.MoveStatus.Zoom = interfaceToString(mapMoveStatus["Zoom"])
 		}
@@ -797,57 +795,57 @@ func (device Device) GetStatus(profileToken string)(PTZStatus, error) {
 func (device Device) ContinuousMove(profileToken string, velocity PTZVector) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<ContinuousMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Velocity>
-						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(velocity.PanTilt.X) +`" y="` + float64ToString(velocity.PanTilt.Y) + `"/>
-						<Zoom x="` + float64ToString(velocity.Zoom.X) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(velocity.PanTilt.X) + `" y="` + float64ToString(velocity.PanTilt.Y) + `"/>
+						<Zoom xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(velocity.Zoom.X) + `"/>
 					</Velocity>
 				</ContinuousMove>`,
-		XMLNs: ptzXMLNs,
-		Action:"http://www.onvif.org/ver20/ptz/wsdl/ContinuousMove",
+		XMLNs:  ptzXMLNs,
+		Action: "http://www.onvif.org/ver20/ptz/wsdl/ContinuousMove",
 	}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.ContinuousMoveResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (device Device) AbsoluteMove(profileToken string, position PTZVector) error{
+func (device Device) AbsoluteMove(profileToken string, position PTZVector) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<AbsoluteMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Position>
-						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(position.PanTilt.X) +`" y="` + float64ToString(position.PanTilt.Y) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(position.PanTilt.X) + `" y="` + float64ToString(position.PanTilt.Y) + `"/>
 						<Zoom x="` + float64ToString(position.Zoom.X) + `"/>
 					</Position>
 				</AbsoluteMove>`,
-		XMLNs:ptzXMLNs,
-		Action:"http://www.onvif.org/ver20/ptz/wsdl/AbsoluteMove",
+		XMLNs:  ptzXMLNs,
+		Action: "http://www.onvif.org/ver20/ptz/wsdl/AbsoluteMove",
 	}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.AbsoluteMoveResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -858,30 +856,30 @@ func (device Device) AbsoluteMove(profileToken string, position PTZVector) error
 // x: positive => go to right || negative => go to left
 // y: positive => go to up || negative => go to down
 // z: positive => zoom in || negative => zoom out
-func (device Device) RelativeMove(profileToken string, translation PTZVector) error{
+func (device Device) RelativeMove(profileToken string, translation PTZVector) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<RelativeMove xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<Translation>
-						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="`+ float64ToString(translation.PanTilt.X) +`" y="` + float64ToString(translation.PanTilt.Y) + `"/>
+						<PanTilt xmlns="http://www.onvif.org/ver10/schema" x="` + float64ToString(translation.PanTilt.X) + `" y="` + float64ToString(translation.PanTilt.Y) + `"/>
 						<Zoom x="` + float64ToString(translation.Zoom.X) + `"/>
 					</Translation>
 				</RelativeMove>`,
-		XMLNs:ptzXMLNs,
-		Action:"http://www.onvif.org/ver20/ptz/wsdl/RelativeMove",
+		XMLNs:  ptzXMLNs,
+		Action: "http://www.onvif.org/ver20/ptz/wsdl/RelativeMove",
 	}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.RelativeMoveResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -891,24 +889,24 @@ func (device Device) RelativeMove(profileToken string, translation PTZVector) er
 func (device Device) Stop(profileToken string) error {
 	//create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<Stop xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<Stop xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 				<ProfileToken>` + profileToken + `</ProfileToken>
 				<PanTilt>true</PanTilt><Zoom>true</Zoom>
 			  </Stop>`,
-		XMLNs:ptzXMLNs,
-		Action:"http://www.onvif.org/ver20/ptz/wsdl/Stop",
+		XMLNs:  ptzXMLNs,
+		Action: "http://www.onvif.org/ver20/ptz/wsdl/Stop",
 	}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.StopResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -918,23 +916,23 @@ func (device Device) Stop(profileToken string) error {
 func (device Device) GotoHomePosition(profileToken string) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GotoHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<GotoHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 				</GotoHomePosition>`,
-		XMLNs:ptzXMLNs,
+		XMLNs:  ptzXMLNs,
 		Action: "http://www.onvif.org/ver20/ptz/wsdl/GotoHomePosition",
 	}
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.GotoHomePositionResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -944,21 +942,21 @@ func (device Device) GotoHomePosition(profileToken string) error {
 func (device Device) SetHomePosition(profileToken string) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<SetHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<SetHomePosition xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 				</SetHomePosition>`,
 	}
 
 	//send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.SetHomePositionResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -969,9 +967,9 @@ func (device Device) SetHomePosition(profileToken string) error {
 func (device Device) SetPreset(profileToken string, presetName string) (string, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<SetPreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<SetPreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 					<PresetName>` + presetName + `</PresetName>
 				</SetPreset>`,
@@ -979,17 +977,17 @@ func (device Device) SetPreset(profileToken string, presetName string) (string, 
 	var result string
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePresetToken, err := response.ValueForPath("Envelope.Body.SetPresetResponse")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
-	if mapProfileToken, ok := ifacePresetToken.(map[string] interface{}); ok{
+	if mapProfileToken, ok := ifacePresetToken.(map[string]interface{}); ok {
 		result = interfaceToString(mapProfileToken["PresetToken"])
 	}
 
@@ -999,9 +997,9 @@ func (device Device) SetPreset(profileToken string, presetName string) (string, 
 func (device Device) GetPresets(profileToken string) ([]PTZPreset, error) {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
-		Body:`<GetPresets xmlns="http://www.onvif.org/ver20/ptz/wsdl">
+		Body: `<GetPresets xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
 				</GetPresets>`,
 	}
@@ -1009,34 +1007,34 @@ func (device Device) GetPresets(profileToken string) ([]PTZPreset, error) {
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse response
 	ifacePresets, err := response.ValuesForPath("Envelope.Body.GetPresetsResponse.Preset")
-	if err != nil{
+	if err != nil {
 		return result, err
 	}
 
 	// parse interface
-	for _, ifacePreset := range ifacePresets{
-		if mapPreset, ok := ifacePreset.(map[string] interface{}); ok{
+	for _, ifacePreset := range ifacePresets {
+		if mapPreset, ok := ifacePreset.(map[string]interface{}); ok {
 			Preset := PTZPreset{}
 
 			Preset.Token = interfaceToString(mapPreset["-token"])
 			Preset.Name = interfaceToString(mapPreset["Name"])
 			// parse PTZPosition
-			if mapPosition, ok := mapPreset["PTZPosition"].(map[string] interface{}); ok{
+			if mapPosition, ok := mapPreset["PTZPosition"].(map[string]interface{}); ok {
 				Position := PTZVector{}
 				// parse PanTilt
-				if mapPanTilt, ok := mapPosition["PanTilt"].(map[string] interface{}); ok{
+				if mapPanTilt, ok := mapPosition["PanTilt"].(map[string]interface{}); ok {
 					Position.PanTilt.Space = interfaceToString(mapPanTilt["-space"])
 					Position.PanTilt.X = interfaceToFloat64(mapPanTilt["-x"])
 					Position.PanTilt.Y = interfaceToFloat64(mapPanTilt["-y"])
 				}
 				// parse Zoom
-				if mapZoom, ok := mapPosition["Zoom"].(map[string] interface{}); ok{
+				if mapZoom, ok := mapPosition["Zoom"].(map[string]interface{}); ok {
 					Position.Zoom.Space = interfaceToString(mapZoom["-space"])
 					Position.Zoom.X = interfaceToFloat64(mapZoom["-x"])
 				}
@@ -1053,7 +1051,7 @@ func (device Device) GetPresets(profileToken string) ([]PTZPreset, error) {
 func (device Device) GotoPreset(profileToken string, presetToken string) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<GotoPreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -1063,12 +1061,12 @@ func (device Device) GotoPreset(profileToken string, presetToken string) error {
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.GotoPresetResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -1078,7 +1076,7 @@ func (device Device) GotoPreset(profileToken string, presetToken string) error {
 func (device Device) RemovePreset(profileToken string, presetToken string) error {
 	// create soap
 	soap := SOAP{
-		User: device.User,
+		User:     device.User,
 		Password: device.Password,
 		Body: `<RemovePreset xmlns="http://www.onvif.org/ver20/ptz/wsdl">
 					<ProfileToken>` + profileToken + `</ProfileToken>
@@ -1088,12 +1086,12 @@ func (device Device) RemovePreset(profileToken string, presetToken string) error
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
 	_, err = response.ValueForPath("Envelope.Body.RemovePresetResponse")
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
