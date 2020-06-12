@@ -5,7 +5,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"errors"
-	"github.com/bobziuchkovski/digest"
+	"github.com/quocson95/go-onvif/digest"
 	"io/ioutil"
 	"net/http"
 	"net/url"
