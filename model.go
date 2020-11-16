@@ -671,9 +671,14 @@ type CreatePullPointSubscriptionResponse struct {
 	TerminationTime       string
 }
 
+type MessageData struct {
+	Name  string
+	Value string
+}
+
 type NotificationMessage struct {
 	Topic   string
 	UtcTime string
-	Data    string
-	Source  string
+	Data    []MessageData
+	Source  []MessageData
 }

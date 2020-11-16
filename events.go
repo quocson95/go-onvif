@@ -30,7 +30,6 @@ func (device Device) Subscribe(address string) (string, error) {
 	return result, nil
 }
 
-// return url for unsubscribe
 func (device Device) CreatePullPointSubscription() (CreatePullPointSubscriptionResponse, error) {
 	// create soap
 	soap := SOAP{
@@ -124,13 +123,37 @@ func (device Device) PullMessages(address string) ([]NotificationMessage, error)
 				if mapMsg, ok := mapMsg["Message"].(map[string]interface{}); ok {
 					msg.UtcTime = interfaceToString(mapMsg["-UtcTime"])
 					if mapData, ok := mapMsg["Data"].(map[string]interface{}); ok {
-						if mapSimpleItem, ok := mapData["SimpleItem"].(map[string]interface{}); ok {
-							msg.Data = interfaceToString(mapSimpleItem["-Value"])
+						if mapSimpleItems, ok := mapData["SimpleItem"].([]interface{}); ok {
+							for _, item := range mapSimpleItems {
+								if mapItem, ok := item.(map[string]interface{}); ok {
+									msg.Data = append(msg.Data, MessageData{
+										Name:  interfaceToString(mapItem["-Name"]),
+										Value: interfaceToString(mapItem["-Value"]),
+									})
+								}
+							}
+						} else if mapSimpleItem, ok := mapData["SimpleItem"].(map[string]interface{}); ok {
+							msg.Data = append(msg.Data, MessageData{
+								Name:  interfaceToString(mapSimpleItem["-Name"]),
+								Value: interfaceToString(mapSimpleItem["-Value"]),
+							})
 						}
 					}
 					if mapSource, ok := mapMsg["Source"].(map[string]interface{}); ok {
-						if mapSimpleItem, ok := mapSource["SimpleItem"].(map[string]interface{}); ok {
-							msg.Source = interfaceToString(mapSimpleItem["-Value"])
+						if mapSimpleItems, ok := mapSource["SimpleItem"].([]interface{}); ok {
+							for _, item := range mapSimpleItems {
+								if mapItem, ok := item.(map[string]interface{}); ok {
+									msg.Source = append(msg.Source, MessageData{
+										Name:  interfaceToString(mapItem["-Name"]),
+										Value: interfaceToString(mapItem["-Value"]),
+									})
+								}
+							}
+						} else if mapSimpleItem, ok := mapSource["SimpleItem"].(map[string]interface{}); ok {
+							msg.Source = append(msg.Source, MessageData{
+								Name:  interfaceToString(mapSimpleItem["-Name"]),
+								Value: interfaceToString(mapSimpleItem["-Value"]),
+							})
 						}
 					}
 				}
