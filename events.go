@@ -6,12 +6,16 @@ func (device Device) Subscribe(address string) (string, error) {
 	soap := SOAP{
 		User:     device.User,
 		Password: device.Password,
-		Body: `<Subscribe xmlns="http://docs.oasis-open.org/wsn/b-2">
-					<ConsumerReference>
-						<Address>` + address + `</Address>
-					</ConsumerReference>
-					<InitialTerminationTime>PT3600S</InitialTerminationTime>
-				</Subscribe>`,
+		XMLNs: []string{
+			`xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2"`,
+			`xmlns:wsa="http://www.w3.org/2005/08/addressing"`,
+		},
+		Body: `<wsnt:Subscribe xmlns="http://docs.oasis-open.org/wsn/b-2.xsd">
+					<wsnt:ConsumerReference>
+						<wsa:Address xmlns="http://www.w3.org/2005/08/addressing">` + address + `</wsa:Address>
+					</wsnt:ConsumerReference>
+					<wsnt:InitialTerminationTime>PT3600S</wsnt:InitialTerminationTime>
+				</wsnt:Subscribe>`,
 	}
 
 	var result string = ""

@@ -1632,3 +1632,29 @@ func (device Device) GetAudioEncoderConfigurationOptions(configurationToken stri
 	glog.Info(result)
 	return result, nil
 }
+
+func (device Device) GetOSDs() ([]AudioEncoderConfigurationOption, error) {
+	// create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		Body:     `<GetOSDs xmlns="http://www.onvif.org/ver10/media/wsdl" />`,
+	}
+
+	result := []AudioEncoderConfigurationOption{}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return result, err
+	}
+
+	// parse response
+	ifOSDsResponse, err := response.ValuesForPath("Envelope.Body.GetOSDsResponse")
+	if err != nil {
+		return result, err
+	}
+
+	glog.Info("Data %s", ifOSDsResponse)
+	return result, nil
+}
