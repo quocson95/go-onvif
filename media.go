@@ -1742,8 +1742,7 @@ func (device Device) UpdateMask(maskToken, configurationToken string, pointStart
 		},
 		Action: "http://www.onvif.org/ver20/media/wsdl/SetMask",
 		Body: `<tr2:SetMask xmlns="http://www.onvif.org/ver20/media/wsdl">
-						<tr2:Mask>
-							<token>` + maskToken + `</token>
+						<tr2:Mask token="` + maskToken + `">
 							<tr2:ConfigurationToken>` + configurationToken + `</tr2:ConfigurationToken>
 							<tr2:Polygon>
 								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointStart.Y) + `" x="` + intToString(pointStart.X) + `"></Point>
@@ -1764,6 +1763,35 @@ func (device Device) UpdateMask(maskToken, configurationToken string, pointStart
 
 	// parse response
 	_, err = response.ValueForPath("Envelope.Body.SetMaskResponse")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (device Device) DeleteMask(maskToken string) error {
+	// create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		XMLNs: []string{
+			`xmlns:tr2="http://www.onvif.org/ver20/media/wsdl"`,
+			`xmlns:tt="http://www.onvif.org/ver10/schema"`,
+		},
+		Action: "http://www.onvif.org/ver20/media/wsdl/DeleteMask",
+		Body: `<tr2:DeleteMask xmlns="http://www.onvif.org/ver20/media/wsdl">
+					<Token>` + maskToken + `</Token>
+			   </tr2:DeleteMask>`,
+	}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return err
+	}
+
+	// parse response
+	_, err = response.ValueForPath("Envelope.Body.DeleteMaskResponse")
 	if err != nil {
 		return err
 	}
