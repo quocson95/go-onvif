@@ -682,3 +682,16 @@ type NotificationMessage struct {
 	Data    []MessageData
 	Source  []MessageData
 }
+
+type Point struct {
+	X int
+	Y int
+}
+
+type Mask struct {
+	Token              string
+	ConfigurationToken string
+	Polygon            []Point
+	Type               string
+	Enabled            bool
+}

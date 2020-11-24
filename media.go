@@ -1633,15 +1633,20 @@ func (device Device) GetAudioEncoderConfigurationOptions(configurationToken stri
 	return result, nil
 }
 
-func (device Device) GetOSDs() ([]AudioEncoderConfigurationOption, error) {
+func (device Device) GetMasks(configurationToken string) ([]Mask, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
 		Password: device.Password,
-		Body:     `<GetOSDs xmlns="http://www.onvif.org/ver10/media/wsdl" />`,
+		XMLNs: []string{
+			`xmlns:tr2="http://www.onvif.org/ver20/media/wsdl"`,
+		},
+		Body: `<GetMasks xmlns="http://www.onvif.org/ver20/media/wsdl">
+						<ConfigurationToken>` + configurationToken + `</ConfigurationToken>
+					</GetMasks>`,
 	}
 
-	result := []AudioEncoderConfigurationOption{}
+	result := make([]Mask, 0)
 
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
@@ -1650,11 +1655,118 @@ func (device Device) GetOSDs() ([]AudioEncoderConfigurationOption, error) {
 	}
 
 	// parse response
-	ifOSDsResponse, err := response.ValuesForPath("Envelope.Body.GetOSDsResponse")
+	ifMasksResponse, err := response.ValuesForPath("Envelope.Body.GetMasksResponse.Masks")
 	if err != nil {
 		return result, err
 	}
 
-	glog.Info("Data %s", ifOSDsResponse)
+	for _, mask := range ifMasksResponse {
+		if mapMask, ok := mask.(map[string]interface{}); ok {
+
+			r := Mask{}
+
+			r.Token = interfaceToString(mapMask["-token"])
+			r.ConfigurationToken = interfaceToString(mapMask["ConfigurationToken"])
+			r.Type = interfaceToString(mapMask["Type"])
+			r.Enabled = interfaceToBool(mapMask["Enabled"])
+
+			if mapPolygon, ok := mapMask["Polygon"].(map[string]interface{}); ok {
+				if mapPoints, ok := mapPolygon["Point"].([]interface{}); ok {
+					for _, point := range mapPoints {
+						if mapPoint, ok := point.(map[string]interface{}); ok {
+							p := Point{}
+							p.X = interfaceToInt(mapPoint["-x"])
+							p.Y = interfaceToInt(mapPoint["-y"])
+							r.Polygon = append(r.Polygon, p)
+						}
+					}
+				}
+			}
+
+			result = append(result, r)
+		}
+	}
+
 	return result, nil
+}
+
+func (device Device) CreateMask(configurationToken string, pointStart, pointEnd Point) (string, error) {
+	// create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		XMLNs: []string{
+			`xmlns:tr2="http://www.onvif.org/ver20/media/wsdl"`,
+			`xmlns:tt="http://www.onvif.org/ver10/schema"`,
+		},
+		Action: "http://www.onvif.org/ver20/media/wsdl/CreateMask",
+		Body: `<tr2:CreateMask xmlns="http://www.onvif.org/ver20/media/wsdl">
+						<tr2:Mask>
+							<tr2:ConfigurationToken>` + configurationToken + `</tr2:ConfigurationToken>
+							<tr2:Polygon>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointStart.Y) + `" x="` + intToString(pointStart.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointEnd.Y) + `" x="` + intToString(pointEnd.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointStart.Y) + `" x="` + intToString(pointStart.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointEnd.Y) + `" x="` + intToString(pointEnd.X) + `"></Point>
+							</tr2:Polygon>
+							<tr2:Type>Blurred</tr2:Type>
+							<tr2:Enabled>true</tr2:Enabled>
+						</tr2:Mask>
+					</tr2:CreateMask>`,
+	}
+
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return "", err
+	}
+
+	// parse response
+	ifOSDsResponse, err := response.ValueForPath("Envelope.Body.CreateMaskResponse.Token")
+	if err != nil {
+		return "", err
+	}
+
+	glog.Info("Data %v", interfaceToString(ifOSDsResponse))
+	return interfaceToString(ifOSDsResponse), nil
+}
+
+func (device Device) UpdateMask(maskToken, configurationToken string, pointStart, pointEnd Point, enable bool) error {
+	// create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		XMLNs: []string{
+			`xmlns:tr2="http://www.onvif.org/ver20/media/wsdl"`,
+			`xmlns:tt="http://www.onvif.org/ver10/schema"`,
+		},
+		Action: "http://www.onvif.org/ver20/media/wsdl/SetMask",
+		Body: `<tr2:SetMask xmlns="http://www.onvif.org/ver20/media/wsdl">
+						<tr2:Mask>
+							<token>` + maskToken + `</token>
+							<tr2:ConfigurationToken>` + configurationToken + `</tr2:ConfigurationToken>
+							<tr2:Polygon>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointStart.Y) + `" x="` + intToString(pointStart.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointEnd.Y) + `" x="` + intToString(pointEnd.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointStart.Y) + `" x="` + intToString(pointStart.X) + `"></Point>
+								<Point xmlns="http://www.onvif.org/ver10/schema" y="` + intToString(pointEnd.Y) + `" x="` + intToString(pointEnd.X) + `"></Point>
+							</tr2:Polygon>
+							<tr2:Type>Blurred</tr2:Type>
+							<tr2:Enabled>` + boolToString(enable) + `</tr2:Enabled>
+						</tr2:Mask>
+					</tr2:SetMask>`,
+	}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return err
+	}
+
+	// parse response
+	_, err = response.ValueForPath("Envelope.Body.SetMaskResponse")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
