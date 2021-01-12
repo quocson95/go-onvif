@@ -87,15 +87,16 @@ type H264Configuration struct {
 }
 
 type VideoEncoderConfig struct {
-	Name           string
-	Token          string
-	Encoding       string
-	Quality        float64
-	RateControl    VideoRateControl
-	Resolution     MediaBounds
-	SessionTimeout string
-	H264           H264Configuration
-	Multicast      Multicast
+	Name                string
+	Token               string
+	Encoding            string
+	Quality             float64
+	RateControl         VideoRateControl
+	Resolution          MediaBounds
+	SessionTimeout      string
+	H264                H264Configuration
+	Multicast           Multicast
+	GuaranteedFrameRate bool
 }
 
 // AudioEncoderConfig contains configuration of an audio encoder

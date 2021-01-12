@@ -223,6 +223,7 @@ func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, erro
 			}
 			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
+			videoEncoder.GuaranteedFrameRate = interfaceToBool(mapVideoEncoder["GuaranteedFrameRate"])
 
 			// parse Resolution
 			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string]interface{}); ok {
@@ -273,38 +274,38 @@ func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, erro
 	return result, nil
 }
 
-func (device Device) SetVideoEncoderConfiguration(profile MediaProfile) error {
+func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncoderConfig) error {
 	soap := SOAP{
 		XMLNs:    mediaXMLNs,
 		User:     device.User,
 		Password: device.Password,
-		Body: `<trt:SetVideoEncoderConfiguration>
-					<trt:Configuration token="` + profile.VideoEncoderConfig.Token + `">
-						<tt:Name>` + profile.VideoEncoderConfig.Name + `</tt:Name>
-						<tt:Encoding>` + profile.VideoEncoderConfig.Encoding + `</tt:Encoding>
-						<tt:Quality>` + float64ToString(profile.VideoEncoderConfig.Quality) + `</tt:Quality>
-						<tt:SessionTimeout>` + profile.VideoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
+		Body: `<trt:SetVideoEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<trt:Configuration token="` + videoEncoderConfig.Token + `">
+						<tt:Name>` + videoEncoderConfig.Name + `</tt:Name>
+						<tt:Encoding>` + videoEncoderConfig.Encoding + `</tt:Encoding>
+						<tt:Quality>` + float64ToString(videoEncoderConfig.Quality) + `</tt:Quality>
+						<tt:SessionTimeout>` + videoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
 						<tt:Resolution>
-							<tt:Width>` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Width) + `</tt:Width>
-							<tt:Height>` + strconv.Itoa(profile.VideoEncoderConfig.Resolution.Height) + `</tt:Height>
+							<tt:Width>` + strconv.Itoa(videoEncoderConfig.Resolution.Width) + `</tt:Width>
+							<tt:Height>` + strconv.Itoa(videoEncoderConfig.Resolution.Height) + `</tt:Height>
 						</tt:Resolution>
 						<tt:RateControl>
-							<tt:FrameRateLimit>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.FrameRateLimit) + `</tt:FrameRateLimit>
-							<tt:EncodingInterval>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.EncodingInterval) + `</tt:EncodingInterval>
-							<tt:BitrateLimit>` + strconv.Itoa(profile.VideoEncoderConfig.RateControl.BitrateLimit) + `</tt:BitrateLimit>
+							<tt:FrameRateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.FrameRateLimit) + `</tt:FrameRateLimit>
+							<tt:EncodingInterval>` + strconv.Itoa(videoEncoderConfig.RateControl.EncodingInterval) + `</tt:EncodingInterval>
+							<tt:BitrateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.BitrateLimit) + `</tt:BitrateLimit>
 						</tt:RateControl>
 						<tt:H264>
-							<tt:GovLength>` + strconv.Itoa(profile.VideoEncoderConfig.H264.GovLength) + `</tt:GovLength>
-							<tt:H264Profile>` + profile.VideoEncoderConfig.H264.H264Profile + `</tt:H264Profile>
+							<tt:GovLength>` + strconv.Itoa(videoEncoderConfig.H264.GovLength) + `</tt:GovLength>
+							<tt:H264Profile>` + videoEncoderConfig.H264.H264Profile + `</tt:H264Profile>
 						</tt:H264>
 						<tt:Multicast>
 							<tt:Address>
-								<tt:Type>` + profile.VideoEncoderConfig.Multicast.Address.Type + `</tt:Type>
-								<tt:IPv4Address>` + profile.VideoEncoderConfig.Multicast.Address.IPv4Address + `</tt:IPv4Address>
+								<tt:Type>` + videoEncoderConfig.Multicast.Address.Type + `</tt:Type>
+								<tt:IPv4Address>` + videoEncoderConfig.Multicast.Address.IPv4Address + `</tt:IPv4Address>
 							</tt:Address>
-							<tt:Port>` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.Port) + `</tt:Port>
-							<tt:TTL>` + strconv.Itoa(profile.VideoEncoderConfig.Multicast.TTL) + `</tt:TTL>
-							<tt:AutoStart>` + strconv.FormatBool(profile.VideoEncoderConfig.Multicast.AutoStart) + `</tt:AutoStart>
+							<tt:Port>` + strconv.Itoa(videoEncoderConfig.Multicast.Port) + `</tt:Port>
+							<tt:TTL>` + strconv.Itoa(videoEncoderConfig.Multicast.TTL) + `</tt:TTL>
+							<tt:AutoStart>` + strconv.FormatBool(videoEncoderConfig.Multicast.AutoStart) + `</tt:AutoStart>
 						</tt:Multicast>
 					</trt:Configuration>
 					<trt:ForcePersistence>true</trt:ForcePersistence>
