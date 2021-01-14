@@ -390,10 +390,11 @@ type IntRange struct {
 }
 
 type H264Options struct {
-	ResolutionsAvailable  MediaBounds
+	ResolutionsAvailable  []MediaBounds
 	GovLengthRange        IntRange
 	FrameRateRange        IntRange
 	EncodingIntervalRange IntRange
+	BitrateRange          IntRange
 	H264ProfilesSupported []string // 'Baseline', 'Main', 'Extended', 'High'
 }
 

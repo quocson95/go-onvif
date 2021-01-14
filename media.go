@@ -427,10 +427,19 @@ func (device Device) GetVideoEncoderConfigurationOptions(configurationToken stri
 			h264Options := H264Options{}
 
 			// parse Resolution Available
-			if mapResolution, ok := mapH264["ResolutionsAvailable"].(map[string]interface{}); ok {
-				h264Options.ResolutionsAvailable.Height = interfaceToInt(mapResolution["Height"])
-				h264Options.ResolutionsAvailable.Width = interfaceToInt(mapResolution["Width"])
+			if resolutionsSupported, ok := mapH264["ResolutionsAvailable"].([]interface{}); ok {
+				h264Options.ResolutionsAvailable = make([]MediaBounds, 0)
+				for _, H264ProfileSupported := range resolutionsSupported {
+					if mapH264ProfileSupported, ok := H264ProfileSupported.(map[string]interface{}); ok {
+						bound := MediaBounds{
+							Height: interfaceToInt(mapH264ProfileSupported["Height"]),
+							Width:  interfaceToInt(mapH264ProfileSupported["Width"]),
+						}
+						h264Options.ResolutionsAvailable = append(h264Options.ResolutionsAvailable, bound)
+					}
+				}
 			}
+
 			// parse GovLengthRange
 			if mapGovLengthRange, ok := mapH264["GovLengthRange"].(map[string]interface{}); ok {
 				h264Options.GovLengthRange.Min = interfaceToInt(mapGovLengthRange["Min"])
@@ -454,8 +463,17 @@ func (device Device) GetVideoEncoderConfigurationOptions(configurationToken stri
 				}
 				h264Options.H264ProfilesSupported = h264Supported
 			}
-
 			result.H264 = h264Options
+		}
+
+		// parse Encoding Interval Range
+		if mapExtension, ok := mapOptions["Extension"].(map[string]interface{}); ok {
+			if mapH264, ok := mapExtension["H264"].(map[string]interface{}); ok {
+				if mapBitrateRange, ok := mapH264["BitrateRange"].(map[string]interface{}); ok {
+					result.H264.BitrateRange.Min = interfaceToInt(mapBitrateRange["Min"])
+					result.H264.BitrateRange.Max = interfaceToInt(mapBitrateRange["Max"])
+				}
+			}
 		}
 	}
 
