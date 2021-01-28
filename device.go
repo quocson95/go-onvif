@@ -382,21 +382,18 @@ func (device Device) GetNTP() (NTPInformation, error) {
 	// parse interface to struct
 	if mapNTPInformation, ok := ifaceNTPInformation.(map[string]interface{}); ok {
 		ntpInformation.FromDHCP = interfaceToBool(mapNTPInformation["FromDHCP"])
-
+		ntpInformation.NTPNetworkHost = make([]NetworkHost, 0)
 		if ntpInformation.FromDHCP {
 			if ifaceManuals, ok := mapNTPInformation["NTPFromDHCP"].([]interface{}); ok {
 				for _, ifaceManual := range ifaceManuals {
 					if mapNTPManual, ok := ifaceManual.(map[string]interface{}); ok {
-						if interfaceToString(mapNTPManual["Type"]) == "IPv4" {
-							NTPNetworkHost := NetworkHost{}
+						NTPNetworkHost := NetworkHost{}
 
-							NTPNetworkHost.Type = interfaceToString(mapNTPManual["Type"])
-							NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
-							NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
+						NTPNetworkHost.Type = interfaceToString(mapNTPManual["Type"])
+						NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
+						NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
 
-							ntpInformation.NTPNetworkHost = NTPNetworkHost
-							break
-						}
+						ntpInformation.NTPNetworkHost = append(ntpInformation.NTPNetworkHost, NTPNetworkHost)
 					}
 				}
 			} else {
@@ -407,7 +404,7 @@ func (device Device) GetNTP() (NTPInformation, error) {
 					NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
 					NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
 
-					ntpInformation.NTPNetworkHost = NTPNetworkHost
+					ntpInformation.NTPNetworkHost = append(ntpInformation.NTPNetworkHost, NTPNetworkHost)
 				}
 			}
 
@@ -415,16 +412,13 @@ func (device Device) GetNTP() (NTPInformation, error) {
 			if ifaceManuals, ok := mapNTPInformation["NTPManual"].([]interface{}); ok {
 				for _, ifaceManual := range ifaceManuals {
 					if mapNTPManual, ok := ifaceManual.(map[string]interface{}); ok {
-						if interfaceToString(mapNTPManual["Type"]) == "IPv4" {
-							NTPNetworkHost := NetworkHost{}
+						NTPNetworkHost := NetworkHost{}
 
-							NTPNetworkHost.Type = interfaceToString(mapNTPManual["Type"])
-							NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
-							NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
+						NTPNetworkHost.Type = interfaceToString(mapNTPManual["Type"])
+						NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
+						NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
 
-							ntpInformation.NTPNetworkHost = NTPNetworkHost
-							break
-						}
+						ntpInformation.NTPNetworkHost = append(ntpInformation.NTPNetworkHost, NTPNetworkHost)
 					}
 				}
 			} else {
@@ -435,7 +429,7 @@ func (device Device) GetNTP() (NTPInformation, error) {
 					NTPNetworkHost.IPv4Address = interfaceToString(mapNTPManual["IPv4Address"])
 					NTPNetworkHost.DNSname = interfaceToString(mapNTPManual["DNSname"])
 
-					ntpInformation.NTPNetworkHost = NTPNetworkHost
+					ntpInformation.NTPNetworkHost = append(ntpInformation.NTPNetworkHost, NTPNetworkHost)
 				}
 			}
 		}
@@ -451,11 +445,11 @@ func (device Device) SetNTP(ntpInformation NTPInformation) error {
 		User:     device.User,
 		Password: device.Password,
 		Body: `<SetNTP xmlns="http://www.onvif.org/ver10/device/wsdl">
-					<FromDHCP xmlns="http://www.onvif.org/ver10/schema">` + boolToString(ntpInformation.FromDHCP) + `</FromDHCP>
+					<FromDHCP>` + boolToString(ntpInformation.FromDHCP) + `</FromDHCP>
 					<NTPManual>
-						<Type xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost.Type + `</Type>
-						<IPv4Address xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost.IPv4Address + `</IPv4Address>
-						<DNSname xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost.DNSname + `</DNSname>
+						<Type xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost[0].Type + `</Type>
+						<IPv4Address xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost[0].IPv4Address + `</IPv4Address>
+						<DNSname xmlns="http://www.onvif.org/ver10/schema">` + ntpInformation.NTPNetworkHost[0].DNSname + `</DNSname>
 					</NTPManual>
 				</SetNTP>`,
 	}

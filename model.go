@@ -172,7 +172,7 @@ type NetworkHost struct {
 
 type NTPInformation struct {
 	FromDHCP       bool
-	NTPNetworkHost NetworkHost // NetworkHost of NTPFromDHCP if FromDHCP is true, else of NTPManual
+	NTPNetworkHost []NetworkHost // NetworkHost of NTPFromDHCP if FromDHCP is true, else of NTPManual
 }
 
 // DNS Information struct
