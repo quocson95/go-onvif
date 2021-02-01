@@ -289,6 +289,7 @@ func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncode
 							<tt:Width>` + strconv.Itoa(videoEncoderConfig.Resolution.Width) + `</tt:Width>
 							<tt:Height>` + strconv.Itoa(videoEncoderConfig.Resolution.Height) + `</tt:Height>
 						</tt:Resolution>
+						<tt:GuaranteedFrameRate>` + boolToString(videoEncoderConfig.GuaranteedFrameRate) + `</tt:GuaranteedFrameRate>
 						<tt:RateControl>
 							<tt:FrameRateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.FrameRateLimit) + `</tt:FrameRateLimit>
 							<tt:EncodingInterval>` + strconv.Itoa(videoEncoderConfig.RateControl.EncodingInterval) + `</tt:EncodingInterval>
