@@ -276,40 +276,40 @@ func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, erro
 
 func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncoderConfig) error {
 	soap := SOAP{
-		XMLNs:    mediaXMLNs,
 		User:     device.User,
 		Password: device.Password,
-		Body: `<trt:SetVideoEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<trt:Configuration token="` + videoEncoderConfig.Token + `">
-						<tt:Name>` + videoEncoderConfig.Name + `</tt:Name>
-						<tt:Encoding>` + videoEncoderConfig.Encoding + `</tt:Encoding>
-						<tt:Quality>` + float64ToString(videoEncoderConfig.Quality) + `</tt:Quality>
-						<tt:SessionTimeout>` + videoEncoderConfig.SessionTimeout + `</tt:SessionTimeout>
-						<tt:Resolution>
-							<tt:Width>` + strconv.Itoa(videoEncoderConfig.Resolution.Width) + `</tt:Width>
-							<tt:Height>` + strconv.Itoa(videoEncoderConfig.Resolution.Height) + `</tt:Height>
-						</tt:Resolution>
-						<tt:RateControl>
-							<tt:FrameRateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.FrameRateLimit) + `</tt:FrameRateLimit>
-							<tt:EncodingInterval>` + strconv.Itoa(videoEncoderConfig.RateControl.EncodingInterval) + `</tt:EncodingInterval>
-							<tt:BitrateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.BitrateLimit) + `</tt:BitrateLimit>
-						</tt:RateControl>
-						<tt:H264>
-							<tt:GovLength>` + strconv.Itoa(videoEncoderConfig.H264.GovLength) + `</tt:GovLength>
-							<tt:H264Profile>` + videoEncoderConfig.H264.H264Profile + `</tt:H264Profile>
-						</tt:H264>
-						<tt:Multicast>
-							<tt:Address>
-								<tt:Type>` + videoEncoderConfig.Multicast.Address.Type + `</tt:Type>
-								<tt:IPv4Address>` + videoEncoderConfig.Multicast.Address.IPv4Address + `</tt:IPv4Address>
+		Body: `<SetVideoEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<:Configuration token="` + videoEncoderConfig.Token + `">
+						<Name>` + videoEncoderConfig.Name + `</Name>
+						<Encoding>` + videoEncoderConfig.Encoding + `</Encoding>
+						<Quality>` + float64ToString(videoEncoderConfig.Quality) + `</Quality>
+						<SessionTimeout>` + videoEncoderConfig.SessionTimeout + `</SessionTimeout>
+						<Resolution>
+							<Width>` + strconv.Itoa(videoEncoderConfig.Resolution.Width) + `</Width>
+							<Height>` + strconv.Itoa(videoEncoderConfig.Resolution.Height) + `</Height>
+						</Resolution>
+						<GuaranteedFrameRate>` + boolToString(videoEncoderConfig.GuaranteedFrameRate) + `</GuaranteedFrameRate>
+						<RateControl>
+							<FrameRateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.FrameRateLimit) + `</FrameRateLimit>
+							<EncodingInterval>` + strconv.Itoa(videoEncoderConfig.RateControl.EncodingInterval) + `</EncodingInterval>
+							<BitrateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.BitrateLimit) + `</BitrateLimit>
+						</RateControl>
+						<H264>
+							<GovLength>` + strconv.Itoa(videoEncoderConfig.H264.GovLength) + `</GovLength>
+							<H264Profile>` + videoEncoderConfig.H264.H264Profile + `</H264Profile>
+						</H264>
+						<Multicast>
+							<Address>
+								<Type>` + videoEncoderConfig.Multicast.Address.Type + `</Type>
+								<IPv4Address>` + videoEncoderConfig.Multicast.Address.IPv4Address + `</IPv4Address>
 							</tt:Address>
-							<tt:Port>` + strconv.Itoa(videoEncoderConfig.Multicast.Port) + `</tt:Port>
-							<tt:TTL>` + strconv.Itoa(videoEncoderConfig.Multicast.TTL) + `</tt:TTL>
-							<tt:AutoStart>` + strconv.FormatBool(videoEncoderConfig.Multicast.AutoStart) + `</tt:AutoStart>
-						</tt:Multicast>
-					</trt:Configuration>
-					<trt:ForcePersistence>true</trt:ForcePersistence>
-				</trt:SetVideoEncoderConfiguration>`,
+							<Port>` + strconv.Itoa(videoEncoderConfig.Multicast.Port) + `</Port>
+							<TTL>` + strconv.Itoa(videoEncoderConfig.Multicast.TTL) + `</TTL>
+							<AutoStart>` + strconv.FormatBool(videoEncoderConfig.Multicast.AutoStart) + `</AutoStart>
+						</Multicast>
+					</Configuration>
+					<ForcePersistence>true</ForcePersistence>
+				</SetVideoEncoderConfiguration>`,
 	}
 
 	response, err := soap.SendRequest(device.XAddr)
