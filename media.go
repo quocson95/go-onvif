@@ -279,7 +279,7 @@ func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncode
 		User:     device.User,
 		Password: device.Password,
 		Body: `<SetVideoEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
-					<:Configuration token="` + videoEncoderConfig.Token + `">
+					<Configuration token="` + videoEncoderConfig.Token + `">
 						<Name>` + videoEncoderConfig.Name + `</Name>
 						<Encoding>` + videoEncoderConfig.Encoding + `</Encoding>
 						<Quality>` + float64ToString(videoEncoderConfig.Quality) + `</Quality>
