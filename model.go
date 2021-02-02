@@ -97,6 +97,7 @@ type VideoEncoderConfig struct {
 	H264                H264Configuration
 	Multicast           Multicast
 	GuaranteedFrameRate bool
+	UseCount            int
 }
 
 // AudioEncoderConfig contains configuration of an audio encoder

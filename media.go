@@ -2,7 +2,6 @@ package onvif
 
 import (
 	"github.com/golang/glog"
-	"strconv"
 )
 
 var mediaXMLNs = []string{
@@ -224,7 +223,7 @@ func (device Device) GetVideoEncoderConfigurations() ([]VideoEncoderConfig, erro
 			videoEncoder.Quality = interfaceToFloat64(mapVideoEncoder["Quality"])
 			videoEncoder.SessionTimeout = interfaceToString(mapVideoEncoder["SessionTimeout"])
 			videoEncoder.GuaranteedFrameRate = interfaceToBool(mapVideoEncoder["GuaranteedFrameRate"])
-
+			videoEncoder.UseCount = interfaceToInt(mapVideoEncoder["UseCount"])
 			// parse Resolution
 			if mapResolution, ok := mapVideoEncoder["Resolution"].(map[string]interface{}); ok {
 				resolution := MediaBounds{}
@@ -278,35 +277,32 @@ func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncode
 	soap := SOAP{
 		User:     device.User,
 		Password: device.Password,
+		Action:   "http://www.onvif.org/ver10/media/wsdl/SetVideoEncoderConfiguration",
 		Body: `<SetVideoEncoderConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
 					<Configuration token="` + videoEncoderConfig.Token + `">
-						<Name>` + videoEncoderConfig.Name + `</Name>
-						<Encoding>` + videoEncoderConfig.Encoding + `</Encoding>
-						<Quality>` + float64ToString(videoEncoderConfig.Quality) + `</Quality>
-						<SessionTimeout>` + videoEncoderConfig.SessionTimeout + `</SessionTimeout>
-						<Resolution>
-							<Width>` + strconv.Itoa(videoEncoderConfig.Resolution.Width) + `</Width>
-							<Height>` + strconv.Itoa(videoEncoderConfig.Resolution.Height) + `</Height>
+						<Name xmlns="http://www.onvif.org/ver10/schema">` + videoEncoderConfig.Name + `</Name>
+						<UseCount xmlns="http://www.onvif.org/ver10/schema">` + intToString(videoEncoderConfig.UseCount) + `</UseCount>
+						<Encoding xmlns="http://www.onvif.org/ver10/schema">` + videoEncoderConfig.Encoding + `</Encoding>
+						<Resolution xmlns="http://www.onvif.org/ver10/schema">
+							<Width>` + intToString(videoEncoderConfig.Resolution.Width) + `</Width>
+							<Height>` + intToString(videoEncoderConfig.Resolution.Height) + `</Height>
 						</Resolution>
-						<GuaranteedFrameRate>` + boolToString(videoEncoderConfig.GuaranteedFrameRate) + `</GuaranteedFrameRate>
-						<RateControl>
-							<FrameRateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.FrameRateLimit) + `</FrameRateLimit>
-							<EncodingInterval>` + strconv.Itoa(videoEncoderConfig.RateControl.EncodingInterval) + `</EncodingInterval>
-							<BitrateLimit>` + strconv.Itoa(videoEncoderConfig.RateControl.BitrateLimit) + `</BitrateLimit>
+						<Quality xmlns="http://www.onvif.org/ver10/schema">` + float64ToString(videoEncoderConfig.Quality) + `</Quality>
+						<RateControl xmlns="http://www.onvif.org/ver10/schema">
+							<FrameRateLimit>` + intToString(videoEncoderConfig.RateControl.FrameRateLimit) + `</FrameRateLimit>
+							<EncodingInterval>` + intToString(videoEncoderConfig.RateControl.EncodingInterval) + `</EncodingInterval>
+							<BitrateLimit>` + intToString(videoEncoderConfig.RateControl.BitrateLimit) + `</BitrateLimit>
 						</RateControl>
-						<H264>
-							<GovLength>` + strconv.Itoa(videoEncoderConfig.H264.GovLength) + `</GovLength>
-							<H264Profile>` + videoEncoderConfig.H264.H264Profile + `</H264Profile>
-						</H264>
-						<Multicast>
+						<Multicast xmlns="http://www.onvif.org/ver10/schema">
 							<Address>
-								<Type>` + videoEncoderConfig.Multicast.Address.Type + `</Type>
-								<IPv4Address>` + videoEncoderConfig.Multicast.Address.IPv4Address + `</IPv4Address>
-							</tt:Address>
-							<Port>` + strconv.Itoa(videoEncoderConfig.Multicast.Port) + `</Port>
-							<TTL>` + strconv.Itoa(videoEncoderConfig.Multicast.TTL) + `</TTL>
-							<AutoStart>` + strconv.FormatBool(videoEncoderConfig.Multicast.AutoStart) + `</AutoStart>
+								<Type>IPv4</Type>
+								<IPv4Address>0.0.0.0</IPv4Address>
+							</Address>
+							<Port>0</Port>
+							<TTL>5</TTL>
+							<AutoStart>false</AutoStart>
 						</Multicast>
+						<SessionTimeout xmlns="http://www.onvif.org/ver10/schema">` + videoEncoderConfig.SessionTimeout + `</SessionTimeout>
 					</Configuration>
 					<ForcePersistence>true</ForcePersistence>
 				</SetVideoEncoderConfiguration>`,
