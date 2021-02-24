@@ -46,7 +46,7 @@ func (device Device) GetInformation() (DeviceInformation, error) {
 }
 
 // GetInformation fetch information of ONVIF camera
-func (device Device) GetNetworkInterfaces() (NetworkInterfaces, error) {
+func (device Device) GetNetworkInterfaces() ([]NetworkInterface, error) {
 	// Create SOAP
 	soap := SOAP{
 		Body:     "<tds:GetNetworkInterfaces/>",
@@ -56,12 +56,88 @@ func (device Device) GetNetworkInterfaces() (NetworkInterfaces, error) {
 	}
 
 	// Send SOAP request
-	_, err := soap.SendRequest(device.XAddr)
+	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
-		return NetworkInterfaces{}, err
+		return nil, err
 	}
 
-	return NetworkInterfaces{}, nil
+	// Parse response to interface
+	networkInterfacesInfos, err := response.ValuesForPath("Envelope.Body.GetNetworkInterfacesResponse.NetworkInterfaces")
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse interface to struct
+	result := make([]NetworkInterface, 0)
+	for _, networkInterfacesInfo := range networkInterfacesInfos {
+		if mapNetworkInterfacesInfo, ok := networkInterfacesInfo.(map[string]interface{}); ok {
+			glog.Infof("mapNetworkInterfacesInfo %v", mapNetworkInterfacesInfo)
+			networkInterface := NetworkInterface{}
+			networkInterface.Token = interfaceToString(mapNetworkInterfacesInfo["-token"])
+			networkInterface.Enabled = interfaceToBool(mapNetworkInterfacesInfo["Enabled"])
+			if mapIPv4Info, ok := mapNetworkInterfacesInfo["IPv4"].(map[string]interface{}); ok {
+				networkInterface.IPv4.Enabled = interfaceToBool(mapIPv4Info["Enabled"])
+				if mapIPv4Config, ok := mapIPv4Info["Config"].(map[string]interface{}); ok {
+					networkInterface.IPv4.Config.DHCP = interfaceToBool(mapIPv4Config["DHCP"])
+					if mapIPv4FromDHCPConfig, ok := mapIPv4Config["FromDHCP"].(map[string]interface{}); ok {
+						networkInterface.IPv4.Config.FromDHCP.Address = interfaceToString(mapIPv4FromDHCPConfig["Address"])
+						networkInterface.IPv4.Config.FromDHCP.PrefixLength = interfaceToInt(mapIPv4FromDHCPConfig["PrefixLength"])
+					}
+					if mapIPv4ManualConfig, ok := mapIPv4Config["Manual"].(map[string]interface{}); ok {
+						networkInterface.IPv4.Config.Manual.Address = interfaceToString(mapIPv4ManualConfig["Address"])
+						networkInterface.IPv4.Config.Manual.PrefixLength = interfaceToInt(mapIPv4ManualConfig["PrefixLength"])
+					}
+					if mapIPv4LinkLocalConfig, ok := mapIPv4Config["LinkLocal"].(map[string]interface{}); ok {
+						networkInterface.IPv4.Config.LinkLocal.Address = interfaceToString(mapIPv4LinkLocalConfig["Address"])
+						networkInterface.IPv4.Config.LinkLocal.PrefixLength = interfaceToInt(mapIPv4LinkLocalConfig["PrefixLength"])
+					}
+				}
+			}
+			if mapInfo, ok := mapNetworkInterfacesInfo["Info"].(map[string]interface{}); ok {
+				networkInterface.Info.Name = interfaceToString(mapInfo["Name"])
+				networkInterface.Info.MTU = interfaceToInt(mapInfo["MTU"])
+				networkInterface.Info.HwAddress = interfaceToString(mapInfo["HwAddress"])
+			}
+			result = append(result, networkInterface)
+		}
+	}
+
+	return result, nil
+}
+
+func (device Device) SetNetworkInterfaces(networkInterface NetworkInterface) error {
+	//create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		Body: `<SetNetworkInterfaces xmlns="http://www.onvif.org/ver10/device/wsdl">
+					<InterfaceToken>` + networkInterface.Token + `</InterfaceToken>
+					<NetworkInterface>
+						<Enabled>` + boolToString(networkInterface.Enabled) + `</Enabled>
+						<MTU>` + intToString(networkInterface.Info.MTU) + `</MTU>
+						<IPv4>
+							<Enabled>true</Enabled>
+							<Manual>
+								<Address>` + networkInterface.IPv4.Config.Manual.Address + `</Address>
+								<PrefixLength>` + intToString(networkInterface.IPv4.Config.Manual.PrefixLength) + `</PrefixLength>
+							</Manual>
+							<DHCP>` + boolToString(networkInterface.IPv4.Config.DHCP) + `</DHCP>
+						</IPv4>
+					</NetworkInterface>
+ 			  </SetNetworkInterfaces>`,
+	}
+	// send request
+	response, err := soap.SendRequest(device.XAddr)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = response.ValueForPath("Envelope.Body.SetNetworkDefaultGatewayResponse")
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // GetCapabilities fetch info of ONVIF camera's capabilities

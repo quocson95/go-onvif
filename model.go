@@ -18,10 +18,6 @@ type DeviceInformation struct {
 	SerialNumber    string
 }
 
-// NetworkInterfaces contains information of ONVIF camera
-type NetworkInterfaces struct {
-}
-
 // NetworkCapabilities contains networking capabilities of ONVIF camera
 type NetworkCapabilities struct {
 	DynDNS     bool
