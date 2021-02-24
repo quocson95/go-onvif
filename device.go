@@ -113,9 +113,9 @@ func (device Device) SetNetworkInterfaces(networkInterface NetworkInterface) err
 		Body: `<SetNetworkInterfaces xmlns="http://www.onvif.org/ver10/device/wsdl">
 					<InterfaceToken>` + networkInterface.Token + `</InterfaceToken>
 					<NetworkInterface>
-						<Enabled>` + boolToString(networkInterface.Enabled) + `</Enabled>
-						<MTU>` + intToString(networkInterface.Info.MTU) + `</MTU>
-						<IPv4>
+						<Enabled xmlns="http://www.onvif.org/ver10/schema">` + boolToString(networkInterface.Enabled) + `</Enabled>
+						<MTU xmlns="http://www.onvif.org/ver10/schema">` + intToString(networkInterface.Info.MTU) + `</MTU>
+						<IPv4 xmlns="http://www.onvif.org/ver10/schema">
 							<Enabled>true</Enabled>
 							<Manual>
 								<Address>` + networkInterface.IPv4.Config.Manual.Address + `</Address>
@@ -133,7 +133,7 @@ func (device Device) SetNetworkInterfaces(networkInterface NetworkInterface) err
 		return err
 	}
 
-	_, err = response.ValueForPath("Envelope.Body.SetNetworkDefaultGatewayResponse")
+	_, err = response.ValueForPath("Envelope.Body.SetNetworkInterfacesResponse")
 	if err != nil {
 		return err
 	}
