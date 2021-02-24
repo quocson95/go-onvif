@@ -181,7 +181,7 @@ type IPAddress struct {
 type DNSInformation struct {
 	FromDHCP     bool
 	SearchDomain string
-	DNSAddress   IPAddress // IPAddress of DNSFromDHCP if FromDHCP is true, else of DNSManual
+	DNSAddress   []IPAddress // IPAddress of DNSFromDHCP if FromDHCP is true, else of DNSManual
 }
 
 // DynamicDNSInformation

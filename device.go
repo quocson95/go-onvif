@@ -605,14 +605,26 @@ func (device Device) GetDNS() (DNSInformation, error) {
 		dnsInformation.SearchDomain = interfaceToString(mapDNSInformation["SearchDomain"])
 
 		if dnsInformation.FromDHCP {
-			if mapDNSFromDHCP, ok := mapDNSInformation["DNSFromDHCP"].(map[string]interface{}); ok {
-				dnsInformation.DNSAddress.Type = interfaceToString(mapDNSFromDHCP["Type"])
-				dnsInformation.DNSAddress.IPv4Address = interfaceToString(mapDNSFromDHCP["IPv4Address"])
+			if mapListDNSFromDHCP, ok := mapDNSInformation["DNSFromDHCP"].([]interface{}); ok {
+				for _, mapDNSFromDHCPIf := range mapListDNSFromDHCP {
+					DNSAddress := IPAddress{}
+					if mapDNSFromDHCP, ok := mapDNSFromDHCPIf.(map[string]interface{}); ok {
+						DNSAddress.Type = interfaceToString(mapDNSFromDHCP["Type"])
+						DNSAddress.IPv4Address = interfaceToString(mapDNSFromDHCP["IPv4Address"])
+					}
+					dnsInformation.DNSAddress = append(dnsInformation.DNSAddress, DNSAddress)
+				}
 			}
 		} else {
-			if mapDNSManual, ok := mapDNSInformation["DNSManual"].(map[string]interface{}); ok {
-				dnsInformation.DNSAddress.Type = interfaceToString(mapDNSManual["Type"])
-				dnsInformation.DNSAddress.IPv4Address = interfaceToString(mapDNSManual["IPv4Address"])
+			if mapListDNSManual, ok := mapDNSInformation["DNSManual"].([]interface{}); ok {
+				for _, mapDNSManualIf := range mapListDNSManual {
+					DNSAddress := IPAddress{}
+					if mapDNSManual, ok := mapDNSManualIf.(map[string]interface{}); ok {
+						DNSAddress.Type = interfaceToString(mapDNSManual["Type"])
+						DNSAddress.IPv4Address = interfaceToString(mapDNSManual["IPv4Address"])
+					}
+					dnsInformation.DNSAddress = append(dnsInformation.DNSAddress, DNSAddress)
+				}
 			}
 		}
 	}
@@ -627,10 +639,11 @@ func (device Device) SetDNS(dnsInformation DNSInformation) error {
 		User:     device.User,
 		Password: device.Password,
 		Body: `<SetDNS xmlns="http://www.onvif.org/ver10/device/wsdl">
-				<FromDHCP xmlns="http://www.onvif.org/ver10/schema">` + boolToString(dnsInformation.FromDHCP) + `</FromDHCP>
-				<SearchDomain xmlns="http://www.onvif.org/ver10/schema">` + dnsInformation.SearchDomain + `</SearchDomain>
-				<DNSManual><Type xmlns="http://www.onvif.org/ver10/schema">` + dnsInformation.DNSAddress.Type + `</Type>
-						   <IPv4Address xmlns="http://www.onvif.org/ver10/schema">` + dnsInformation.DNSAddress.IPv4Address + `</IPv4Address>
+				<FromDHCP>` + boolToString(dnsInformation.FromDHCP) + `</FromDHCP>
+				<SearchDomain>` + dnsInformation.SearchDomain + `</SearchDomain>
+				<DNSManual>
+					<Type xmlns="http://www.onvif.org/ver10/schema">` + dnsInformation.DNSAddress[0].Type + `</Type>
+					<IPv4Address xmlns="http://www.onvif.org/ver10/schema">` + dnsInformation.DNSAddress[0].IPv4Address + `</IPv4Address>
 				</DNSManual>
 			  </SetDNS>`,
 	}
