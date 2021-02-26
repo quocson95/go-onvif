@@ -78,6 +78,11 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 		return nil, errors.New(fault)
 	}
 
+	fault, _ = mapXML.ValueForPathString("Envelope.Body.Fault.faultstring")
+	if fault != "" {
+		return nil, errors.New(fault)
+	}
+
 	return mapXML, nil
 }
 

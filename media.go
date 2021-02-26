@@ -319,6 +319,35 @@ func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncode
 	return nil
 }
 
+func (device Device) SetVideoSourceConfiguration(videoSourceConfig VideoSourceConfiguration) error {
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		Action:   "http://www.onvif.org/ver10/media/wsdl/SetVideoEncoderConfiguration",
+		Body: `<SetVideoSourceConfiguration xmlns="http://www.onvif.org/ver10/media/wsdl">
+					<Configuration token="` + videoSourceConfig.Token + `">
+						<Name xmlns="http://www.onvif.org/ver10/schema">` + videoSourceConfig.Name + `</Name>
+						<Bounds xmlns="http://www.onvif.org/ver10/schema" 
+								x="` + intToString(videoSourceConfig.Bounds.X) + `" 
+								y="` + intToString(videoSourceConfig.Bounds.Y) + `"
+								width="` + intToString(videoSourceConfig.Bounds.Width) + `"
+								height="` + intToString(videoSourceConfig.Bounds.Height) + `"/>
+						<SourceToken xmlns="http://www.onvif.org/ver10/schema">` + videoSourceConfig.SourceToken + `</SourceToken>
+					</Configuration>
+				</SetVideoSourceConfiguration>`,
+	}
+
+	response, err := soap.SendRequest(device.XAddr)
+	if err != nil {
+		return err
+	}
+	_, err = response.ValueForPath("Envelope.Body.SetVideoSourceConfigurationResponse")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (device Device) GetCompatibleVideoEncoderConfigurations(profileToken string) ([]VideoEncoderConfig, error) {
 	soap := SOAP{
 		Body: `<GetCompatibleVideoEncoderConfigurations xmlns="http://www.onvif.org/ver10/media/wsdl">
