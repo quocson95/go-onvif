@@ -100,7 +100,7 @@ func (device Device) PullMessages(address string) ([]NotificationMessage, error)
 		Password: device.Password,
 		Action:   "http://www.onvif.org/ver10/events/wsdl/PullPointSubscription/PullMessagesRequest",
 		Body: `<PullMessages xmlns="http://www.onvif.org/ver10/events/wsdl">
-					<Timeout>1</Timeout>
+					<Timeout>PT3S</Timeout>
 					<MessageLimit>100</MessageLimit>
 				</PullMessages>`,
 	}
@@ -186,4 +186,33 @@ func (device Device) UnSubscribe(address string) error {
 	}
 
 	return nil
+}
+
+func (device Device) ReNew(address string) (CreatePullPointSubscriptionResponse, error) {
+	// create soap
+	soap := SOAP{
+		User:     device.User,
+		Password: device.Password,
+		Body: `<Renew xmlns="http://docs.oasis-open.org/wsn/b-2">
+						<TerminationTime>PT3600S</TerminationTime>
+					</Renew>`,
+	}
+	result := CreatePullPointSubscriptionResponse{}
+
+	// send request
+	response, err := soap.SendRequest(address)
+	if err != nil {
+		return result, err
+	}
+
+	ifaceResult, err := response.ValueForPath("Envelope.Body.RenewResponse")
+	if err != nil {
+		return result, err
+	}
+
+	if mapMetadata, ok := ifaceResult.(map[string]interface{}); ok {
+		result.CurrentTime = interfaceToString(mapMetadata["CurrentTime"])
+		result.TerminationTime = interfaceToString(mapMetadata["TerminationTime"])
+	}
+	return result, nil
 }
