@@ -80,7 +80,7 @@ func NewTransport(username, password string) *Transport {
 	t.Transport = &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
-			Timeout:   30 * time.Second,
+			Timeout:   5 * time.Second,
 			KeepAlive: 5 * time.Second,
 			DualStack: true,
 		}).DialContext,
