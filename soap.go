@@ -25,6 +25,7 @@ type SOAP struct {
 	Password string
 	TokenAge time.Duration
 	Action   string
+	NoDebug  bool
 }
 
 // SendRequest sends SOAP request to xAddr with digest authenticate
@@ -40,7 +41,9 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 	if soap.User != "" {
 		urlXAddr.User = url.UserPassword(soap.User, soap.Password)
 	}
-	glog.Info(request)
+	if !soap.NoDebug {
+		glog.Info(request)
+	}
 	// Create HTTP request
 	buffer := bytes.NewBuffer([]byte(request))
 	req, err := http.NewRequest("POST", urlXAddr.String(), buffer)
@@ -64,7 +67,9 @@ func (soap SOAP) SendRequest(xaddr string) (mxj.Map, error) {
 		return nil, err
 	}
 
-	glog.Infof("Onvif response: %s", string(responseBody))
+	if !soap.NoDebug {
+		glog.Infof("Onvif response: %s", string(responseBody))
+	}
 
 	// Parse XML to map
 	mapXML, err := mxj.NewMapXml(responseBody)

@@ -103,6 +103,7 @@ func (device Device) PullMessages(address string) ([]NotificationMessage, error)
 					<Timeout>PT3S</Timeout>
 					<MessageLimit>100</MessageLimit>
 				</PullMessages>`,
+		NoDebug: true,
 	}
 
 	var result = make([]NotificationMessage, 0)
