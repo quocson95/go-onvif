@@ -51,8 +51,10 @@ import (
 	"github.com/golang/glog"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var (
@@ -75,7 +77,19 @@ func NewTransport(username, password string) *Transport {
 		Username: username,
 		Password: password,
 	}
-	t.Transport = http.DefaultTransport
+	t.Transport = &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 5 * time.Second,
+			DualStack: true,
+		}).DialContext,
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
 	return t
 }
 
