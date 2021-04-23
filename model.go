@@ -694,3 +694,68 @@ type Mask struct {
 	Type               string
 	Enabled            bool
 }
+
+type CameraDevice struct {
+	Name         string `json:"name"`
+	Manufacturer string `json:"manufacturer"`
+	Model        string `json:"model"`
+	Serial       string `json:"serial"`
+	Mac          string `json:"mac"`
+	HardwareID   string `json:"hardwareId"`
+	XAddr        string `json:"xadd"`
+	User         string `json:"user"`
+	Password     string `json:"password"`
+	Proto        string `json:"proto"`
+}
+
+type Resolution struct {
+	Height int `json:"height"`
+	Width  int `json:"width"`
+}
+
+type RateControl struct {
+	BitRate          int `json:"bitrate"`
+	Fps              int `json:"fps"`
+	EncodingInterval int `json:"encodinginterval"`
+}
+
+type Bound struct {
+	Min int `json:"min"`
+	Max int `json:"max"`
+}
+
+type ProfileSupport struct {
+	ResolutionsAvailable []Resolution `json:"resolutionsAvailable"`
+	FpsRange             Bound        `json:"fpsRange"`
+	GovLength            Bound        `json:"govLength"`
+}
+
+type Stream struct {
+	ProfileToken     string         `json:"profileToken"`
+	VideoEncToken    string         `json:"videoEncToken"`
+	VideoCodec       string         `json:"videoCodec"`
+	StreamURI        string         `json:"streamUri"`
+	Resolution       Resolution     `json:"resolution"`
+	RateControl      RateControl    `json:"rateControl"`
+	ProfileSupport   ProfileSupport `json:"profileSupport"`
+	SnapshotURI      string         `json:"snapshotUri"`
+	VideoSourceToken string         `json:"videoSourceToken"`
+}
+
+type CameraProfile struct {
+	CameraDevice
+	Authorize bool     `json:"authorize"`
+	Streams   []Stream `json:"streams"`
+	LastError string   `json:"lastError"`
+}
+
+type CameraProfileCommandResponse struct {
+	Result string        `json:"result"`
+	Data   CameraProfile `json:"data"`
+}
+
+type OnvifXAddress struct {
+	MediaXAddress string
+	PtzXAddress   string
+	EventXAddress string
+}
