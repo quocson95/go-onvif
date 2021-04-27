@@ -15,7 +15,7 @@ var (
 
 type OnvifData struct {
 	Error string
-	Data  string
+	Data  interface{}
 }
 
 func DiscoveryDevice(interfaceName string, duration int) string {
@@ -48,11 +48,12 @@ func DiscoveryDevice(interfaceName string, duration int) string {
 	}
 
 	// Discover device on interface's network
-	devices, err := discoverDevices(ip.String(), time.Duration(duration)*time.Millisecond)
-	data, _ := json.Marshal(devices)
-
 	result.Error = ""
-	result.Data = string(data)
+	devices, err := discoverDevices(ip.String(), time.Duration(duration)*time.Millisecond)
+	if err != nil {
+		result.Error = err.Error()
+	}
+	result.Data = devices
 	str, _ := json.Marshal(result)
 	return string(str)
 }
@@ -83,8 +84,7 @@ func GetMediaInformation(host, username, password string) string {
 		glog.Warning("Get capabilities error")
 
 		result.Error = "res.error.getcapabilities"
-		data, _ := json.Marshal(profile)
-		result.Data = string(data)
+		result.Data = profile
 		str, _ := json.Marshal(result)
 		return string(str)
 	}
@@ -108,8 +108,7 @@ func GetMediaInformation(host, username, password string) string {
 		profile.LastError = "profile.onvif.getprofiles.error"
 		glog.Warning("Get profiles error")
 		result.Error = "res.error.getprofiles"
-		data, _ := json.Marshal(profile)
-		result.Data = string(data)
+		result.Data = profile
 		str, _ := json.Marshal(result)
 		return string(str)
 	}
@@ -161,9 +160,8 @@ func GetMediaInformation(host, username, password string) string {
 		str, _ := json.Marshal(result)
 		return string(str)
 	}
-	data, _ := json.Marshal(profile)
 	result.Error = ""
-	result.Data = string(data)
+	result.Data = profile
 	str, _ := json.Marshal(result)
 	return string(str)
 }
@@ -259,7 +257,6 @@ func PtzStart(host, username, password string, x, y, z float64) string {
 		str, _ := json.Marshal(result)
 		return string(str)
 	}
-	result.Data = "res.ok"
 	result.Error = ""
 	str, _ := json.Marshal(result)
 	return string(str)
@@ -336,7 +333,6 @@ func PtzStop(host, username, password string) string {
 		str, _ := json.Marshal(result)
 		return string(str)
 	}
-	result.Data = "res.ok"
 	result.Error = ""
 	str, _ := json.Marshal(result)
 	return string(str)

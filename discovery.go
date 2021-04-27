@@ -156,7 +156,7 @@ func discoverDevices(ipAddr string, duration time.Duration) ([]Device, error) {
 	}
 
 	// Create initial discovery results
-	var discoveryResults []Device
+	discoveryResults := make([]Device, 0)
 
 	// Keep reading UDP message until timeout
 	for {
