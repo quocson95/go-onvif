@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	mapProfile    map[string]string // key: device XAddr, value: profile of device
+	mapProfile    = make(map[string]string) // key: device XAddr, value: profile of device
 	mapPtzXAddr   = make(map[string]string)
 	mapMediaXAddr = make(map[string]string)
 )
