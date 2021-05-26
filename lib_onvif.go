@@ -337,3 +337,79 @@ func PtzStop(host, username, password string) string {
 	str, _ := json.Marshal(result)
 	return string(str)
 }
+
+func PtzGoToHome(host, username, password string) string {
+	result := OnvifData{}
+	od := Device{
+		XAddr:    host,
+		User:     username,
+		Password: password,
+	}
+
+	// get ptz XAddr and media XAddr
+	ptzXAddr := mapPtzXAddr[od.XAddr]
+	mediaXAddr := mapMediaXAddr[od.XAddr]
+	if ptzXAddr == "" || mediaXAddr == "" {
+		glog.Info("Find PTZ And Media Address")
+
+		caps, err := GetXAddress(od)
+		if err != nil {
+			if CheckAuthorizedError(err.Error()) {
+				result.Error = "res.error.unauthorized"
+			} else {
+				result.Error = "res.error.getptzxaddr"
+			}
+			str, _ := json.Marshal(result)
+			return string(str)
+		}
+		ptzXAddr = caps.PtzXAddress
+		mediaXAddr = caps.MediaXAddress
+	}
+
+	// get profile
+	profileToken := mapProfile[od.XAddr]
+	if profileToken == "" {
+		glog.Info("Find Profile")
+		// Media device control
+		odMedia := Device{
+			XAddr:    mediaXAddr,
+			User:     username,
+			Password: password,
+		}
+		profiles, err := odMedia.GetProfiles()
+		if err != nil {
+			glog.Info(err)
+			if CheckAuthorizedError(err.Error()) {
+				result.Error = "res.error.unauthorized"
+			} else {
+				result.Error = "res.error.getprofile"
+			}
+			str, _ := json.Marshal(result)
+			return string(str)
+		}
+		mapProfile[od.XAddr] = profiles[0].Token
+		profileToken = mapProfile[od.XAddr]
+	}
+	glog.Info("PTZ XAddr: ", ptzXAddr)
+	glog.Info("Profile Token: ", profileToken)
+	// PTZ device control
+	odPtz := Device{
+		XAddr:    ptzXAddr,
+		User:     username,
+		Password: password,
+	}
+	err := odPtz.GotoHomePosition(profileToken)
+	if err != nil {
+		glog.Warning("PTZ Stop Error: ", err.Error())
+		if CheckAuthorizedError(err.Error()) {
+			result.Error = "res.error.unauthorized"
+		} else {
+			result.Error = "res.error.ptzstop"
+		}
+		str, _ := json.Marshal(result)
+		return string(str)
+	}
+	result.Error = ""
+	str, _ := json.Marshal(result)
+	return string(str)
+}
