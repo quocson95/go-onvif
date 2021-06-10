@@ -18,6 +18,19 @@ type OnvifData struct {
 	Data  interface{}
 }
 
+func DiscoveryDeviceByIp(ip string, duration int) string {
+	result := OnvifData{}
+	// Discover device on interface's network
+	result.Error = ""
+	devices, err := discoverDevices(ip, time.Duration(duration)*time.Millisecond)
+	if err != nil {
+		result.Error = err.Error()
+	}
+	result.Data = devices
+	str, _ := json.Marshal(result)
+	return string(str)
+}
+
 func DiscoveryDevice(interfaceName string, duration int) string {
 	result := OnvifData{}
 	itf, err := net.InterfaceByName(interfaceName) //here your interface
