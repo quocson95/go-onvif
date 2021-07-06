@@ -50,7 +50,7 @@ func (device Device) GetReplayServiceCapabilities() (interface{}, error) {
 	return result, nil
 }
 
-func (device Device) GetReplayUri(recordingToken string) (interface{}, error) {
+func (device Device) GetReplayUri(recordingToken string) (string, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -66,7 +66,7 @@ func (device Device) GetReplayUri(recordingToken string) (interface{}, error) {
 					</GetReplayUri>`,
 	}
 
-	var result interface{}
+	var result = ""
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -74,10 +74,9 @@ func (device Device) GetReplayUri(recordingToken string) (interface{}, error) {
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.GetReplayUriResponse")
+	data, err := response.ValueForPath("Envelope.Body.GetReplayUriResponse.Uri")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
-	return result, nil
+	return interfaceToString(data), nil
 }
