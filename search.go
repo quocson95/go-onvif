@@ -1,7 +1,5 @@
 package onvif
 
-import "github.com/golang/glog"
-
 func (device Device) GetRecordingSummary() ([]RecordingSummary, error) {
 	// create soap
 	soap := SOAP{
@@ -94,7 +92,7 @@ func (device Device) FindRecordings() (string, error) {
 	return interfaceToString(data), nil
 }
 
-func (device Device) GetRecordingSearchResults(searchToken string) (interface{}, error) {
+func (device Device) GetRecordingSearchResults(searchToken string) (ResultList, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -104,7 +102,7 @@ func (device Device) GetRecordingSearchResults(searchToken string) (interface{},
 				</GetRecordingSearchResults>`,
 	}
 
-	var result interface{}
+	result := ResultList{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -112,15 +110,51 @@ func (device Device) GetRecordingSearchResults(searchToken string) (interface{},
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.GetRecordingSearchResultsResponse")
+	resultListIf, err := response.ValueForPath("Envelope.Body.GetRecordingSearchResultsResponse.ResultList")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
+	if resultList, ok := resultListIf.(map[string]interface{}); ok {
+		result.SearchState = interfaceToString(resultList["SearchState"])
+		result.RecordingInformation = make([]RecordingInformation, 0)
+		if recordingInformationList, ok := resultList["RecordingInformation"].(map[string]interface{}); ok {
+			recordingInformation := RecordingInformation{}
+			recordingInformation.RecordingToken = interfaceToString(recordingInformationList["RecordingToken"])
+			recordingInformation.EarliestRecording = interfaceToString(recordingInformationList["EarliestRecording"])
+			recordingInformation.LatestRecording = interfaceToString(recordingInformationList["LatestRecording"])
+			recordingInformation.RecordingStatus = interfaceToString(recordingInformationList["RecordingStatus"])
+			recordingInformation.Track = make([]Track, 0)
+			if listTrack, ok := recordingInformationList["Track"].([]interface{}); ok {
+				for _, t := range listTrack {
+					if track, ok := t.(map[string]interface{}); ok {
+						recordingInformation.Track = append(recordingInformation.Track, Track{
+							TrackToken:  interfaceToString(track["TrackToken"]),
+							TrackType:   interfaceToString(track["TrackType"]),
+							Description: interfaceToString(track["Description"]),
+							DataFrom:    interfaceToString(track["DataFrom"]),
+							DataTo:      interfaceToString(track["DataTo"]),
+						})
+					}
+				}
+			} else {
+				if track, ok := recordingInformationList["Track"].(map[string]interface{}); ok {
+					recordingInformation.Track = append(recordingInformation.Track, Track{
+						TrackToken:  interfaceToString(track["TrackToken"]),
+						TrackType:   interfaceToString(track["TrackType"]),
+						Description: interfaceToString(track["Description"]),
+						DataFrom:    interfaceToString(track["DataFrom"]),
+						DataTo:      interfaceToString(track["DataTo"]),
+					})
+				}
+			}
+			result.RecordingInformation = append(result.RecordingInformation, recordingInformation)
+		}
+	}
+
 	return result, nil
 }
 
-func (device Device) FindEvents(startPoint string) (interface{}, error) {
+func (device Device) FindEvents(startPoint string) (string, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -130,7 +164,7 @@ func (device Device) FindEvents(startPoint string) (interface{}, error) {
 			   </FindEvents>`,
 	}
 
-	var result interface{}
+	var result = ""
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -138,15 +172,14 @@ func (device Device) FindEvents(startPoint string) (interface{}, error) {
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.FindEventsResponse")
+	data, err := response.ValueForPath("Envelope.Body.FindRecordingsResponse.SearchToken")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
-	return result, nil
+	return interfaceToString(data), nil
 }
 
-func (device Device) GetEventSearchResults(searchToken string) (interface{}, error) {
+func (device Device) GetEventSearchResults(searchToken string) (ResultList, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -156,7 +189,7 @@ func (device Device) GetEventSearchResults(searchToken string) (interface{}, err
 				</GetEventSearchResults>`,
 	}
 
-	var result interface{}
+	result := ResultList{}
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -164,10 +197,46 @@ func (device Device) GetEventSearchResults(searchToken string) (interface{}, err
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.GetEventSearchResultsResponse")
+	resultListIf, err := response.ValueForPath("Envelope.Body.GetEventSearchResultsResponse.ResultList")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
+	if resultList, ok := resultListIf.(map[string]interface{}); ok {
+		result.SearchState = interfaceToString(resultList["SearchState"])
+		result.RecordingInformation = make([]RecordingInformation, 0)
+		if recordingInformationList, ok := resultList["RecordingInformation"].(map[string]interface{}); ok {
+			recordingInformation := RecordingInformation{}
+			recordingInformation.RecordingToken = interfaceToString(recordingInformationList["RecordingToken"])
+			recordingInformation.EarliestRecording = interfaceToString(recordingInformationList["EarliestRecording"])
+			recordingInformation.LatestRecording = interfaceToString(recordingInformationList["LatestRecording"])
+			recordingInformation.RecordingStatus = interfaceToString(recordingInformationList["RecordingStatus"])
+			recordingInformation.Track = make([]Track, 0)
+			if listTrack, ok := recordingInformationList["Track"].([]interface{}); ok {
+				for _, t := range listTrack {
+					if track, ok := t.(map[string]interface{}); ok {
+						recordingInformation.Track = append(recordingInformation.Track, Track{
+							TrackToken:  interfaceToString(track["TrackToken"]),
+							TrackType:   interfaceToString(track["TrackType"]),
+							Description: interfaceToString(track["Description"]),
+							DataFrom:    interfaceToString(track["DataFrom"]),
+							DataTo:      interfaceToString(track["DataTo"]),
+						})
+					}
+				}
+			} else {
+				if track, ok := recordingInformationList["Track"].(map[string]interface{}); ok {
+					recordingInformation.Track = append(recordingInformation.Track, Track{
+						TrackToken:  interfaceToString(track["TrackToken"]),
+						TrackType:   interfaceToString(track["TrackType"]),
+						Description: interfaceToString(track["Description"]),
+						DataFrom:    interfaceToString(track["DataFrom"]),
+						DataTo:      interfaceToString(track["DataTo"]),
+					})
+				}
+			}
+			result.RecordingInformation = append(result.RecordingInformation, recordingInformation)
+		}
+	}
+
 	return result, nil
 }

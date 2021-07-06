@@ -778,3 +778,24 @@ type MediaAttributes struct {
 	From           string
 	Until          string
 }
+
+type Track struct {
+	TrackToken  string
+	TrackType   string
+	Description string
+	DataFrom    string
+	DataTo      string
+}
+
+type RecordingInformation struct {
+	RecordingToken    string
+	EarliestRecording string
+	LatestRecording   string
+	Track             []Track
+	RecordingStatus   string
+}
+
+type ResultList struct {
+	SearchState          string
+	RecordingInformation []RecordingInformation
+}
