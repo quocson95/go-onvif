@@ -766,3 +766,15 @@ type OnvifXAddress struct {
 	PtzXAddress   string
 	EventXAddress string
 }
+
+type RecordingSummary struct {
+	DataFrom         string
+	DataUntil        string
+	NumberRecordings int
+}
+
+type MediaAttributes struct {
+	RecordingToken string
+	From           string
+	Until          string
+}

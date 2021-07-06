@@ -2,7 +2,7 @@ package onvif
 
 import "github.com/golang/glog"
 
-func (device Device) GetRecordingSummary() (interface{}, error) {
+func (device Device) GetRecordingSummary() ([]RecordingSummary, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -10,7 +10,7 @@ func (device Device) GetRecordingSummary() (interface{}, error) {
 		Body:     `<GetRecordingSummary xmlns="http://www.onvif.org/ver10/search/wsdl"/>`,
 	}
 
-	var result interface{}
+	result := make([]RecordingSummary, 0)
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -18,25 +18,35 @@ func (device Device) GetRecordingSummary() (interface{}, error) {
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.GetRecordingSummaryResponse.Summary")
+	summaries, err := response.ValuesForPath("Envelope.Body.GetRecordingSummaryResponse.Summary")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
+
+	for _, summaryIf := range summaries {
+		if summary, ok := summaryIf.(map[string]interface{}); ok {
+			recordingSummary := RecordingSummary{}
+			recordingSummary.DataFrom = interfaceToString(summary["DataFrom"])
+			recordingSummary.DataUntil = interfaceToString(summary["DataUntil"])
+			recordingSummary.NumberRecordings = interfaceToInt(summary["NumberRecordings"])
+			result = append(result, recordingSummary)
+		}
+	}
+
 	return result, nil
 }
 
-func (device Device) GetMediaAttributes(time string) (interface{}, error) {
+func (device Device) GetMediaAttributes(time string) ([]MediaAttributes, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
 		Password: device.Password,
 		Body: `<GetMediaAttributes xmlns="http://www.onvif.org/ver10/search/wsdl">
-						<Time>` + time + `</Time>					
-					</GetMediaAttributes>`,
+					<Time>` + time + `</Time>					
+			   </GetMediaAttributes>`,
 	}
 
-	var result interface{}
+	result := make([]MediaAttributes, 0)
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -44,15 +54,23 @@ func (device Device) GetMediaAttributes(time string) (interface{}, error) {
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.GetMediaAttributesResponse.MediaAttributes")
+	mediaAttributesIfs, err := response.ValuesForPath("Envelope.Body.GetMediaAttributesResponse.MediaAttributes")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
+	for _, mediaAttributesIf := range mediaAttributesIfs {
+		if mediaAttributes, ok := mediaAttributesIf.(map[string]interface{}); ok {
+			ma := MediaAttributes{}
+			ma.RecordingToken = interfaceToString(mediaAttributes["RecordingToken"])
+			ma.From = interfaceToString(mediaAttributes["From"])
+			ma.Until = interfaceToString(mediaAttributes["Until"])
+			result = append(result, ma)
+		}
+	}
 	return result, nil
 }
 
-func (device Device) FindRecordings() (interface{}, error) {
+func (device Device) FindRecordings() (string, error) {
 	// create soap
 	soap := SOAP{
 		User:     device.User,
@@ -61,7 +79,7 @@ func (device Device) FindRecordings() (interface{}, error) {
 					</FindRecordings>`,
 	}
 
-	var result interface{}
+	var result = ""
 	// send request
 	response, err := soap.SendRequest(device.XAddr)
 	if err != nil {
@@ -69,12 +87,11 @@ func (device Device) FindRecordings() (interface{}, error) {
 	}
 
 	// parse response
-	data, err := response.ValueForPath("Envelope.Body.FindRecordingsResponse")
+	data, err := response.ValueForPath("Envelope.Body.FindRecordingsResponse.SearchToken")
 	if err != nil {
 		return result, err
 	}
-	glog.Infof("Data %v", data)
-	return result, nil
+	return interfaceToString(data), nil
 }
 
 func (device Device) GetRecordingSearchResults(searchToken string) (interface{}, error) {
