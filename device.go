@@ -225,13 +225,41 @@ func (device Device) GetCapabilities() (DeviceCapabilities, error) {
 		}
 	}
 
+	// Get Extension capabilities
+	recordingCap := ExtensionCapabilities{}
+	searchRecodingCap := ExtensionCapabilities{}
+	relayCap := ExtensionCapabilities{}
+	ifaceExtensionCap, err := response.ValueForPath(envelopeBodyPath + ".Extension")
+	if err == nil {
+		if mapExtensionCap, ok := ifaceExtensionCap.(map[string]interface{}); ok {
+			if mapRecordingCapIface, ok := mapExtensionCap["Recording"]; ok {
+				if mapRecordingCap, ok := mapRecordingCapIface.(map[string]interface{}); ok {
+					recordingCap.XAddr = interfaceToString(mapRecordingCap["XAddr"])
+				}
+			}
+			if mapSearchRecordingCapIface, ok := mapExtensionCap["Search"]; ok {
+				if mapSearchRecordingCap, ok := mapSearchRecordingCapIface.(map[string]interface{}); ok {
+					searchRecodingCap.XAddr = interfaceToString(mapSearchRecordingCap["XAddr"])
+				}
+			}
+			if mapRelayCapIface, ok := mapExtensionCap["Replay"]; ok {
+				if mapRelayCap, ok := mapRelayCapIface.(map[string]interface{}); ok {
+					relayCap.XAddr = interfaceToString(mapRelayCap["XAddr"])
+				}
+			}
+		}
+	}
+
 	// Create final result
 	deviceCapabilities := DeviceCapabilities{
-		Network:   netCap,
-		Media:     mediaCap,
-		Ptz:       ptzCap,
-		EventsCap: eventsCap,
-		Streaming: streamingCap,
+		Network:         netCap,
+		Media:           mediaCap,
+		Ptz:             ptzCap,
+		EventsCap:       eventsCap,
+		Streaming:       streamingCap,
+		Recording:       recordingCap,
+		Replay:          relayCap,
+		SearchRecording: searchRecodingCap,
 	}
 
 	return deviceCapabilities, nil
