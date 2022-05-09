@@ -46,6 +46,7 @@ package digest
 import (
 	"crypto/md5"
 	"crypto/rand"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"github.com/golang/glog"
@@ -84,8 +85,11 @@ func NewTransport(username, password string) *Transport {
 			KeepAlive: 30 * time.Second,
 			DualStack: true,
 		}).DialContext,
-		ForceAttemptHTTP2:     true,
-		MaxIdleConns:          100,
+		ForceAttemptHTTP2: true,
+		MaxIdleConns:      100,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 		IdleConnTimeout:       90 * time.Second,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
