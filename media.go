@@ -1,6 +1,7 @@
 package onvif
 
 import (
+	"fmt"
 	"github.com/golang/glog"
 )
 
@@ -1771,7 +1772,7 @@ func (device Device) CreateMask(configurationToken string, pointStart, pointEnd 
 		return "", err
 	}
 
-	glog.Info("Data %v", interfaceToString(ifOSDsResponse))
+	fmt.Printf("Data %v\n", interfaceToString(ifOSDsResponse))
 	return interfaceToString(ifOSDsResponse), nil
 }
 

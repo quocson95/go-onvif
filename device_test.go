@@ -66,25 +66,25 @@ func TestGetHostname(t *testing.T) {
 }
 
 /// Todo Test Get, Set SystemDateTime mode Manual
-func GetSetSystemDateAndTime(t *testing.T){
+func GetSetSystemDateAndTime(t *testing.T) {
 	log.Println("Test GetSetSystemDateAndTime")
 
 	utcDT := SystemDateAndTime{
-		DateTimeType: "Manual",
-		DaylightSavings:false,
+		DateTimeType:    "Manual",
+		DaylightSavings: false,
 		TimeZone: TimeZone{
-			TZ:"CST-8",
+			TZ: "CST-8",
 		},
 		UTCDateTime: UTCDateTime{
 			Time: Time{
-				Hour: 10,
+				Hour:   10,
 				Minute: 20,
 				Second: 10,
 			},
 			Date: Date{
-				Year: 2018,
+				Year:  2018,
 				Month: 11,
-				Day: 15,
+				Day:   15,
 			},
 		},
 	}
@@ -102,17 +102,17 @@ func GetSetSystemDateAndTime(t *testing.T){
 	}
 }
 
-
 /// Todo Test Set Get NTP, SetSytemDateAndTime mode NTP
 // Todo Config NTP
-func  TestGetSetNTP(t *testing.T)  {
+func TestGetSetNTP(t *testing.T) {
 	log.Println("Test GetSetNTP")
 
 	ntpInformation := NTPInformation{
 		FromDHCP: false,
-		NTPNetworkHost: NetworkHost{
-				Type: "IPv4",
-				IPv4Address: "swisstime.ee.ethz.ch",
+		NTPNetworkHost: []NetworkHost{{
+			Type:        "IPv4",
+			IPv4Address: "swisstime.ee.ethz.ch",
+		},
 		},
 	}
 	res, err := testDevice.GetNTP()
@@ -128,14 +128,13 @@ func  TestGetSetNTP(t *testing.T)  {
 	}
 }
 
-
 //// Todo Config SystemDateAndTime with mode NTP
-func  GetSetSystemTimeNTP(t *testing.T)  {
+func GetSetSystemTimeNTP(t *testing.T) {
 	log.Println("Test GetSetSystemTimeNTP")
 
 	utcDT := SystemDateAndTime{
-		DateTimeType: "NTP",
-		DaylightSavings:false,
+		DateTimeType:    "NTP",
+		DaylightSavings: false,
 	}
 	res, err := testDevice.GetSystemDateAndTime()
 	if err != nil {
@@ -151,7 +150,7 @@ func  GetSetSystemTimeNTP(t *testing.T)  {
 }
 
 //// Todo Reboot Device
-func TestSystemReboot(t *testing.T)  {
+func TestSystemReboot(t *testing.T) {
 	log.Println("Test SystemReboot")
 
 	res, err := testDevice.SystemReboot()
@@ -161,7 +160,6 @@ func TestSystemReboot(t *testing.T)  {
 	js := prettyJSON(&res)
 	fmt.Println(js)
 }
-
 
 /// Todo Get Set device
 func GetSetDNS(t *testing.T) {
@@ -174,13 +172,13 @@ func GetSetDNS(t *testing.T) {
 	js := prettyJSON(&res)
 	fmt.Println(js)
 
-	dnsInformation :=DNSInformation{
-		FromDHCP: false,
+	dnsInformation := DNSInformation{
+		FromDHCP:     false,
 		SearchDomain: "domain",
-		DNSAddress:IPAddress{
-			Type: "IPv4",
-			IPv4Address:"172.16.0.1",
-		},
+		DNSAddress: []IPAddress{{
+			Type:        "IPv4",
+			IPv4Address: "172.16.0.1",
+		}},
 	}
 
 	err = testDevice.SetDNS(dnsInformation)
@@ -189,9 +187,8 @@ func GetSetDNS(t *testing.T) {
 	}
 }
 
-
 // Todo get set protocols
-func GetSetNetworkProtocols(t *testing.T){
+func GetSetNetworkProtocols(t *testing.T) {
 	log.Println("Test GetSetNetworkProtocols")
 
 	res, err := testDevice.GetNetworkProtocols()
@@ -219,7 +216,7 @@ func GetSetNetworkProtocols(t *testing.T){
 	//res, err := testDevice.SetNetworkProtocols(protocols)
 }
 
-func GetSetScopes(t *testing.T)  {
+func GetSetScopes(t *testing.T) {
 	log.Println("Test GetSetScopes")
 
 	res, err := testDevice.GetScopes()
@@ -240,7 +237,7 @@ func GetSetScopes(t *testing.T)  {
 	}
 }
 
-func AddRemoveScopes(t *testing.T)  {
+func AddRemoveScopes(t *testing.T) {
 	log.Println("Test AddRemoveScopes")
 
 	res, err := testDevice.GetScopes()
@@ -271,7 +268,7 @@ func AddRemoveScopes(t *testing.T)  {
 	}
 }
 
-func GetSetNetworkDefaultGateway(t *testing.T){
+func GetSetNetworkDefaultGateway(t *testing.T) {
 	log.Println("Test GetSetNetworkDefaultGateway")
 
 	res, err := testDevice.GetNetworkDefaultGateway()
@@ -286,7 +283,7 @@ func GetSetNetworkDefaultGateway(t *testing.T){
 	//res, err := testDevice.SetNetworkDefaultGateway(gateway)
 }
 
-func TestGetUsers(t *testing.T)  {
+func TestGetUsers(t *testing.T) {
 	log.Println("Test GetUsers")
 
 	res, err := testDevice.GetUsers()
@@ -297,7 +294,7 @@ func TestGetUsers(t *testing.T)  {
 	fmt.Println(js)
 }
 
-func CreateSetDeleteUser(t *testing.T)  {
+func CreateSetDeleteUser(t *testing.T) {
 	log.Println("Test CreateSetDeleteUser")
 
 	//users := []models.User{
@@ -319,7 +316,7 @@ func CreateSetDeleteUser(t *testing.T)  {
 	}
 }
 
-func TestGetRelayOutputs(t *testing.T){
+func TestGetRelayOutputs(t *testing.T) {
 	log.Println("Test GetRelayOutputs")
 
 	res, err := testDevice.GetRelayOutputs()
@@ -330,7 +327,7 @@ func TestGetRelayOutputs(t *testing.T){
 	fmt.Println(js)
 }
 
-func TestGetServices(t *testing.T){
+func TestGetServices(t *testing.T) {
 	log.Println("Test GetServices")
 
 	res, err := testDevice.GetServices()
@@ -341,7 +338,7 @@ func TestGetServices(t *testing.T){
 	fmt.Println(js)
 }
 
-func TestGetServiceCapabilities(t *testing.T){
+func TestGetServiceCapabilities(t *testing.T) {
 	log.Println("Test GetServiceCapabilities")
 
 	res, err := testDevice.GetServiceCapabilities()
@@ -351,4 +348,3 @@ func TestGetServiceCapabilities(t *testing.T){
 	js := prettyJSON(&res)
 	fmt.Println(js)
 }
-
