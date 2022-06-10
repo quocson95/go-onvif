@@ -1,7 +1,3 @@
-# Description
-This repo is forked from https://github.com/quocson95/go-onvif, with the aim to fix & generalize a few issues.
-Currently SetVideoEncoderConfiguration had been generalized to allow supporting non-default network configurations, for instance when modifying camera resolition.
-
 # Go-ONVIF
 
 Go-ONVIF is a Go package for communicating with network camera which supports the [ONVIF](http://www.onvif.org/) specifications. ONVIF (Open Network Video Interface) is an open industry forum promoting and developing global standards for interfaces of IP-based physical security products such as network cameras. Recently, almost all network cameras support ONVIF specifications, especially network camera that made in China, which usually can bought with cheap price.
