@@ -294,14 +294,18 @@ func (device Device) SetVideoEncoderConfiguration(videoEncoderConfig VideoEncode
 							<EncodingInterval>` + intToString(videoEncoderConfig.RateControl.EncodingInterval) + `</EncodingInterval>
 							<BitrateLimit>` + intToString(videoEncoderConfig.RateControl.BitrateLimit) + `</BitrateLimit>
 						</RateControl>
+						<H264 xmlns="http://www.onvif.org/ver10/schema">
+							<GovLength>` + intToString(videoEncoderConfig.H264.GovLength) + `</GovLength>
+							<H264Profile>` + videoEncoderConfig.H264.H264Profile + `</H264Profile>
+						</H264>
 						<Multicast xmlns="http://www.onvif.org/ver10/schema">
 							<Address>
-								<Type>IPv4</Type>
-								<IPv4Address>0.0.0.0</IPv4Address>
+								<Type>` + videoEncoderConfig.Multicast.Address.Type + `</Type>
+								<IPv4Address>` + videoEncoderConfig.Multicast.Address.IPv4Address + `</IPv4Address>
 							</Address>
-							<Port>0</Port>
-							<TTL>5</TTL>
-							<AutoStart>false</AutoStart>
+							<Port>` + intToString(videoEncoderConfig.Multicast.Port) + `</Port>
+							<TTL>` + intToString(videoEncoderConfig.Multicast.TTL) + `</TTL>
+							<AutoStart>` + boolToString(videoEncoderConfig.Multicast.AutoStart) + `</AutoStart>
 						</Multicast>
 						<SessionTimeout xmlns="http://www.onvif.org/ver10/schema">` + videoEncoderConfig.SessionTimeout + `</SessionTimeout>
 					</Configuration>
