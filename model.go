@@ -2,11 +2,11 @@ package onvif
 
 // Device contains data of ONVIF camera
 type Device struct {
-	ID       string
-	Name     string
-	XAddr    string
-	User     string
-	Password string
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	XAddr    string `json:"xAddr"`
+	User     string `json:"user"`
+	Password string `json:"password"`
 }
 
 // DeviceInformation contains information of ONVIF camera
@@ -28,20 +28,20 @@ type NetworkCapabilities struct {
 
 // MediaCapabilities contains media capabilities of ONVIF camera
 type MediaCapabilities struct {
-	XAddr string
+	XAddr string `json:"xAddr"`
 }
 
 type PTZCapabilities struct {
-	XAddr string
+	XAddr string `json:"xAddr"`
 }
 
 type EventsCapabilities struct {
 	Events map[string]bool
-	XAddr  string
+	XAddr  string `json:"xAddr"`
 }
 
 type ExtensionCapabilities struct {
-	XAddr string
+	XAddr string `json:"xAddr"`
 }
 
 // DeviceCapabilities contains capabilities of an ONVIF camera
@@ -588,19 +588,19 @@ type PTZNode struct {
 }
 
 type Vector2D struct {
-	Space string
-	X     float64
-	Y     float64
+	Space string  `json:"space"`
+	X     float64 `json:"x"`
+	Y     float64 `json:"y"`
 }
 
 type Vector1D struct {
-	Space string
-	X     float64
+	Space string  `json:"space"`
+	X     float64 `json:"x"`
 }
 
 type PTZVector struct {
-	PanTilt Vector2D
-	Zoom    Vector1D
+	PanTilt Vector2D `json:"panTilt"`
+	Zoom    Vector1D `json:"zoom"`
 }
 
 type PanTiltLimits struct {
